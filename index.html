@@ -262,6 +262,150 @@
     .mic-browser-pane { display: none; }
     .mic-browser-pane.active { display: block; }
 
+    /* ★★★ VOICE OVER RECORDING MODE (focused) ★★★ */
+    .vm-shell.vo-recording { grid-template-columns: 1fr; }
+    .vm-shell.vo-recording .vm-rail,
+    .vm-shell.vo-recording .vm-canvas-controls,
+    .vm-shell.vo-recording .vm-bottom-bar,
+    .vm-shell.vo-recording .vm-status-line,
+    .vm-shell.vo-recording .vm-progress-wrap,
+    .vm-shell.vo-recording .vm-flyout,
+    .vm-shell.vo-recording .vm-backdrop,
+    .vm-shell.vo-recording .vm-live-badge,
+    .vm-shell.vo-recording .vm-rec-badge {
+        display: none !important;
+    }
+    .vm-shell.vo-recording .vm-canvas-wrap {
+        border-radius: 14px;
+        padding: 4px;
+    }
+
+    .vo-hud {
+        position: absolute;
+        left: 50%;
+        bottom: 14px;
+        transform: translateX(-50%);
+        width: calc(100% - 32px);
+        max-width: 560px;
+        background: rgba(15,23,42,0.92);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 18px;
+        padding: 12px 16px 14px;
+        box-shadow: 0 20px 60px rgba(0,0,0,.6);
+        z-index: 60;
+        color: #fff;
+        font-family: inherit;
+        animation: voHudIn .25s cubic-bezier(.34,1.4,.64,1);
+    }
+    @keyframes voHudIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+    .vo-hud-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: .78rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+    .vo-hud-dot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: #ef4444;
+        animation: pulse-rec 1s infinite;
+        flex-shrink: 0;
+    }
+    .vo-hud-time {
+        margin-left: auto;
+        font-family: ui-monospace, monospace;
+        font-size: .74rem;
+        color: #cbd5e1;
+        letter-spacing: .04em;
+    }
+    .vo-hud-bar {
+        height: 8px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 12px;
+    }
+    .vo-hud-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #22c55e, #16a34a);
+        transition: width .15s linear;
+    }
+    .vo-hud-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .vo-btn {
+        flex: 1;
+        min-width: 82px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        font-family: inherit;
+        font-size: .78rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: .15s;
+        white-space: nowrap;
+    }
+    .vo-btn:hover { background: rgba(255,255,255,0.16); }
+    .vo-btn:active { transform: scale(.97); }
+    .vo-btn-pause { background: #f59e0b; border-color: #f59e0b; }
+    .vo-btn-pause:hover { background: #d97706; }
+    .vo-btn-stop { background: #ef4444; border-color: #ef4444; }
+    .vo-btn-stop:hover { background: #dc2626; }
+    .vo-btn-discard {
+        background: transparent;
+        color: #fca5a5;
+        border-color: rgba(239,68,68,0.45);
+        flex: 0 0 auto;
+        min-width: auto;
+        padding: 10px 14px;
+    }
+    .vo-btn-discard:hover { background: rgba(239,68,68,0.15); color: #fff; }
+    .vo-hud-done {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .vo-hud-done-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: .8rem;
+        font-weight: 800;
+    }
+    .vo-hud-done-row .vo-ok { color: #34d399; font-size: 16px; }
+    .vo-hud-close {
+        margin-left: auto;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: #cbd5e1;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: .8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: .15s;
+        padding: 0;
+        font-family: inherit;
+    }
+    .vo-hud-close:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
     @media (max-width: 900px) {
         .vm-shell { grid-template-columns: 58px 1fr 58px; gap: 4px; height: calc(100vh - 68px); padding: 4px; border-radius: 12px; }
         .vm-rail { padding: 4px 2px; gap: 3px; border-radius: 10px; }
@@ -283,6 +427,13 @@
         .vm-tool { min-height: 42px; padding: 8px 10px; font-size: .7rem; }
         .vm-tool .ti { font-size: 16px; }
         .vm-tool .tt { font-size: .66rem; }
+    }
+    @media (max-width: 600px) {
+        .vo-hud { width: calc(100% - 16px); bottom: 8px; padding: 10px 12px 12px; border-radius: 14px; }
+        .vo-hud-head { font-size: .72rem; margin-bottom: 8px; }
+        .vo-hud-bar { margin-bottom: 10px; }
+        .vo-btn { min-width: 62px; padding: 9px 10px; font-size: .72rem; }
+        .vo-btn-discard { padding: 9px 11px; }
     }
     @media (max-width: 480px) {
         .vm-shell { grid-template-columns: 52px 1fr 52px; padding: 3px; }
@@ -1182,7 +1333,6 @@ function vmRunTimeline(isRecording = false, muteTTS = false) {
     });
 }
 
-/* ★★★ Sound event processing — respects global mute flag ★★★ */
 function vmProcessSoundEvents(t, scenes) {
     let curIdx = -1, sc = null, scT = 0;
     for (let i = 0; i < scenes.length; i++) {
@@ -1223,7 +1373,12 @@ function vmProcessSoundEvents(t, scenes) {
     }
 }
 
-/* ★★★ Voice over recording — muted video audio ★★★ */
+/* ★★★ VOICE OVER RECORDING — clean focused mode ★★★ */
+function hideVoHud() {
+    const hud = document.getElementById('voHud');
+    if (hud) hud.style.display = 'none';
+}
+
 async function startVoiceOverRecording() {
     if (vmRecordingVoiceOver || vmRecording) return;
     if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
@@ -1235,71 +1390,163 @@ async function startVoiceOverRecording() {
     let stream;
     try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false }); }
     catch (e) { qcToast('🎙️ <b>Mic permission issue.</b> Tap <b>Record</b> again for instructions.', 4000); openMicModal(); return; }
+
     if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch(e){} }
     vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream, chunks: [], duration: 0 };
     vmRecordingVoiceOver = true;
 
-    // ★ Mute video sounds during recording so user only hears own voice
+    // Mute video sounds during recording — user hears only their own voice
     const prevMuted = vmMuted;
     vmSetMute(true, true);
+
+    // Switch into focused recording mode (rails/controls hidden via CSS)
+    const shell = document.getElementById('vmShell');
+    if (shell) shell.classList.add('vo-recording');
+    const hud = document.getElementById('voHud');
+    const hudRec = document.getElementById('voHudRec');
+    const hudDone = document.getElementById('voHudDone');
+    const hudTime = document.getElementById('voHudTime');
+    const hudFill = document.getElementById('voHudFill');
+    if (hud) { hud.style.display = 'block'; }
+    if (hudRec) hudRec.style.display = 'block';
+    if (hudDone) hudDone.style.display = 'none';
+
+    // Resize canvas after layout change
+    requestAnimationFrame(() => vmFitCanvas());
 
     const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Recording…';
     const voRecBadge = document.getElementById('voRecBadge'); if (voRecBadge) voRecBadge.style.display = 'flex';
     const voBtn = document.getElementById('voRecordBtn'); if (voBtn) voBtn.classList.add('active');
+
     let mime = '';
     try { const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus']; for (const c of candidates) { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; } } } catch(e){}
     let rec;
     try { rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream); }
-    catch (e) { qcToast('❌ Recorder not supported'); stream.getTracks().forEach(t => t.stop()); vmRecordingVoiceOver = false; vmSetMute(prevMuted, true); return; }
+    catch (e) {
+        qcToast('❌ Recorder not supported'); stream.getTracks().forEach(t => t.stop());
+        vmRecordingVoiceOver = false; vmSetMute(prevMuted, true);
+        if (shell) shell.classList.remove('vo-recording');
+        if (hud) hud.style.display = 'none';
+        return;
+    }
     vmVoiceOver.recorder = rec;
     rec.ondataavailable = e => { if (e.data && e.data.size) vmVoiceOver.chunks.push(e.data); };
     const stoppedP = new Promise(res => { rec.onstop = res; });
+
+    // Pause/resume state
+    let voPaused = false;
+    let voPausedTotal = 0;
+    let voPausedAt = 0;
+    let voCancelled = false;
+
+    const pauseBtn = document.getElementById('voPauseBtn');
+    const stopBtn = document.getElementById('voStopBtn');
+    const discardBtn = document.getElementById('voDiscardBtn');
+    if (pauseBtn) pauseBtn.onclick = () => {
+        if (voPaused) {
+            voPausedTotal += performance.now() - voPausedAt;
+            voPaused = false;
+            try { if (rec.state === 'paused') rec.resume(); } catch(e){}
+            pauseBtn.innerHTML = '⏸ Pause';
+        } else {
+            voPausedAt = performance.now();
+            voPaused = true;
+            try { if (rec.state === 'recording') rec.pause(); } catch(e){}
+            pauseBtn.innerHTML = '▶ Resume';
+        }
+    };
+    if (stopBtn) stopBtn.onclick = () => { vmStopFlag = true; };
+    if (discardBtn) discardBtn.onclick = () => { voCancelled = true; vmStopFlag = true; };
+
     rec.start(500);
     const recStart = Date.now();
+
     await vmPreloadImages();
     try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch(e){}
     const canvas = document.getElementById('vmCanvas');
     const ctx = canvas.getContext('2d');
     const scenes = vmSceneList();
     const total = scenes[scenes.length - 1].end;
-    const start = performance.now();
     vmStopFlag = false;
     vmSoundRuntime = { lastSceneIdx: -1, playedOptions: {} };
     const prevTtsEnabled = TTS.enabled;
     TTS.enabled = false;
+
     await new Promise(resolve => {
+        const t0 = performance.now();
         const frame = (now) => {
             if (vmStopFlag) { resolve(); return; }
-            const t = (now - start) / 1000;
-            const elapsed = (Date.now() - recStart) / 1000;
-            const tEl = document.getElementById('voElapsed'); if (tEl) tEl.textContent = vmFormatTime(elapsed) + ' / ' + vmFormatTime(total);
+            let t;
+            if (voPaused) t = (voPausedAt - t0 - voPausedTotal) / 1000;
+            else t = (now - t0 - voPausedTotal) / 1000;
+            const cur = Math.max(0, Math.min(t, total));
+            if (hudTime) hudTime.textContent = vmFormatTime(cur) + ' / ' + vmFormatTime(total);
+            if (hudFill) hudFill.style.width = ((cur / total) * 100) + '%';
             if (t >= total) { vmDrawFrame(ctx, Math.max(0, total - 0.05), scenes); resolve(); return; }
-            vmProcessSoundEvents(t, scenes);
+            if (!voPaused) vmProcessSoundEvents(t, scenes);
             vmDrawFrame(ctx, t, scenes);
             vmRaf = requestAnimationFrame(frame);
         };
         vmRaf = requestAnimationFrame(frame);
     });
+
     TTS.enabled = prevTtsEnabled;
     if (rec.state !== 'inactive') rec.stop();
     await stoppedP;
     stream.getTracks().forEach(t => t.stop());
+    vmRecordingVoiceOver = false;
+    vmSetMute(prevMuted, true);
+
+    // Clean up focused mode
+    if (shell) shell.classList.remove('vo-recording');
+    if (pauseBtn) pauseBtn.onclick = null;
+    if (stopBtn) stopBtn.onclick = null;
+    if (discardBtn) discardBtn.onclick = null;
+    if (voRecBadge) voRecBadge.style.display = 'none';
+    if (voBtn) voBtn.classList.remove('active');
+    requestAnimationFrame(() => vmFitCanvas());
+
+    // Discarded?
+    if (voCancelled) {
+        if (hud) hud.style.display = 'none';
+        vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
+        if (voStatus) voStatus.textContent = 'Record Voice Over';
+        qcToast('🗑️ Recording discarded');
+        return;
+    }
+
+    // Save
     vmVoiceOver.duration = (Date.now() - recStart) / 1000;
     const type = rec.mimeType || mime || 'audio/webm';
     const blob = new Blob(vmVoiceOver.chunks, { type });
+    if (!blob.size) {
+        if (hud) hud.style.display = 'none';
+        qcToast('❌ Empty recording');
+        if (voStatus) voStatus.textContent = 'Record Voice Over';
+        return;
+    }
     vmVoiceOver.blob = blob;
     vmVoiceOver.url = URL.createObjectURL(blob);
     vmVoiceOver.audio = new Audio(vmVoiceOver.url);
     vmVoiceOver.audio.preload = 'auto';
     await SE.attachVoiceover(vmVoiceOver.audio);
-    vmRecordingVoiceOver = false;
-    // ★ Restore previous mute state
-    vmSetMute(prevMuted, true);
-    if (voRecBadge) voRecBadge.style.display = 'none';
-    if (voBtn) voBtn.classList.remove('active');
+
     if (voStatus) voStatus.textContent = 'Re-record Voice Over';
     const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex';
     const voPlayBtn = document.getElementById('voPlayBtn'); if (voPlayBtn) voPlayBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+
+    // Show done HUD (small area, visible above the video)
+    if (hud) { hudRec.style.display = 'none'; hudDone.style.display = 'flex'; }
+    const durEl = document.getElementById('voHudDur'); if (durEl) durEl.textContent = vmVoiceOver.duration.toFixed(1) + 's';
+    const doneClose = document.getElementById('voHudClose');
+    const donePlay = document.getElementById('voHudPlay');
+    const doneReRec = document.getElementById('voHudReRec');
+    const doneDel = document.getElementById('voHudDel');
+    if (doneClose) doneClose.onclick = () => { if (hud) hud.style.display = 'none'; };
+    if (donePlay) donePlay.onclick = () => { playVoiceOverPreview(); };
+    if (doneReRec) doneReRec.onclick = () => { if (hud) hud.style.display = 'none'; setTimeout(() => startVoiceOverRecording(), 200); };
+    if (doneDel) doneDel.onclick = () => { deleteVoiceOver(); if (hud) hud.style.display = 'none'; };
+
     qcToast('✅ Voice over recorded (' + vmVoiceOver.duration.toFixed(1) + 's)');
 }
 function stopVoiceOverRecording() {
@@ -1347,6 +1594,7 @@ function deleteVoiceOver() {
     const voStatus = document.getElementById('voStatusText');
     if (voStatus) voStatus.textContent = 'Record Voice Over';
     const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none';
+    hideVoHud();
     qcToast('🗑️ Voice over deleted');
 }
 
@@ -1367,6 +1615,7 @@ function vmToggleMute() { vmSetMute(!vmMuted); }
 
 async function vmPlayPreview() {
     if (vmRecording || vmPreviewPlaying || vmRecordingVoiceOver) return;
+    hideVoHud();
     vmPreviewPlaying = true;
     await SE.init();
     await vmPreloadImages();
@@ -1423,6 +1672,7 @@ async function vmStartRender() {
     if (vmPreviewPlaying) { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); await new Promise(r => setTimeout(r, 180)); vmPreviewPlaying = false; vmStopFlag = false; }
     if (vmAutoPreviewTimeout) { clearTimeout(vmAutoPreviewTimeout); vmAutoPreviewTimeout = null; }
     hideDownloadModal();
+    hideVoHud();
     const pBtn = document.getElementById('vmPreviewBtn');
     const rBtn = document.getElementById('vmRenderBtn');
     const sBtn = document.getElementById('vmStopBtn');
@@ -1509,6 +1759,8 @@ function vmStopAll() {
     const rB = document.getElementById('vmRecBadge'); if (rB) rB.classList.remove('on');
     const pW = document.getElementById('vmProgressWrap'); if (pW) pW.classList.remove('on');
     const lB = document.getElementById('vmLiveBadge'); if (lB) lB.classList.remove('on');
+    const shell = document.getElementById('vmShell'); if (shell) shell.classList.remove('vo-recording');
+    hideVoHud();
     vmRecording = false; vmPreviewPlaying = false; vmRecordingVoiceOver = false;
 }
 function vmSetStatus(html) { const el = document.getElementById('vmStatus'); if (el) el.innerHTML = html; }
@@ -1601,6 +1853,34 @@ function renderVideoStudio(data) {
             <div class="vm-live-badge" id="vmLiveBadge"><span class="vm-live-dot"></span>LIVE</div>
             <div class="vm-rec-badge" id="vmRecBadge"><div class="vm-rec-dot"></div><span>REC</span><span id="vmRecTime">00:00</span>/<span id="vmRecTotal">00:00</span></div>
             <canvas id="vmCanvas"></canvas>
+            <div class="vo-hud" id="voHud" style="display:none;">
+              <div class="vo-hud-recording" id="voHudRec" style="display:none;">
+                <div class="vo-hud-head">
+                  <div class="vo-hud-dot"></div>
+                  <span>🎙️ Recording Voice Over</span>
+                  <span class="vo-hud-time" id="voHudTime">00:00 / 00:00</span>
+                </div>
+                <div class="vo-hud-bar"><div class="vo-hud-fill" id="voHudFill"></div></div>
+                <div class="vo-hud-actions">
+                  <button class="vo-btn vo-btn-pause" id="voPauseBtn">⏸ Pause</button>
+                  <button class="vo-btn vo-btn-stop" id="voStopBtn">⏹ Stop &amp; Save</button>
+                  <button class="vo-btn vo-btn-discard" id="voDiscardBtn" title="Discard recording">🗑</button>
+                </div>
+              </div>
+              <div class="vo-hud-done" id="voHudDone" style="display:none;">
+                <div class="vo-hud-done-row">
+                  <span class="vo-ok">✓</span>
+                  <span>Voice over ready</span>
+                  <span style="margin-left:auto;font-family:ui-monospace,monospace;color:#cbd5e1;font-size:.74rem;" id="voHudDur">0.0s</span>
+                  <button class="vo-hud-close" id="voHudClose" title="Close">✕</button>
+                </div>
+                <div class="vo-hud-actions">
+                  <button class="vo-btn" id="voHudPlay">▶ Play</button>
+                  <button class="vo-btn" id="voHudReRec">🔄 Re-record</button>
+                  <button class="vo-btn vo-btn-discard" id="voHudDel">🗑 Delete</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="vm-progress-wrap" id="vmProgressWrap"><div class="vm-progress-fill" id="vmRenderProgress" style="width:0%"></div><div class="vm-progress-text" id="vmRenderProgressText">0%</div></div>
           <div class="vm-bottom-bar">
@@ -1900,7 +2180,7 @@ function renderVideoStudio(data) {
     document.querySelectorAll('[data-close]').forEach(c => { c.onclick = vmCloseAllFlyouts; });
     document.getElementById('vmBackdrop').onclick = vmCloseAllFlyouts;
     document.getElementById('vmShell').addEventListener('click', (e) => {
-        if (!e.target.closest('.vm-flyout') && !e.target.closest('.vm-rail-btn') && !e.target.closest('.vm-bottom-bar') && !e.target.closest('.vm-canvas-controls')) vmCloseAllFlyouts();
+        if (!e.target.closest('.vm-flyout') && !e.target.closest('.vm-rail-btn') && !e.target.closest('.vm-bottom-bar') && !e.target.closest('.vm-canvas-controls') && !e.target.closest('.vo-hud')) vmCloseAllFlyouts();
     });
 
     document.querySelectorAll('[data-ori]').forEach(b => {
@@ -1925,7 +2205,6 @@ function renderVideoStudio(data) {
     const introBtn = document.getElementById('introToggleBtn');
     introBtn.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; vmShowIntro = !vmShowIntro; introBtn.classList.toggle('on', vmShowIntro); vmSetStatusDefault(); vmScheduleAutoPreview(); };
 
-    // ★ Wire up mute button
     const muteBtn = document.getElementById('vmMuteBtn');
     if (muteBtn) { muteBtn.onclick = () => vmToggleMute(); }
 
@@ -2050,7 +2329,6 @@ function renderVideoStudio(data) {
         info.style.display = needsAdjust ? 'block' : 'none';
     }
 
-    /* MUSIC */
     document.getElementById('vmMusic').onchange = async (e) => {
         const f = e.target.files[0]; if (!f) return;
         if (vmAudioEl) { try { vmAudioEl.pause(); } catch (er) { } }
@@ -2074,7 +2352,6 @@ function renderVideoStudio(data) {
     document.getElementById('musicVolVal').textContent = Math.round(vmSound.musicVolume * 100) + '%';
     musicSlider.oninput = () => { const v = parseFloat(musicSlider.value); vmSound.musicVolume = v; SE.setMusicVolume(v); document.getElementById('musicVolVal').textContent = Math.round(v * 100) + '%'; };
 
-    /* VOICE OVER UI */
     document.getElementById('voRecordBtn').onclick = () => {
         if (vmRecordingVoiceOver) { stopVoiceOverRecording(); return; }
         startVoiceOverRecording();
@@ -2088,7 +2365,6 @@ function renderVideoStudio(data) {
     document.getElementById('voPlayBtn').onclick = () => { playVoiceOverPreview(); };
     document.getElementById('voDeleteBtn').onclick = () => { deleteVoiceOver(); };
 
-    /* SOUND SYSTEM UI */
     function wireSoundToggle(id, getter, setter) {
         const el = document.getElementById(id); if (!el) return;
         if (getter()) el.classList.add('on'); else el.classList.remove('on');
@@ -2144,7 +2420,6 @@ function renderVideoStudio(data) {
         vmFitCanvas();
         vmRefreshIdle();
         refreshTimingUI();
-        // Sync mute button UI
         const mb = document.getElementById('vmMuteBtn');
         if (mb) { mb.textContent = vmMuted ? '🔕' : '🔊'; mb.classList.toggle('muted', vmMuted); }
         setTimeout(() => { vmPlayPreview(); }, 700);
