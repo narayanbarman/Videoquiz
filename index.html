@@ -262,101 +262,109 @@
     .mic-browser-pane { display: none; }
     .mic-browser-pane.active { display: block; }
 
-    /* ★★★ ULTRA-COMPACT VOICE OVER HUD ★★★ */
-    .vo-hud {
-        position: absolute;
-        left: 50%;
-        bottom: 12px;
-        transform: translateX(-50%);
-        background: rgba(15,23,42,0.94);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.14);
-        border-radius: 14px;
-        padding: 10px 12px;
-        box-shadow: 0 16px 44px rgba(0,0,0,.55);
-        z-index: 60;
-        color: #fff;
-        font-family: inherit;
-        min-width: 280px;
-        max-width: calc(100% - 24px);
-        animation: voHudIn .22s cubic-bezier(.34,1.4,.64,1);
+    /* ★★★ VOICE OVER RECORDING — 2-ROW BAR ★★★ */
+    .vm-shell.vo-recording .vm-rail,
+    .vm-shell.vo-recording .vm-canvas-controls,
+    .vm-shell.vo-recording .vm-bottom-bar,
+    .vm-shell.vo-recording .vm-status-line,
+    .vm-shell.vo-recording .vm-progress-wrap,
+    .vm-shell.vo-recording .vm-flyout,
+    .vm-shell.vo-recording .vm-backdrop,
+    .vm-shell.vo-recording .vm-live-badge,
+    .vm-shell.vo-recording .vm-rec-badge {
+        display: none !important;
     }
-    @keyframes voHudIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-    .vo-hud-row {
+    .vo-bar-wrap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        background: linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.55) 60%, rgba(0,0,0,0));
+        padding: 10px 8px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        animation: voBarIn .25s ease-out;
+        pointer-events: auto;
+    }
+    @keyframes voBarIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .vo-wave {
+        width: 100%;
+        height: 56px;
+        display: block;
+        background: rgba(15,23,42,0.65);
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .vo-btns {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+    }
+    .vo-hbtn {
+        border: none;
+        border-radius: 9px;
+        padding: 9px 4px;
+        font-family: inherit;
+        font-size: .66rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        transition: .13s;
+        background: rgba(255,255,255,0.12);
+        color: #e2e8f0;
+        border: 1px solid rgba(255,255,255,0.14);
+        line-height: 1.1;
+        min-height: 44px;
+        justify-content: center;
+        user-select: none;
+    }
+    .vo-hbtn i { font-size: 13px; }
+    .vo-hbtn:hover { background: rgba(255,255,255,0.22); }
+    .vo-hbtn:active { transform: scale(.95); }
+    .vo-hbtn.pause { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+    .vo-hbtn.pause:hover { background: #d97706; }
+    .vo-hbtn.stop { background: #ef4444; color: #fff; border-color: #ef4444; }
+    .vo-hbtn.stop:hover { background: #dc2626; }
+    .vo-hbtn.rerec { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+    .vo-hbtn.rerec:hover { background: #0284c7; }
+    .vo-hbtn.del { background: rgba(239,68,68,0.2); color: #fca5a5; border-color: rgba(239,68,68,0.4); }
+    .vo-hbtn.del:hover { background: rgba(239,68,68,0.32); color: #fff; }
+    .vo-hbtn.add { background: #22c55e; color: #fff; border-color: #22c55e; }
+    .vo-hbtn.add:hover { background: #16a34a; }
+    .vo-hbtn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .vo-status-strip {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15,23,42,0.85);
+        color: #fff;
+        padding: 5px 14px;
+        border-radius: 30px;
+        font-size: .62rem;
+        font-weight: 800;
+        letter-spacing: .04em;
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: .74rem;
-        font-weight: 800;
+        z-index: 61;
+        pointer-events: none;
     }
-    .vo-rec-dot {
-        width: 9px; height: 9px; border-radius: 50%;
-        background: #ef4444;
-        animation: pulse-rec 1s infinite;
-        flex-shrink: 0;
-    }
-    .vo-label {
-        font-size: .6rem; letter-spacing: .1em;
-        color: #fca5a5; font-weight: 900;
-        text-transform: uppercase;
-    }
-    .vo-ok {
-        color: #34d399; font-size: 16px; font-weight: 900;
-    }
-    .vo-done-label {
-        font-size: .68rem; color: #a7f3d0; font-weight: 800;
-    }
-    .vo-time {
-        font-family: ui-monospace, 'SF Mono', monospace;
-        font-size: .7rem;
-        color: #e2e8f0;
-        letter-spacing: .03em;
-        margin-right: auto;
-    }
-    .vo-bar {
-        height: 5px;
-        background: rgba(255,255,255,0.14);
-        border-radius: 3px;
-        overflow: hidden;
-        margin-top: 8px;
-    }
-    .vo-fill {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, #22c55e, #10b981);
-        transition: width .12s linear;
-    }
-    .vo-btn-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 9px;
-        border: 1px solid rgba(255,255,255,0.16);
-        background: rgba(255,255,255,0.08);
-        color: #fff;
-        font-size: 13px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: .15s;
-        font-family: inherit;
-        padding: 0;
-        flex-shrink: 0;
-    }
-    .vo-btn-icon:hover { background: rgba(255,255,255,0.18); }
-    .vo-btn-icon:active { transform: scale(.94); }
-    .vo-btn-pause { background: #f59e0b; border-color: #f59e0b; }
-    .vo-btn-pause:hover { background: #d97706; }
-    .vo-btn-stop { background: #22c55e; border-color: #22c55e; }
-    .vo-btn-stop:hover { background: #16a34a; }
-    .vo-btn-discard { color: #fca5a5; border-color: rgba(239,68,68,0.45); }
-    .vo-btn-discard:hover { background: rgba(239,68,68,0.18); color: #fff; }
-    .vo-btn-add { background: #22c55e; border-color: #22c55e; }
-    .vo-btn-add:hover { background: #16a34a; }
-    .vo-btn-del { color: #fca5a5; border-color: rgba(239,68,68,0.45); }
-    .vo-btn-del:hover { background: rgba(239,68,68,0.18); color: #fff; }
+    .vo-status-strip .dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse-rec 1s infinite; }
+    .vo-status-strip.ready { background: linear-gradient(135deg, #10b981, #059669); }
+    .vo-status-strip.ready .dot { background: #fff; animation: none; }
+    .vo-status-strip.paused { background: rgba(245, 158, 11, .95); }
+    .vo-status-strip.paused .dot { background: #fff; animation: none; }
+    .vo-status-strip .tm { font-family: ui-monospace, monospace; font-size: .6rem; color: #cbd5e1; }
 
     @media (max-width: 900px) {
         .vm-shell { grid-template-columns: 58px 1fr 58px; gap: 4px; height: calc(100vh - 68px); padding: 4px; border-radius: 12px; }
@@ -379,12 +387,10 @@
         .vm-tool { min-height: 42px; padding: 8px 10px; font-size: .7rem; }
         .vm-tool .ti { font-size: 16px; }
         .vm-tool .tt { font-size: .66rem; }
-    }
-    @media (max-width: 600px) {
-        .vo-hud { bottom: 6px; padding: 8px 10px; min-width: 220px; border-radius: 12px; }
-        .vo-hud-row { gap: 6px; font-size: .68rem; }
-        .vo-time { font-size: .64rem; }
-        .vo-btn-icon { width: 28px; height: 28px; font-size: 11px; border-radius: 8px; }
+        .vo-btns { gap: 4px; }
+        .vo-hbtn { font-size: .58rem; min-height: 40px; padding: 7px 2px; }
+        .vo-hbtn i { font-size: 11px; }
+        .vo-wave { height: 46px; }
     }
     @media (max-width: 480px) {
         .vm-shell { grid-template-columns: 52px 1fr 52px; padding: 3px; }
@@ -396,8 +402,9 @@
         .vm-tool-grid { gap: 5px; }
         .vm-tool { font-size: .66rem; padding: 7px 8px; min-height: 40px; }
         .vm-tool .ti { font-size: 15px; width: 18px; }
-        .cp-presets { gap: 5px; }
-        .cp-sv { height: 148px; }
+        .vo-hbtn { font-size: .54rem; min-height: 38px; }
+        .vo-hbtn i { font-size: 10px; }
+        .vo-wave { height: 40px; }
     }
     .dl-modal { position: fixed; inset: 0; background: rgba(6,20,15,0.88); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 5000; visibility: hidden; opacity: 0; transition: 0.3s; padding: 14px; }
     .dl-modal.active { visibility: visible; opacity: 1; }
@@ -509,45 +516,16 @@
                 <button class="mic-browser-tab" data-tab="android">🤖 Android</button>
             </div>
             <div class="mic-browser-pane active" data-pane="chrome">
-                <div class="mic-steps">
-                    <ol>
-                        <li>Click the <b>🔒 padlock</b> (or <b>⚙️</b>) icon in the address bar.</li>
-                        <li>Select <b>Site settings</b>.</li>
-                        <li>Find <b>Microphone</b> → change to <b>Allow</b>.</li>
-                        <li>Reload the page (<code>Ctrl+R</code>).</li>
-                        <li>Come back and tap <b>Try Request Permission</b>.</li>
-                    </ol>
-                </div>
+                <div class="mic-steps"><ol><li>Click the <b>🔒 padlock</b> (or <b>⚙️</b>) icon in the address bar.</li><li>Select <b>Site settings</b>.</li><li>Find <b>Microphone</b> → change to <b>Allow</b>.</li><li>Reload the page (<code>Ctrl+R</code>).</li><li>Come back and tap <b>Try Request Permission</b>.</li></ol></div>
             </div>
             <div class="mic-browser-pane" data-pane="firefox">
-                <div class="mic-steps">
-                    <ol>
-                        <li>Click the <b>🔒 padlock</b> icon in the address bar.</li>
-                        <li>Click <b>Clear Permission</b> next to Microphone.</li>
-                        <li>Reload the page (<code>Ctrl+R</code>).</li>
-                        <li>A popup will appear — click <b>Allow</b>.</li>
-                    </ol>
-                </div>
+                <div class="mic-steps"><ol><li>Click the <b>🔒 padlock</b> icon in the address bar.</li><li>Click <b>Clear Permission</b> next to Microphone.</li><li>Reload the page (<code>Ctrl+R</code>).</li><li>A popup will appear — click <b>Allow</b>.</li></ol></div>
             </div>
             <div class="mic-browser-pane" data-pane="safari">
-                <div class="mic-steps">
-                    <ol>
-                        <li>Open <b>Safari → Settings</b> (or Preferences).</li>
-                        <li>Go to <b>Websites → Microphone</b>.</li>
-                        <li>Find this site and change to <b>Allow</b>.</li>
-                        <li>Reload the page.</li>
-                    </ol>
-                </div>
+                <div class="mic-steps"><ol><li>Open <b>Safari → Settings</b> (or Preferences).</li><li>Go to <b>Websites → Microphone</b>.</li><li>Find this site and change to <b>Allow</b>.</li><li>Reload the page.</li></ol></div>
             </div>
             <div class="mic-browser-pane" data-pane="android">
-                <div class="mic-steps">
-                    <ol>
-                        <li>Open <b>Settings → Apps → Chrome</b>.</li>
-                        <li>Tap <b>Permissions → Microphone</b> → <b>Allow</b>.</li>
-                        <li>Return to this page and reload.</li>
-                        <li>Tap <b>Try Request Permission</b> again.</li>
-                    </ol>
-                </div>
+                <div class="mic-steps"><ol><li>Open <b>Settings → Apps → Chrome</b>.</li><li>Tap <b>Permissions → Microphone</b> → <b>Allow</b>.</li><li>Return to this page and reload.</li><li>Tap <b>Try Request Permission</b> again.</li></ol></div>
             </div>
         </div>
         <div class="mic-actions">
@@ -568,12 +546,7 @@ function qcToast(msg, ms) {
 }
 
 /* ============ COLOR PICKER ============ */
-const CP_PRESETS = [
-    '#ffffff', '#f8fafc', '#e2e8f0', '#94a3b8', '#475569', '#1e293b', '#0f172a', '#000000',
-    '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e', '#10b981', '#14b8a6',
-    '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899',
-    '#fecaca', '#fed7aa', '#fef08a', '#bbf7d0', '#a5f3fc', '#bfdbfe', '#ddd6fe', '#fbcfe8'
-];
+const CP_PRESETS = ['#ffffff','#f8fafc','#e2e8f0','#94a3b8','#475569','#1e293b','#0f172a','#000000','#ef4444','#f97316','#f59e0b','#eab308','#84cc16','#22c55e','#10b981','#14b8a6','#06b6d4','#0ea5e9','#3b82f6','#6366f1','#8b5cf6','#a855f7','#d946ef','#ec4899','#fecaca','#fed7aa','#fef08a','#bbf7d0','#a5f3fc','#bfdbfe','#ddd6fe','#fbcfe8'];
 let cpLastHue = 210;
 const cpState = { h: 210, s: 1, v: 1, hex: '#1a73e8' };
 let cpCB = { onInput: null, onReset: null };
@@ -696,24 +669,14 @@ function detectCorrectAnswerPrefix(text) {
 }
 
 /* ============ STATE ============ */
-let vmSound = {
-    ttsEnabled: false,
-    ttsReadQ: true, ttsReadO: true, ttsReadA: true,
-    ttsVoice: null, ttsRate: 1.0, ttsPitch: 1.0, ttsVolume: 1.0,
-    qSfx: 'q_chime', oSfx: 'o_bubble', aSfx: 'a_tada',
-    sfxVolume: 0.8, musicVolume: 0.4
-};
+let vmSound = { ttsEnabled: false, ttsReadQ: true, ttsReadO: true, ttsReadA: true, ttsVoice: null, ttsRate: 1.0, ttsPitch: 1.0, ttsVolume: 1.0, qSfx: 'q_chime', oSfx: 'o_bubble', aSfx: 'a_tada', sfxVolume: 0.8, musicVolume: 0.4 };
 let vmSoundRuntime = { lastSceneIdx: -1, playedOptions: {} };
 let vmMuted = false;
-
 let vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
 let vmRecordingVoiceOver = false;
 
 /* ============ MIC PERMISSION ============ */
-async function queryMicPermission() {
-    try { if (navigator.permissions && navigator.permissions.query) { const r = await navigator.permissions.query({ name: 'microphone' }); return r.state; } } catch (e) {}
-    return 'unknown';
-}
+async function queryMicPermission() { try { if (navigator.permissions && navigator.permissions.query) { const r = await navigator.permissions.query({ name: 'microphone' }); return r.state; } } catch (e) {} return 'unknown'; }
 function updateMicStatusUI(state) {
     const box = document.getElementById('micStatusBox'); if (!box) return;
     box.className = 'mic-status ' + state;
@@ -725,42 +688,16 @@ function updateMicStatusUI(state) {
 async function requestMicPermission() {
     const box = document.getElementById('micStatusBox');
     if (box) { box.className = 'mic-status prompt'; box.innerHTML = '⏳ <b>Requesting…</b> Please allow in the popup.'; }
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        if (box) { box.className = 'mic-status denied'; box.innerHTML = '❌ Browser does not support microphone. Use Chrome, Edge, Firefox, or Safari (HTTPS).'; }
-        return false;
-    }
-    try {
-        const s = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        s.getTracks().forEach(t => t.stop());
-        if (box) { box.className = 'mic-status granted'; box.innerHTML = '✅ <b>Permission granted!</b> You can close this and record voice over.'; }
-        qcToast('✅ Microphone allowed');
-        setTimeout(() => closeMicModal(), 900);
-        return true;
-    } catch (e) {
-        let msg = '❌ ';
-        if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') msg += '<b>Permission DENIED.</b> Follow the manual steps below.';
-        else if (e.name === 'NotFoundError') msg += '<b>No microphone found.</b> Plug in a mic and try again.';
-        else if (e.name === 'NotReadableError') msg += '<b>Microphone is busy.</b> Close other apps using mic and try.';
-        else msg += 'Error: ' + (e.message || e.name);
-        if (box) { box.className = 'mic-status denied'; box.innerHTML = msg; }
-        return false;
-    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { if (box) { box.className = 'mic-status denied'; box.innerHTML = '❌ Browser does not support microphone. Use Chrome, Edge, Firefox, or Safari (HTTPS).'; } return false; }
+    try { const s = await navigator.mediaDevices.getUserMedia({ audio: true, video: false }); s.getTracks().forEach(t => t.stop()); if (box) { box.className = 'mic-status granted'; box.innerHTML = '✅ <b>Permission granted!</b> You can close this and record voice over.'; } qcToast('✅ Microphone allowed'); setTimeout(() => closeMicModal(), 900); return true; }
+    catch (e) { let msg = '❌ '; if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') msg += '<b>Permission DENIED.</b> Follow the manual steps below.'; else if (e.name === 'NotFoundError') msg += '<b>No microphone found.</b> Plug in a mic and try again.'; else if (e.name === 'NotReadableError') msg += '<b>Microphone is busy.</b> Close other apps using mic and try.'; else msg += 'Error: ' + (e.message || e.name); if (box) { box.className = 'mic-status denied'; box.innerHTML = msg; } return false; }
 }
-function openMicModal() {
-    const modal = document.getElementById('micModal'); modal.classList.add('active');
-    (async () => { const state = await queryMicPermission(); updateMicStatusUI(state); })();
-}
+function openMicModal() { const modal = document.getElementById('micModal'); modal.classList.add('active'); (async () => { const state = await queryMicPermission(); updateMicStatusUI(state); })(); }
 function closeMicModal() { document.getElementById('micModal').classList.remove('active'); }
 document.getElementById('micCloseBtn').onclick = closeMicModal;
 document.getElementById('micRequestBtn').onclick = () => { requestMicPermission(); };
 document.getElementById('micModal').addEventListener('click', (e) => { if (e.target.id === 'micModal') closeMicModal(); });
-document.querySelectorAll('.mic-browser-tab').forEach(tab => {
-    tab.onclick = () => {
-        document.querySelectorAll('.mic-browser-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active');
-        document.querySelectorAll('.mic-browser-pane').forEach(p => p.classList.remove('active'));
-        const pane = document.querySelector(`.mic-browser-pane[data-pane="${tab.dataset.tab}"]`); if (pane) pane.classList.add('active');
-    };
-});
+document.querySelectorAll('.mic-browser-tab').forEach(tab => { tab.onclick = () => { document.querySelectorAll('.mic-browser-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); document.querySelectorAll('.mic-browser-pane').forEach(p => p.classList.remove('active')); const pane = document.querySelector(`.mic-browser-pane[data-pane="${tab.dataset.tab}"]`); if (pane) pane.classList.add('active'); }; });
 
 /* ============ UTILS ============ */
 function vmClamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -770,17 +707,7 @@ function vmEaseOutQuint(p) { return 1 - Math.pow(1 - p, 5); }
 function vmEaseOutBack(p) { const c1 = 1.1, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); }
 function vmEaseOutElastic(p) { const c4 = (2 * Math.PI) / 3; return p === 0 ? 0 : p === 1 ? 1 : Math.pow(2, -10 * p) * Math.sin((p * 10 - 0.75) * c4) + 1; }
 function vmFormatTime(sec) { const m = Math.floor(sec / 60); const s = Math.floor(sec % 60); return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; }
-
-function estimateSpeechDuration(text, rate) {
-    if (!text) return 0;
-    const s = String(text);
-    const r = (rate && rate > 0) ? rate : 1.0;
-    let cps = 13;
-    if (/[\u0980-\u09FF\u0900-\u097F\u0B80-\u0BFF\u0C00-\u0C7F\u0C80-\u0CFF\u0D00-\u0D7F\u0A80-\u0AFF\u0A00-\u0A7F\u0600-\u06FF]/.test(s)) cps = 9;
-    if (/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/.test(s)) cps = 4;
-    if (/[\u0400-\u04FF\u0370-\u03FF]/.test(s)) cps = 11;
-    return (s.length / (cps * r)) + 0.5;
-}
+function estimateSpeechDuration(text, rate) { if (!text) return 0; const s = String(text); const r = (rate && rate > 0) ? rate : 1.0; let cps = 13; if (/[\u0980-\u09FF\u0900-\u097F\u0B80-\u0BFF\u0C00-\u0C7F\u0C80-\u0CFF\u0D00-\u0D7F\u0A80-\u0AFF\u0A00-\u0A7F\u0600-\u06FF]/.test(s)) cps = 9; if (/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/.test(s)) cps = 4; if (/[\u0400-\u04FF\u0370-\u03FF]/.test(s)) cps = 11; return (s.length / (cps * r)) + 0.5; }
 
 /* ============ VIDEO MAKER STATE ============ */
 const vmThemes = [
@@ -934,8 +861,7 @@ async function vmPreloadImages(force) {
 }
 function vmInitParticles(W, H) { vmParticles = []; for (let i = 0; i < 70; i++) vmParticles.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 4 + 1, s: Math.random() * 0.6 + 0.15, a: Math.random() * 0.55 + 0.15, o: Math.random() * Math.PI * 2 }); }
 function vmDrawBG(ctx, W, H, t, th) {
-    if (vmBgColor) { ctx.fillStyle = vmBgColor; ctx.fillRect(0, 0, W, H); }
-    else { const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, th.bg[0]); g.addColorStop(0.5, th.bg[1]); g.addColorStop(1, th.bg[0]); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+    if (vmBgColor) { ctx.fillStyle = vmBgColor; ctx.fillRect(0, 0, W, H); } else { const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, th.bg[0]); g.addColorStop(0.5, th.bg[1]); g.addColorStop(1, th.bg[0]); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
     const base = Math.min(W, H);
     if (vmBgStyle === 'none') return;
     if (vmBgStyle === 'blobs' || vmBgStyle === 'particles') {
@@ -954,14 +880,11 @@ function vmSceneList() {
     const scenes = [];
     if (vmShowIntro) scenes.push({ type: 'intro', dur: vmIntroSec });
     vmQuestions.forEach((q, i) => {
-        let qDur = vmSecPerQ;
-        let rDur = vmRevealSec;
+        let qDur = vmSecPerQ, rDur = vmRevealSec;
         if (vmSound.ttsEnabled) {
             const ttsQ = vmSound.ttsReadQ ? estimateSpeechDuration(q.text, vmSound.ttsRate) : 0;
             let ttsOptsTotal = 0;
-            if (vmSound.ttsReadO && q.options && q.options.length) {
-                q.options.forEach((o, k) => { ttsOptsTotal += estimateSpeechDuration(String.fromCharCode(65 + k) + '. ' + o, vmSound.ttsRate); });
-            }
+            if (vmSound.ttsReadO && q.options && q.options.length) { q.options.forEach((o, k) => { ttsOptsTotal += estimateSpeechDuration(String.fromCharCode(65 + k) + '. ' + o, vmSound.ttsRate); }); }
             let ttsA = 0;
             if (vmSound.ttsReadA) { const prefix = detectCorrectAnswerPrefix(q.correct); ttsA = estimateSpeechDuration(prefix + ' — ' + q.correct, vmSound.ttsRate); }
             let minQDur = ttsQ + ttsOptsTotal + 2.0;
@@ -984,82 +907,29 @@ function vmDrawIntro(ctx, W, H, t, th) {
     const u = Math.min(W, H) / 1080; const cx = W / 2;
     const totalSec = Math.round(vmTotalDuration());
     const totalStr = totalSec >= 60 ? `${Math.floor(totalSec / 60)}m ${totalSec % 60}s` : `${totalSec}s`;
-    const e1 = vmEaseOutCubic(vmClamp(t / 0.6, 0, 1));
-    const e2 = vmEaseOutCubic(vmClamp((t - 0.35) / 0.6, 0, 1));
-    const e3 = vmEaseOutCubic(vmClamp((t - 0.7) / 0.6, 0, 1));
+    const e1 = vmEaseOutCubic(vmClamp(t / 0.6, 0, 1)), e2 = vmEaseOutCubic(vmClamp((t - 0.35) / 0.6, 0, 1)), e3 = vmEaseOutCubic(vmClamp((t - 0.7) / 0.6, 0, 1));
     const hasLogo = !!vmLogoImg;
     const titleMaxSize = vmQFontSize * 1.5 * u;
     const titleFit = vmFitFont(ctx, vmTitle, W * 0.86, H * 0.22, titleMaxSize, 44 * u, 900, 1.15, 3);
-    const titleLH = titleFit.size * 1.15;
-    const titleHeight = titleFit.lines.length * titleLH;
-    const infoFontSize = 42 * u;
-    const infoBlockH = infoFontSize * 1.6;
+    const titleLH = titleFit.size * 1.15, titleHeight = titleFit.lines.length * titleLH;
+    const infoFontSize = 42 * u, infoBlockH = infoFontSize * 1.6;
     let logoY = 0, titleCenterY = 0, infoCenterY = 0;
-    if (hasLogo) {
-        const lr = 140 * u; const gapLogoTitle = 60 * u; const gapTitleInfo = 70 * u;
-        const totalBlockH = (lr * 2) + gapLogoTitle + titleHeight + gapTitleInfo + infoBlockH;
-        const startY = (H - totalBlockH) / 2;
-        logoY = startY + lr;
-        titleCenterY = startY + (lr * 2) + gapLogoTitle + titleHeight / 2;
-        infoCenterY = startY + (lr * 2) + gapLogoTitle + titleHeight + gapTitleInfo + infoBlockH / 2;
-    } else {
-        const gapTitleInfo = 80 * u;
-        const totalBlockH = titleHeight + gapTitleInfo + infoBlockH;
-        const startY = (H - totalBlockH) / 2;
-        titleCenterY = startY + titleHeight / 2;
-        infoCenterY = startY + titleHeight + gapTitleInfo + infoBlockH / 2;
-    }
-    if (hasLogo) {
-        const lr = 140 * u;
-        ctx.save(); ctx.globalAlpha = e1 * 0.6;
-        const glowR = (lr + 46 * u) * (0.85 + 0.15 * Math.sin(t * 2));
-        const gg = ctx.createRadialGradient(cx, logoY, 0, cx, logoY, glowR);
-        gg.addColorStop(0, vmHexA(th.accent, 0.55)); gg.addColorStop(0.5, vmHexA(th.accent, 0.20)); gg.addColorStop(1, vmHexA(th.accent, 0));
-        ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(cx, logoY, glowR, 0, 7); ctx.fill(); ctx.restore();
-        const sc = 0.5 + 0.5 * vmEaseOutBack(vmClamp(t / 0.6, 0, 1));
-        ctx.save(); ctx.globalAlpha = e1; ctx.translate(cx, logoY); ctx.scale(sc, sc);
-        ctx.beginPath(); ctx.arc(0, 0, lr + 18 * u, 0, 7); ctx.fillStyle = vmHexA(th.accent, 0.18); ctx.fill();
-        ctx.lineWidth = 5 * u; ctx.strokeStyle = vmHexA(th.accent, 0.85); ctx.stroke();
-        vmRoundImage(ctx, vmLogoImg, -lr, -lr, lr * 2, lr * 2, lr); ctx.restore();
-    }
-    ctx.save(); ctx.globalAlpha = e2;
-    ctx.font = `900 ${titleFit.size}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.shadowColor = th.light ? 'rgba(15,23,42,.18)' : 'rgba(0,0,0,.5)'; ctx.shadowBlur = 26 * u; ctx.shadowOffsetY = 6 * u;
-    const tg = ctx.createLinearGradient(0, titleCenterY - titleLH, 0, titleCenterY + titleLH);
-    tg.addColorStop(0, vmGetQColor()); tg.addColorStop(1, vmGetSubColor());
-    ctx.fillStyle = tg;
+    if (hasLogo) { const lr = 140 * u, gapLogoTitle = 60 * u, gapTitleInfo = 70 * u; const totalBlockH = (lr * 2) + gapLogoTitle + titleHeight + gapTitleInfo + infoBlockH; const startY = (H - totalBlockH) / 2; logoY = startY + lr; titleCenterY = startY + (lr * 2) + gapLogoTitle + titleHeight / 2; infoCenterY = startY + (lr * 2) + gapLogoTitle + titleHeight + gapTitleInfo + infoBlockH / 2; }
+    else { const gapTitleInfo = 80 * u; const totalBlockH = titleHeight + gapTitleInfo + infoBlockH; const startY = (H - totalBlockH) / 2; titleCenterY = startY + titleHeight / 2; infoCenterY = startY + titleHeight + gapTitleInfo + infoBlockH / 2; }
+    if (hasLogo) { const lr = 140 * u; ctx.save(); ctx.globalAlpha = e1 * 0.6; const glowR = (lr + 46 * u) * (0.85 + 0.15 * Math.sin(t * 2)); const gg = ctx.createRadialGradient(cx, logoY, 0, cx, logoY, glowR); gg.addColorStop(0, vmHexA(th.accent, 0.55)); gg.addColorStop(0.5, vmHexA(th.accent, 0.20)); gg.addColorStop(1, vmHexA(th.accent, 0)); ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(cx, logoY, glowR, 0, 7); ctx.fill(); ctx.restore(); const sc = 0.5 + 0.5 * vmEaseOutBack(vmClamp(t / 0.6, 0, 1)); ctx.save(); ctx.globalAlpha = e1; ctx.translate(cx, logoY); ctx.scale(sc, sc); ctx.beginPath(); ctx.arc(0, 0, lr + 18 * u, 0, 7); ctx.fillStyle = vmHexA(th.accent, 0.18); ctx.fill(); ctx.lineWidth = 5 * u; ctx.strokeStyle = vmHexA(th.accent, 0.85); ctx.stroke(); vmRoundImage(ctx, vmLogoImg, -lr, -lr, lr * 2, lr * 2, lr); ctx.restore(); }
+    ctx.save(); ctx.globalAlpha = e2; ctx.font = `900 ${titleFit.size}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.shadowColor = th.light ? 'rgba(15,23,42,.18)' : 'rgba(0,0,0,.5)'; ctx.shadowBlur = 26 * u; ctx.shadowOffsetY = 6 * u;
+    const tg = ctx.createLinearGradient(0, titleCenterY - titleLH, 0, titleCenterY + titleLH); tg.addColorStop(0, vmGetQColor()); tg.addColorStop(1, vmGetSubColor()); ctx.fillStyle = tg;
     const slideOff = (1 - e2) * 30 * u;
     titleFit.lines.forEach((l, i) => { const y = titleCenterY - titleHeight / 2 + titleLH / 2 + i * titleLH + slideOff; ctx.fillText(l, cx, y); });
     ctx.restore();
-    ctx.save(); ctx.globalAlpha = e3;
-    const infoText = `${vmQuestions.length} Questions  •  ${totalStr}`;
-    ctx.font = `700 ${infoFontSize}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = vmGetSubColor(); ctx.shadowColor = th.light ? 'rgba(0,0,0,.15)' : 'rgba(0,0,0,.4)'; ctx.shadowBlur = 16 * u;
-    ctx.fillText(infoText, cx, infoCenterY + (1 - e3) * 20 * u); ctx.restore();
-    ctx.save(); ctx.globalAlpha = e3 * 0.7;
-    const lineW = 120 * u; const lineY = infoCenterY + infoFontSize * 1.1;
-    const lg = ctx.createLinearGradient(cx - lineW / 2, 0, cx + lineW / 2, 0);
-    lg.addColorStop(0, vmHexA(th.accent, 0)); lg.addColorStop(0.5, th.accent); lg.addColorStop(1, vmHexA(th.accent, 0));
-    ctx.fillStyle = lg; ctx.fillRect(cx - lineW / 2, lineY, lineW, 3 * u); ctx.restore();
+    ctx.save(); ctx.globalAlpha = e3; const infoText = `${vmQuestions.length} Questions  •  ${totalStr}`; ctx.font = `700 ${infoFontSize}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = vmGetSubColor(); ctx.shadowColor = th.light ? 'rgba(0,0,0,.15)' : 'rgba(0,0,0,.4)'; ctx.shadowBlur = 16 * u; ctx.fillText(infoText, cx, infoCenterY + (1 - e3) * 20 * u); ctx.restore();
+    ctx.save(); ctx.globalAlpha = e3 * 0.7; const lineW = 120 * u; const lineY = infoCenterY + infoFontSize * 1.1; const lg = ctx.createLinearGradient(cx - lineW / 2, 0, cx + lineW / 2, 0); lg.addColorStop(0, vmHexA(th.accent, 0)); lg.addColorStop(0.5, th.accent); lg.addColorStop(1, vmHexA(th.accent, 0)); ctx.fillStyle = lg; ctx.fillRect(cx - lineW / 2, lineY, lineW, 3 * u); ctx.restore();
 }
 function vmDrawOptionBg(ctx, x, y, w, h, th, isCorrect, isHighlight) {
     const radius = vmGetOptionRadius(vmOptionShape, h);
-    if (isHighlight) {
-        const hg = ctx.createLinearGradient(x, y, x + w, y + h);
-        hg.addColorStop(0, 'rgba(34,197,94,0.98)'); hg.addColorStop(1, 'rgba(16,185,129,0.98)');
-        ctx.fillStyle = hg; ctx.shadowColor = 'rgba(34,197,94,0.75)'; ctx.shadowBlur = 46 * Math.min(w, h) / 60;
-        vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0;
-        ctx.lineWidth = 4 * Math.min(w, h) / 60; ctx.strokeStyle = '#22c55e'; vmRR(ctx, x, y, w, h, radius); ctx.stroke();
-        return { textColor: '#ffffff', letterBg: 'rgba(255,255,255,0.95)', letterText: '#15803d', letterBorder: null };
-    }
+    if (isHighlight) { const hg = ctx.createLinearGradient(x, y, x + w, y + h); hg.addColorStop(0, 'rgba(34,197,94,0.98)'); hg.addColorStop(1, 'rgba(16,185,129,0.98)'); ctx.fillStyle = hg; ctx.shadowColor = 'rgba(34,197,94,0.75)'; ctx.shadowBlur = 46 * Math.min(w, h) / 60; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = 4 * Math.min(w, h) / 60; ctx.strokeStyle = '#22c55e'; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: '#ffffff', letterBg: 'rgba(255,255,255,0.95)', letterText: '#15803d', letterBorder: null }; }
     const sc = Math.min(w, h) / 60;
-    if (vmOptionColor) {
-        ctx.fillStyle = vmOptionColor; ctx.shadowColor = 'rgba(0,0,0,0.15)'; ctx.shadowBlur = 14 * sc; ctx.shadowOffsetY = 3 * sc;
-        vmRR(ctx, x, y, w, h, radius); ctx.fill();
-        ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-        ctx.strokeStyle = vmHexA(th.accent, 0.45); ctx.lineWidth = 2 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke();
-        return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.20), letterText: th.accent };
-    }
+    if (vmOptionColor) { ctx.fillStyle = vmOptionColor; ctx.shadowColor = 'rgba(0,0,0,0.15)'; ctx.shadowBlur = 14 * sc; ctx.shadowOffsetY = 3 * sc; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.45); ctx.lineWidth = 2 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.20), letterText: th.accent }; }
     switch (vmOptionStyle) {
         case 'solid': { ctx.fillStyle = th.light ? '#ffffff' : 'rgba(30,41,59,0.92)'; ctx.shadowColor = 'rgba(0,0,0,0.12)'; ctx.shadowBlur = 14 * sc; ctx.shadowOffsetY = 3 * sc; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.1)'; ctx.lineWidth = 1.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.15), letterText: th.accent }; }
         case 'gradient': { const grad = ctx.createLinearGradient(x, y, x + w, y + h); grad.addColorStop(0, vmHexA(th.accent, 0.15)); grad.addColorStop(1, vmHexA(th.accent2 || th.accent, 0.15)); ctx.fillStyle = grad; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.strokeStyle = vmHexA(th.accent, 0.4); ctx.lineWidth = 2 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: th.accent, letterText: '#ffffff' }; }
@@ -1090,27 +960,14 @@ function vmDrawTimer(ctx, cx, topY, t, th, u, sceneDur) {
     if (!vmShowTimerBar || vmTimerStyle === 'none' || !sceneDur || sceneDur <= 0) return;
     const tR = vmClamp(1 - (t / sceneDur), 0, 1);
     const tColor = tR > 0.5 ? th.accent : (tR > 0.25 ? '#f59e0b' : '#ef4444');
-    if (vmTimerStyle === 'bar') {
-        const tbH = 8 * u; const tbW = 1080 * u * 0.60; const tbX = cx - tbW / 2;
-        vmRR(ctx, tbX, topY, tbW, tbH, tbH / 2); ctx.fillStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.15)'; ctx.fill();
-        if (tR > 0) { vmRR(ctx, tbX, topY, tbW * tR, tbH, tbH / 2); const tg = ctx.createLinearGradient(tbX, 0, tbX + tbW, 0); if (tR > 0.5) { tg.addColorStop(0, th.accent); tg.addColorStop(1, th.accent2 || th.accent); } else if (tR > 0.25) { tg.addColorStop(0, '#f59e0b'); tg.addColorStop(1, '#fbbf24'); } else { tg.addColorStop(0, '#ef4444'); tg.addColorStop(1, '#f87171'); } ctx.fillStyle = tg; ctx.fill(); }
-    } else if (vmTimerStyle === 'ring') {
-        const R = 38 * u; const rcx = cx; const rcy = topY + R;
-        ctx.beginPath(); ctx.arc(rcx, rcy, R, 0, Math.PI * 2); ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.15)'; ctx.lineWidth = 6 * u; ctx.stroke();
-        ctx.beginPath(); ctx.arc(rcx, rcy, R, -Math.PI / 2, -Math.PI / 2 + tR * Math.PI * 2); ctx.strokeStyle = tColor; ctx.lineWidth = 6 * u; ctx.lineCap = 'round'; ctx.stroke();
-        ctx.fillStyle = vmGetQColor(); ctx.font = `800 ${22 * u}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(Math.ceil(sceneDur * tR), rcx, rcy + 1);
-    } else if (vmTimerStyle === 'dots') {
-        const total = Math.min(20, Math.max(1, Math.ceil(sceneDur))); const dotsPerRow = 10; const dotR = 8 * u; const gap = 16 * u;
-        const totalW = dotsPerRow * gap - gap + dotR * 2; const x0 = cx - totalW / 2 + dotR;
-        const filled = Math.round(tR * total);
-        for (let i = 0; i < total; i++) { const row = Math.floor(i / dotsPerRow); const col = i % dotsPerRow; const dx = x0 + col * gap; const dy = topY + row * gap * 1.4 + dotR; ctx.beginPath(); ctx.arc(dx, dy, dotR, 0, 7); ctx.fillStyle = i < filled ? tColor : (th.light ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.2)'); ctx.fill(); }
-    } else if (vmTimerStyle === 'numbers') {
-        ctx.fillStyle = tColor; ctx.font = `900 ${60 * u}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.shadowColor = vmHexA(tColor, 0.6); ctx.shadowBlur = 24 * u; ctx.fillText(Math.ceil(sceneDur * tR), cx, topY); ctx.shadowBlur = 0;
-    }
+    if (vmTimerStyle === 'bar') { const tbH = 8 * u, tbW = 1080 * u * 0.60, tbX = cx - tbW / 2; vmRR(ctx, tbX, topY, tbW, tbH, tbH / 2); ctx.fillStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.15)'; ctx.fill(); if (tR > 0) { vmRR(ctx, tbX, topY, tbW * tR, tbH, tbH / 2); const tg = ctx.createLinearGradient(tbX, 0, tbX + tbW, 0); if (tR > 0.5) { tg.addColorStop(0, th.accent); tg.addColorStop(1, th.accent2 || th.accent); } else if (tR > 0.25) { tg.addColorStop(0, '#f59e0b'); tg.addColorStop(1, '#fbbf24'); } else { tg.addColorStop(0, '#ef4444'); tg.addColorStop(1, '#f87171'); } ctx.fillStyle = tg; ctx.fill(); } }
+    else if (vmTimerStyle === 'ring') { const R = 38 * u, rcx = cx, rcy = topY + R; ctx.beginPath(); ctx.arc(rcx, rcy, R, 0, Math.PI * 2); ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.15)'; ctx.lineWidth = 6 * u; ctx.stroke(); ctx.beginPath(); ctx.arc(rcx, rcy, R, -Math.PI / 2, -Math.PI / 2 + tR * Math.PI * 2); ctx.strokeStyle = tColor; ctx.lineWidth = 6 * u; ctx.lineCap = 'round'; ctx.stroke(); ctx.fillStyle = vmGetQColor(); ctx.font = `800 ${22 * u}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(Math.ceil(sceneDur * tR), rcx, rcy + 1); }
+    else if (vmTimerStyle === 'dots') { const total = Math.min(20, Math.max(1, Math.ceil(sceneDur))); const dotsPerRow = 10, dotR = 8 * u, gap = 16 * u; const totalW = dotsPerRow * gap - gap + dotR * 2; const x0 = cx - totalW / 2 + dotR; const filled = Math.round(tR * total); for (let i = 0; i < total; i++) { const row = Math.floor(i / dotsPerRow), col = i % dotsPerRow; const dx = x0 + col * gap, dy = topY + row * gap * 1.4 + dotR; ctx.beginPath(); ctx.arc(dx, dy, dotR, 0, 7); ctx.fillStyle = i < filled ? tColor : (th.light ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.2)'); ctx.fill(); } }
+    else if (vmTimerStyle === 'numbers') { ctx.fillStyle = tColor; ctx.font = `900 ${60 * u}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.shadowColor = vmHexA(tColor, 0.6); ctx.shadowBlur = 24 * u; ctx.fillText(Math.ceil(sceneDur * tR), cx, topY); ctx.shadowBlur = 0; }
 }
 function vmDrawQuestion(ctx, W, H, t, th, q, idx, total, reveal, sceneDur) {
     const u = Math.min(W, H) / 1080;
-    const pad = W * 0.075; const maxW = W - pad * 2; const cx = W / 2;
+    const pad = W * 0.075, maxW = W - pad * 2, cx = W / 2;
     const prog = (idx + (reveal ? 1 : 0.55)) / total;
     ctx.fillStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.13)'; ctx.fillRect(0, 0, W, 9 * u);
     const pg = ctx.createLinearGradient(0, 0, W, 0); pg.addColorStop(0, th.accent); pg.addColorStop(1, th.accent2 || th.accent); ctx.fillStyle = pg; ctx.fillRect(0, 0, W * vmClamp(prog, 0, 1), 9 * u);
@@ -1125,55 +982,37 @@ function vmDrawQuestion(ctx, W, H, t, th, q, idx, total, reveal, sceneDur) {
     const imgObj = q.image ? vmImages[q.image] : null;
     const hasImg = !!imgObj;
     const qAnim = reveal ? { offsetX: 0, offsetY: 0, scale: 1, alpha: 1, blur: 0, typewriter: 1, rotate: 0 } : vmQuestionAnimParams(t / 0.65, vmQuestionAnim);
-    if (hasImg) {
-        const iTop = H * 0.145; const iMaxH = H * 0.155;
-        const ratio = imgObj.width / imgObj.height;
-        let ih = iMaxH, iw = ih * ratio;
-        const maxIW = W * 0.62;
-        if (iw > maxIW) { iw = maxIW; ih = iw / ratio; }
-        ctx.save(); ctx.globalAlpha = qAnim.alpha; ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 34 * u;
-        vmRoundImage(ctx, imgObj, cx - iw / 2 + qAnim.offsetX * u, iTop + qAnim.offsetY * u, iw, ih, 26 * u); ctx.restore();
-    }
+    if (hasImg) { const iTop = H * 0.145; const iMaxH = H * 0.155; const ratio = imgObj.width / imgObj.height; let ih = iMaxH, iw = ih * ratio; const maxIW = W * 0.62; if (iw > maxIW) { iw = maxIW; ih = iw / ratio; } ctx.save(); ctx.globalAlpha = qAnim.alpha; ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 34 * u; vmRoundImage(ctx, imgObj, cx - iw / 2 + qAnim.offsetX * u, iTop + qAnim.offsetY * u, iw, ih, 26 * u); ctx.restore(); }
     const qTop = hasImg ? H * 0.315 : H * 0.155;
     const qMaxH = hasImg ? H * 0.155 : H * 0.26;
     const qFit = vmFitFont(ctx, q.text, maxW - 40 * u, qMaxH, vmQFontSize * u, 26 * u, 900, 1.2, hasImg ? 3 : 4);
-    const boxPadY = 22 * u; const boxY = qTop - boxPadY; const boxH = qMaxH + boxPadY * 2;
-    const boxX = pad + 10 * u; const boxW = maxW - 20 * u;
+    const boxPadY = 22 * u, boxY = qTop - boxPadY, boxH = qMaxH + boxPadY * 2;
+    const boxX = pad + 10 * u, boxW = maxW - 20 * u;
     ctx.save(); ctx.globalAlpha = reveal ? 1 : qAnim.alpha;
     vmDrawQuestionBox(ctx, boxX, boxY, boxW, boxH, th); ctx.restore();
     ctx.save(); ctx.globalAlpha = qAnim.alpha;
     if (qAnim.blur > 0.5) ctx.filter = `blur(${qAnim.blur.toFixed(1)}px)`;
-    ctx.translate(cx + qAnim.offsetX * u, qTop + qMaxH / 2 + qAnim.offsetY * u);
-    ctx.rotate(qAnim.rotate || 0); ctx.scale(qAnim.scale, qAnim.scale); ctx.translate(-cx, -(qTop + qMaxH / 2));
+    ctx.translate(cx + qAnim.offsetX * u, qTop + qMaxH / 2 + qAnim.offsetY * u); ctx.rotate(qAnim.rotate || 0); ctx.scale(qAnim.scale, qAnim.scale); ctx.translate(-cx, -(qTop + qMaxH / 2));
     ctx.font = `900 ${qFit.size}px ${vmFontStack()}`;
     const useWhite = vmQuestionBox === 'gradient' || vmQuestionBox === 'dark';
     ctx.fillStyle = useWhite ? '#ffffff' : vmGetQColor();
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.shadowColor = useWhite ? 'rgba(0,0,0,.5)' : (th.light ? 'rgba(15,23,42,.18)' : 'rgba(0,0,0,.55)');
-    ctx.shadowBlur = 20 * u;
+    ctx.shadowColor = useWhite ? 'rgba(0,0,0,.5)' : (th.light ? 'rgba(15,23,42,.18)' : 'rgba(0,0,0,.55)'); ctx.shadowBlur = 20 * u;
     const lh = qFit.size * 1.2;
-    if (vmQuestionAnim === 'typewriter' && !reveal) {
-        const totalChars = qFit.lines.reduce((a, l) => a + l.length, 0);
-        const revealChars = Math.floor(totalChars * qAnim.typewriter);
-        let drawn = 0;
-        qFit.lines.forEach((l, i) => { const remaining = revealChars - drawn; const showText = remaining > 0 ? l.substring(0, Math.min(l.length, remaining)) : ''; ctx.fillText(showText, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh); drawn += l.length; });
-    } else if (vmQuestionAnim === 'wave' && !reveal) {
-        qFit.lines.forEach((l, i) => { const wOff = Math.sin(t * 2.2 + i * 0.7) * 4 * u; ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh + wOff); });
-    } else {
-        qFit.lines.forEach((l, i) => ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh));
-    }
+    if (vmQuestionAnim === 'typewriter' && !reveal) { const totalChars = qFit.lines.reduce((a, l) => a + l.length, 0); const revealChars = Math.floor(totalChars * qAnim.typewriter); let drawn = 0; qFit.lines.forEach((l, i) => { const remaining = revealChars - drawn; const showText = remaining > 0 ? l.substring(0, Math.min(l.length, remaining)) : ''; ctx.fillText(showText, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh); drawn += l.length; }); }
+    else if (vmQuestionAnim === 'wave' && !reveal) { qFit.lines.forEach((l, i) => { const wOff = Math.sin(t * 2.2 + i * 0.7) * 4 * u; ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh + wOff); }); }
+    else { qFit.lines.forEach((l, i) => ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh)); }
     ctx.filter = 'none'; ctx.restore();
     const optTop = hasImg ? H * 0.51 : H * 0.47;
     const bottomPad = H * 0.07;
-    const n = q.options.length;
-    const gap = 22 * u;
+    const n = q.options.length, gap = 22 * u;
     const avail = H - optTop - bottomPad;
     const oh = Math.min(178 * u, (avail - gap * (n - 1)) / n);
     const blockH = n * oh + (n - 1) * gap;
     const y0 = optTop + Math.max(0, (avail - blockH) / 2);
     let correctRect = null;
     for (let i = 0; i < n; i++) {
-        const opt = q.options[i]; const isCorrect = (opt === q.correct);
+        const opt = q.options[i], isCorrect = (opt === q.correct);
         const sD = vmOptionAnim === 'cascade' ? 0.55 + 0.18 * i : vmOptionAnim === 'flip' ? 0.5 + 0.16 * i : 0.4 + 0.12 * i;
         const aD = 0.75;
         const appear = reveal ? 1 : vmClamp((t - sD) / aD, 0, 1);
@@ -1191,8 +1030,8 @@ function vmDrawQuestion(ctx, W, H, t, th, q, idx, total, reveal, sceneDur) {
         ctx.globalAlpha = a.alpha * (dim ? 0.26 : 1);
         ctx.translate(cx + ox, oy + oh / 2); ctx.rotate(a.rotate || 0); ctx.scale(pulse * a.scaleX, pulse * a.scaleY); ctx.translate(-cx, -(oy + oh / 2));
         const si = vmDrawOptionBg(ctx, pad, oy, maxW, oh, th, isCorrect, hl);
-        const cr = oh * 0.30; const lOff = si.letterOffset || 0;
-        const bx = pad + oh * 0.55 + lOff; const by = oy + oh / 2;
+        const cr = oh * 0.30, lOff = si.letterOffset || 0;
+        const bx = pad + oh * 0.55 + lOff, by = oy + oh / 2;
         ctx.beginPath(); ctx.arc(bx, by, cr, 0, 7);
         if (si.letterBg === 'transparent') { ctx.fillStyle = 'transparent'; ctx.fill(); ctx.strokeStyle = si.letterBorder || th.accent; ctx.lineWidth = 2 * u; ctx.stroke(); } else { ctx.fillStyle = si.letterBg; ctx.fill(); }
         ctx.fillStyle = si.letterText; ctx.font = `900 ${cr * 1.05}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('ABCDEFGH'[i] || (i + 1), bx, by + 1);
@@ -1203,33 +1042,15 @@ function vmDrawQuestion(ctx, W, H, t, th, q, idx, total, reveal, sceneDur) {
         ctx.font = `700 ${oFit.size}px ${vmFontStack()}`; ctx.fillStyle = si.textColor; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
         const tlh = oFit.size * 1.15;
         oFit.lines.forEach((l, k) => ctx.fillText(l, tX, by - (oFit.lines.length - 1) * tlh / 2 + k * tlh));
-        if (hl) {
-            const cxp = pad + maxW - oh * 0.46;
-            ctx.beginPath(); ctx.arc(cxp, by, oh * 0.25, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.98)'; ctx.fill();
-            ctx.strokeStyle = '#15803d'; ctx.lineWidth = oh * 0.08; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(cxp - oh * 0.115, by); ctx.lineTo(cxp - oh * 0.028, by + oh * 0.09); ctx.lineTo(cxp + oh * 0.125, by - oh * 0.09); ctx.stroke();
-        }
-        if (a.shine > 0 && a.shine < 1) {
-            const radius = vmGetOptionRadius(vmOptionShape, oh);
-            ctx.save(); vmRR(ctx, pad, oy, maxW, oh, radius); ctx.clip();
-            const sX = pad + maxW * (a.shine * 1.5 - 0.25); const sW = maxW * 0.15;
-            const sg = ctx.createLinearGradient(sX - sW, oy, sX + sW, oy + oh);
-            sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,0.42)'); sg.addColorStop(1, 'rgba(255,255,255,0)');
-            ctx.fillStyle = sg; ctx.fillRect(sX - sW, oy, sW * 2, oh); ctx.restore();
-        }
+        if (hl) { const cxp = pad + maxW - oh * 0.46; ctx.beginPath(); ctx.arc(cxp, by, oh * 0.25, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.98)'; ctx.fill(); ctx.strokeStyle = '#15803d'; ctx.lineWidth = oh * 0.08; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cxp - oh * 0.115, by); ctx.lineTo(cxp - oh * 0.028, by + oh * 0.09); ctx.lineTo(cxp + oh * 0.125, by - oh * 0.09); ctx.stroke(); }
+        if (a.shine > 0 && a.shine < 1) { const radius = vmGetOptionRadius(vmOptionShape, oh); ctx.save(); vmRR(ctx, pad, oy, maxW, oh, radius); ctx.clip(); const sX = pad + maxW * (a.shine * 1.5 - 0.25); const sW = maxW * 0.15; const sg = ctx.createLinearGradient(sX - sW, oy, sX + sW, oy + oh); sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,0.42)'); sg.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = sg; ctx.fillRect(sX - sW, oy, sW * 2, oh); ctx.restore(); }
         ctx.restore();
     }
     if (reveal && t > 0.35 && correctRect) {
         const effT = t - 0.35;
         if (vmAnswerEffect === 'confetti') vmDrawConfetti(ctx, W, H, effT, idx);
         else if (vmAnswerEffect === 'sparkle') vmDrawSparkles(ctx, W, H, effT, idx, correctRect);
-        else if (vmAnswerEffect === 'glow') {
-            const glowR = Math.max(correctRect.w, correctRect.h) * (0.8 + 0.3 * effT);
-            const gg = ctx.createRadialGradient(correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, 0, correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, glowR);
-            const a = Math.max(0, 0.7 - effT * 0.5);
-            gg.addColorStop(0, `rgba(34,197,94,${a})`); gg.addColorStop(0.5, `rgba(34,197,94,${a * 0.4})`); gg.addColorStop(1, 'rgba(34,197,94,0)');
-            ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H);
-        }
+        else if (vmAnswerEffect === 'glow') { const glowR = Math.max(correctRect.w, correctRect.h) * (0.8 + 0.3 * effT); const gg = ctx.createRadialGradient(correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, 0, correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, glowR); const a = Math.max(0, 0.7 - effT * 0.5); gg.addColorStop(0, `rgba(34,197,94,${a})`); gg.addColorStop(0.5, `rgba(34,197,94,${a * 0.4})`); gg.addColorStop(1, 'rgba(34,197,94,0)'); ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H); }
     }
 }
 function vmDrawFrame(ctx, t, scenes) {
@@ -1265,16 +1086,7 @@ function vmRunTimeline(isRecording = false, muteTTS = false) {
         const frame = (now) => {
             if (vmStopFlag) { finish(); return; }
             const t = (now - start) / 1000;
-            if (isRecording) {
-                const elapsed = (Date.now() - renderStartTime) / 1000;
-                const progress = Math.min(1, elapsed / total);
-                const tEl = document.getElementById('vmRecTime'); if (tEl) tEl.textContent = vmFormatTime(elapsed);
-                const totEl = document.getElementById('vmRecTotal'); if (totEl) totEl.textContent = vmFormatTime(total);
-                const pEl = document.getElementById('vmRenderProgress');
-                if (pEl) pEl.style.width = (progress * 100) + '%';
-                const pTxt = document.getElementById('vmRenderProgressText');
-                if (pTxt) pTxt.textContent = Math.round(progress * 100) + '%';
-            }
+            if (isRecording) { const elapsed = (Date.now() - renderStartTime) / 1000; const progress = Math.min(1, elapsed / total); const tEl = document.getElementById('vmRecTime'); if (tEl) tEl.textContent = vmFormatTime(elapsed); const totEl = document.getElementById('vmRecTotal'); if (totEl) totEl.textContent = vmFormatTime(total); const pEl = document.getElementById('vmRenderProgress'); if (pEl) pEl.style.width = (progress * 100) + '%'; const pTxt = document.getElementById('vmRenderProgressText'); if (pTxt) pTxt.textContent = Math.round(progress * 100) + '%'; }
             if (t >= total) { vmDrawFrame(ctx, Math.max(0, total - 0.05), scenes); finish(); return; }
             vmProcessSoundEvents(t, scenes);
             vmDrawFrame(ctx, t, scenes);
@@ -1286,24 +1098,14 @@ function vmRunTimeline(isRecording = false, muteTTS = false) {
 
 function vmProcessSoundEvents(t, scenes) {
     let curIdx = -1, sc = null, scT = 0;
-    for (let i = 0; i < scenes.length; i++) {
-        if (t >= scenes[i].start && t < scenes[i].end) { curIdx = i; sc = scenes[i]; scT = t - scenes[i].start; break; }
-    }
+    for (let i = 0; i < scenes.length; i++) { if (t >= scenes[i].start && t < scenes[i].end) { curIdx = i; sc = scenes[i]; scT = t - scenes[i].start; break; } }
     if (curIdx < 0 || !sc) return;
     if (vmSoundRuntime.lastSceneIdx !== curIdx) {
         vmSoundRuntime.lastSceneIdx = curIdx;
         vmSoundRuntime.playedOptions = {};
         if (!vmMuted) {
-            if (sc.type === 'question') {
-                SE.playSfx(vmSound.qSfx);
-                if (vmSound.ttsEnabled && vmSound.ttsReadQ) TTS.speak(sc.q.text);
-            } else if (sc.type === 'reveal') {
-                SE.playSfx(vmSound.aSfx);
-                if (vmSound.ttsEnabled && vmSound.ttsReadA) {
-                    const prefix = detectCorrectAnswerPrefix(sc.q.correct);
-                    TTS.speak(prefix + ' — ' + sc.q.correct);
-                }
-            }
+            if (sc.type === 'question') { SE.playSfx(vmSound.qSfx); if (vmSound.ttsEnabled && vmSound.ttsReadQ) TTS.speak(sc.q.text); }
+            else if (sc.type === 'reveal') { SE.playSfx(vmSound.aSfx); if (vmSound.ttsEnabled && vmSound.ttsReadA) { const prefix = detectCorrectAnswerPrefix(sc.q.correct); TTS.speak(prefix + ' — ' + sc.q.correct); } }
         }
     }
     if (sc.type === 'question') {
@@ -1312,34 +1114,71 @@ function vmProcessSoundEvents(t, scenes) {
             const sD = vmOptionAnim === 'cascade' ? 0.55 + 0.18 * i : vmOptionAnim === 'flip' ? 0.5 + 0.16 * i : 0.4 + 0.12 * i;
             if (scT >= sD && !vmSoundRuntime.playedOptions[i]) {
                 vmSoundRuntime.playedOptions[i] = true;
-                if (!vmMuted) {
-                    if (vmSound.oSfx && !vmSound.oSfx.endsWith('_none')) SE.playSfx(vmSound.oSfx);
-                    if (vmSound.ttsEnabled && vmSound.ttsReadO) {
-                        const letter = String.fromCharCode(65 + i);
-                        TTS.enqueue(letter + '. ' + sc.q.options[i]);
-                    }
-                }
+                if (!vmMuted) { if (vmSound.oSfx && !vmSound.oSfx.endsWith('_none')) SE.playSfx(vmSound.oSfx); if (vmSound.ttsEnabled && vmSound.ttsReadO) { const letter = String.fromCharCode(65 + i); TTS.enqueue(letter + '. ' + sc.q.options[i]); } }
             }
         }
     }
 }
 
-/* ★★★ VOICE OVER — compact bottom popup ★★★ */
-function hideVoHud() {
-    const hud = document.getElementById('voHud');
-    if (hud) hud.style.display = 'none';
+/* ★★★ VOICE OVER — bottom bar with waveform + 5 buttons ★★★ */
+let voAudioCtx = null, voAnalyser = null, voSource = null, voWaveRaf = null;
+let voWaveData = null;
+
+function hideVoBar() {
+    const bar = document.getElementById('voBar');
+    if (bar) bar.style.display = 'none';
+    const strip = document.getElementById('voStatusStrip');
+    if (strip) strip.style.display = 'none';
     const shell = document.getElementById('vmShell');
     if (shell) shell.classList.remove('vo-recording');
+    if (voWaveRaf) { cancelAnimationFrame(voWaveRaf); voWaveRaf = null; }
+    if (voAudioCtx) { try { voAudioCtx.close(); } catch(e){} voAudioCtx = null; voAnalyser = null; voSource = null; }
+}
+
+function drawVoWave() {
+    const c = document.getElementById('voWaveCanvas');
+    if (!c || !voAnalyser) return;
+    const ctx = c.getContext('2d');
+    const W = c.width, H = c.height;
+    ctx.clearRect(0, 0, W, H);
+    if (!voWaveData) voWaveData = new Uint8Array(voAnalyser.frequencyBinCount);
+    voAnalyser.getByteTimeDomainData(voWaveData);
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 8; i++) { const x = (W / 8) * i; ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, H - 4); ctx.stroke(); }
+    ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.stroke();
+    // Waveform (bars)
+    const bars = 60;
+    const barW = W / bars;
+    for (let i = 0; i < bars; i++) {
+        const idx = Math.floor((i / bars) * voWaveData.length);
+        const v = (voWaveData[idx] - 128) / 128;
+        const barH = Math.max(2, Math.abs(v) * (H - 8));
+        const x = i * barW + barW * 0.15;
+        const y = (H - barH) / 2;
+        const w = barW * 0.7;
+        const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+        grad.addColorStop(0, '#22c55e');
+        grad.addColorStop(1, '#10b981');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        const r = Math.min(w / 2, 2);
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + barH, r);
+        ctx.arcTo(x + w, y + barH, x, y + barH, r);
+        ctx.arcTo(x, y + barH, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+        ctx.fill();
+    }
+    if (vmRecordingVoiceOver) voWaveRaf = requestAnimationFrame(drawVoWave);
 }
 
 async function startVoiceOverRecording() {
     if (vmRecordingVoiceOver || vmRecording) return;
-    if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-        qcToast('⚠️ Mic needs <b>HTTPS</b>. Use "Upload Voice Over File".', 5000); openMicModal(); return;
-    }
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        qcToast('⚠️ Mic not available. Use "Upload Voice Over File".', 5000); openMicModal(); return;
-    }
+    if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') { qcToast('⚠️ Mic needs <b>HTTPS</b>. Use "Upload Voice Over File".', 5000); openMicModal(); return; }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { qcToast('⚠️ Mic not available. Use "Upload Voice Over File".', 5000); openMicModal(); return; }
     let stream;
     try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false }); }
     catch (e) { qcToast('🎙️ <b>Mic permission issue.</b> Tap <b>Record</b> again for instructions.', 4000); openMicModal(); return; }
@@ -1348,67 +1187,91 @@ async function startVoiceOverRecording() {
     vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream, chunks: [], duration: 0 };
     vmRecordingVoiceOver = true;
 
-    // Close all flyouts
     vmCloseAllFlyouts();
-
-    // Mute video sounds during recording
     const prevMuted = vmMuted;
     vmSetMute(true, true);
 
-    // Show compact HUD, hide rails + controls so user only sees clean quiz video
+    // Enter focused mode
     const shell = document.getElementById('vmShell');
     if (shell) shell.classList.add('vo-recording');
-    const hud = document.getElementById('voHud');
-    const hudRec = document.getElementById('voHudRec');
-    const hudDone = document.getElementById('voHudDone');
-    const hudTime = document.getElementById('voHudTime');
-    const hudFill = document.getElementById('voHudFill');
-    if (hud) { hud.style.display = 'block'; }
-    if (hudRec) hudRec.style.display = 'flex';
-    if (hudDone) hudDone.style.display = 'none';
-
+    const bar = document.getElementById('voBar');
+    const strip = document.getElementById('voStatusStrip');
+    const stripText = document.getElementById('voStatusText2');
+    const stripTime = document.getElementById('voStatusTime');
+    if (bar) bar.style.display = 'flex';
+    if (strip) { strip.style.display = 'flex'; strip.classList.remove('ready', 'paused'); }
+    if (stripText) stripText.textContent = 'RECORDING';
     requestAnimationFrame(() => vmFitCanvas());
 
-    const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Recording…';
-    const voBtn = document.getElementById('voRecordBtn'); if (voBtn) voBtn.classList.add('active');
+    // Waveform setup
+    try {
+        voAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        voAnalyser = voAudioCtx.createAnalyser();
+        voAnalyser.fftSize = 1024;
+        voAnalyser.smoothingTimeConstant = 0.75;
+        voSource = voAudioCtx.createMediaStreamSource(stream);
+        voSource.connect(voAnalyser);
+        // do NOT connect to destination (avoid feedback)
+        const wc = document.getElementById('voWaveCanvas');
+        if (wc) { wc.width = wc.clientWidth * 2; wc.height = wc.clientHeight * 2; }
+        drawVoWave();
+    } catch (e) { console.warn('waveform init failed', e); }
 
     let mime = '';
     try { const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus']; for (const c of candidates) { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; } } } catch(e){}
     let rec;
     try { rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream); }
-    catch (e) {
-        qcToast('❌ Recorder not supported'); stream.getTracks().forEach(t => t.stop());
-        vmRecordingVoiceOver = false; vmSetMute(prevMuted, true);
-        hideVoHud();
-        return;
-    }
+    catch (e) { qcToast('❌ Recorder not supported'); stream.getTracks().forEach(t => t.stop()); vmRecordingVoiceOver = false; vmSetMute(prevMuted, true); hideVoBar(); return; }
     vmVoiceOver.recorder = rec;
     rec.ondataavailable = e => { if (e.data && e.data.size) vmVoiceOver.chunks.push(e.data); };
     const stoppedP = new Promise(res => { rec.onstop = res; });
 
-    let voPaused = false, voPausedTotal = 0, voPausedAt = 0, voCancelled = false;
+    let voPaused = false, voPausedTotal = 0, voPausedAt = 0;
+    let voCancelled = false, voSaved = false;
 
     const pauseBtn = document.getElementById('voPauseBtn');
     const stopBtn = document.getElementById('voStopBtn');
-    const discardBtn = document.getElementById('voDiscardBtn');
-    if (pauseBtn) pauseBtn.onclick = () => {
+    const reRecBtn = document.getElementById('voReRecBtn');
+    const delBtn = document.getElementById('voDelBtn');
+    const addBtn = document.getElementById('voAddBtn');
+
+    function setPausedStateUI() {
+        if (voPaused) {
+            pauseBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+            pauseBtn.classList.remove('pause');
+            pauseBtn.classList.add('rerec');
+            if (strip) { strip.classList.remove('ready'); strip.classList.add('paused'); if (stripText) stripText.textContent = 'PAUSED'; }
+        } else {
+            pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            pauseBtn.classList.add('pause');
+            pauseBtn.classList.remove('rerec');
+            if (strip) { strip.classList.remove('ready', 'paused'); if (stripText) stripText.textContent = 'RECORDING'; }
+        }
+    }
+    pauseBtn.onclick = () => {
         if (voPaused) {
             voPausedTotal += performance.now() - voPausedAt;
             voPaused = false;
             try { if (rec.state === 'paused') rec.resume(); } catch(e){}
-            pauseBtn.innerHTML = '⏸';
-            pauseBtn.title = 'Pause';
-            pauseBtn.classList.add('vo-btn-pause');
         } else {
             voPausedAt = performance.now();
             voPaused = true;
             try { if (rec.state === 'recording') rec.pause(); } catch(e){}
-            pauseBtn.innerHTML = '▶';
-            pauseBtn.title = 'Resume';
         }
+        setPausedStateUI();
     };
-    if (stopBtn) stopBtn.onclick = () => { vmStopFlag = true; };
-    if (discardBtn) discardBtn.onclick = () => { voCancelled = true; vmStopFlag = true; };
+    stopBtn.onclick = () => { vmStopFlag = true; };
+    reRecBtn.onclick = () => { voCancelled = true; vmStopFlag = true; };
+    delBtn.onclick = () => {
+        // Delete = discard and exit
+        voCancelled = true;
+        vmStopFlag = true;
+    };
+    addBtn.onclick = () => {
+        // Add = stop and keep this recording
+        voCancelled = false;
+        vmStopFlag = true;
+    };
 
     rec.start(500);
     const recStart = Date.now();
@@ -1432,8 +1295,7 @@ async function startVoiceOverRecording() {
             if (voPaused) t = (voPausedAt - t0 - voPausedTotal) / 1000;
             else t = (now - t0 - voPausedTotal) / 1000;
             const cur = Math.max(0, Math.min(t, total));
-            if (hudTime) hudTime.textContent = vmFormatTime(cur) + ' / ' + vmFormatTime(total);
-            if (hudFill) hudFill.style.width = ((cur / total) * 100) + '%';
+            if (stripTime) stripTime.textContent = vmFormatTime(cur) + ' / ' + vmFormatTime(total);
             if (t >= total) { vmDrawFrame(ctx, Math.max(0, total - 0.05), scenes); resolve(); return; }
             if (!voPaused) vmProcessSoundEvents(t, scenes);
             vmDrawFrame(ctx, t, scenes);
@@ -1448,25 +1310,33 @@ async function startVoiceOverRecording() {
     stream.getTracks().forEach(t => t.stop());
     vmRecordingVoiceOver = false;
     vmSetMute(prevMuted, true);
-    if (voBtn) voBtn.classList.remove('active');
 
-    // Discarded?
+    // Close analyser
+    if (voWaveRaf) { cancelAnimationFrame(voWaveRaf); voWaveRaf = null; }
+    if (voAudioCtx) { try { voAudioCtx.close(); } catch(e){} voAudioCtx = null; voAnalyser = null; voSource = null; }
+
+    // Determine action
+    const wasReRec = (reRecBtn && !voCancelled && !voSaved && vmVoiceOver.recorder === rec && vmVoiceOver.chunks.length === 0);
+    // ^ won't happen; rec was just created
+
     if (voCancelled) {
-        hideVoHud();
+        // Could be ReRecord, Delete, or Discard
+        hideVoBar();
         vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
-        if (voStatus) voStatus.textContent = 'Record Voice Over';
-        qcToast('🗑️ Recording discarded');
+        const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Record Voice Over';
+        const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none';
+        qcToast('🗑️ Discarded');
         return;
     }
 
-    // Save
+    // Save the recording (Stop or Add)
     vmVoiceOver.duration = (Date.now() - recStart) / 1000;
     const type = rec.mimeType || mime || 'audio/webm';
     const blob = new Blob(vmVoiceOver.chunks, { type });
     if (!blob.size) {
-        hideVoHud();
+        hideVoBar();
         qcToast('❌ Empty recording');
-        if (voStatus) voStatus.textContent = 'Record Voice Over';
+        const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Record Voice Over';
         return;
     }
     vmVoiceOver.blob = blob;
@@ -1475,74 +1345,44 @@ async function startVoiceOverRecording() {
     vmVoiceOver.audio.preload = 'auto';
     await SE.attachVoiceover(vmVoiceOver.audio);
 
-    if (voStatus) voStatus.textContent = 'Re-record Voice Over';
+    const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Re-record Voice Over';
     const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex';
     const voPlayBtn = document.getElementById('voPlayBtn'); if (voPlayBtn) voPlayBtn.innerHTML = '<i class="fas fa-play"></i> Play';
 
-    // Show "done" state in the same compact HUD
-    if (hudRec) hudRec.style.display = 'none';
-    if (hudDone) hudDone.style.display = 'flex';
-    const durEl = document.getElementById('voHudDur'); if (durEl) durEl.textContent = vmVoiceOver.duration.toFixed(1) + 's';
-
-    const doneAdd = document.getElementById('voHudAdd');
-    const donePlay = document.getElementById('voHudPlay');
-    const doneReRec = document.getElementById('voHudReRec');
-    const doneDel = document.getElementById('voHudDel');
-    const doneClose = document.getElementById('voHudClose');
-    if (doneAdd) doneAdd.onclick = () => { hideVoHud(); qcToast('✅ Voice over added to video'); };
-    if (donePlay) donePlay.onclick = () => { playVoiceOverPreview(); };
-    if (doneReRec) doneReRec.onclick = () => { hideVoHud(); setTimeout(() => startVoiceOverRecording(), 200); };
-    if (doneDel) doneDel.onclick = () => { deleteVoiceOver(); hideVoHud(); };
-    if (doneClose) doneClose.onclick = () => { hideVoHud(); };
-
-    qcToast('✅ Voice over recorded (' + vmVoiceOver.duration.toFixed(1) + 's)');
+    // Check if this was "Add" or "Stop"
+    // We can't easily distinguish; treat both the same — exit focused mode
+    hideVoBar();
+    qcToast('✅ Voice over saved (' + vmVoiceOver.duration.toFixed(1) + 's)');
 }
-function stopVoiceOverRecording() {
-    if (!vmRecordingVoiceOver) return;
-    vmStopFlag = true;
-    if (vmRaf) cancelAnimationFrame(vmRaf);
-    setTimeout(() => { qcToast('Recording stopped'); }, 300);
-}
+
+function stopVoiceOverRecording() { if (!vmRecordingVoiceOver) return; vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); setTimeout(() => { qcToast('Recording stopped'); }, 300); }
+
 async function handleVoiceOverUpload(file) {
     if (!file) return;
     if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch(e){} }
     vmVoiceOver = { blob: file, url: URL.createObjectURL(file), audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
     vmVoiceOver.audio = new Audio(vmVoiceOver.url);
     vmVoiceOver.audio.preload = 'auto';
-    vmVoiceOver.audio.addEventListener('loadedmetadata', () => {
-        vmVoiceOver.duration = vmVoiceOver.audio.duration || 0;
-        const voStatus = document.getElementById('voStatusText');
-        if (voStatus) voStatus.textContent = 'Re-upload Voice Over';
-    });
+    vmVoiceOver.audio.addEventListener('loadedmetadata', () => { vmVoiceOver.duration = vmVoiceOver.audio.duration || 0; const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Re-upload Voice Over'; });
     await SE.attachVoiceover(vmVoiceOver.audio);
-    const voStatus = document.getElementById('voStatusText');
-    if (voStatus) voStatus.textContent = 'Voice Over File Loaded';
+    const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Voice Over File Loaded';
     const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex';
     qcToast('✅ Voice over file loaded: ' + file.name.slice(0, 30));
 }
 function playVoiceOverPreview() {
     if (!vmVoiceOver.audio) return;
     const a = vmVoiceOver.audio;
-    if (a.paused) {
-        try { a.currentTime = 0; a.play(); } catch(e){}
-        const pb = document.getElementById('voPlayBtn');
-        if (pb) pb.innerHTML = '<i class="fas fa-pause"></i> Pause';
-        a.onended = () => { if (pb) pb.innerHTML = '<i class="fas fa-play"></i> Play'; };
-    } else {
-        a.pause();
-        const pb = document.getElementById('voPlayBtn');
-        if (pb) pb.innerHTML = '<i class="fas fa-play"></i> Play';
-    }
+    if (a.paused) { try { a.currentTime = 0; a.play(); } catch(e){} const pb = document.getElementById('voPlayBtn'); if (pb) pb.innerHTML = '<i class="fas fa-pause"></i> Pause'; a.onended = () => { if (pb) pb.innerHTML = '<i class="fas fa-play"></i> Play'; }; }
+    else { a.pause(); const pb = document.getElementById('voPlayBtn'); if (pb) pb.innerHTML = '<i class="fas fa-play"></i> Play'; }
 }
 function deleteVoiceOver() {
     if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch(e){} }
     if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch(e){} }
     vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
     SE.attachVoiceover(null);
-    const voStatus = document.getElementById('voStatusText');
-    if (voStatus) voStatus.textContent = 'Record Voice Over';
+    const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Record Voice Over';
     const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none';
-    hideVoHud();
+    hideVoBar();
     qcToast('🗑️ Voice over deleted');
 }
 
@@ -1551,18 +1391,14 @@ function vmSetMute(m, silent) {
     SE.setMasterMute(m);
     if (m) TTS.stop();
     const btn = document.getElementById('vmMuteBtn');
-    if (btn) {
-        btn.textContent = m ? '🔕' : '🔊';
-        btn.classList.toggle('muted', m);
-        btn.title = m ? 'Unmute all sounds' : 'Mute all sounds';
-    }
+    if (btn) { btn.textContent = m ? '🔕' : '🔊'; btn.classList.toggle('muted', m); btn.title = m ? 'Unmute all sounds' : 'Mute all sounds'; }
     if (!silent) qcToast(m ? '🔕 All sounds muted' : '🔊 Sound on');
 }
 function vmToggleMute() { vmSetMute(!vmMuted); }
 
 async function vmPlayPreview() {
     if (vmRecording || vmPreviewPlaying || vmRecordingVoiceOver) return;
-    hideVoHud();
+    hideVoBar();
     vmPreviewPlaying = true;
     await SE.init();
     await vmPreloadImages();
@@ -1618,8 +1454,7 @@ async function vmStartRender() {
     if (typeof MediaRecorder === 'undefined') { alert('Your browser does not support video recording.'); return; }
     if (vmPreviewPlaying) { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); await new Promise(r => setTimeout(r, 180)); vmPreviewPlaying = false; vmStopFlag = false; }
     if (vmAutoPreviewTimeout) { clearTimeout(vmAutoPreviewTimeout); vmAutoPreviewTimeout = null; }
-    hideDownloadModal();
-    hideVoHud();
+    hideDownloadModal(); hideVoBar();
     const pBtn = document.getElementById('vmPreviewBtn');
     const rBtn = document.getElementById('vmRenderBtn');
     const sBtn = document.getElementById('vmStopBtn');
@@ -1636,20 +1471,13 @@ async function vmStartRender() {
     document.getElementById('vmRenderProgress').style.width = '0%';
     document.getElementById('vmRenderProgressText').textContent = '0%';
     vmSetStatus('⏳ Preparing…');
-    await vmPreloadImages();
-    await SE.init();
+    await vmPreloadImages(); await SE.init();
     try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch(e){}
     const canvas = document.getElementById('vmCanvas');
     const { W, H } = vmSize();
     let stream;
     try { stream = canvas.captureStream(30); const vT = stream.getVideoTracks()[0]; if (!vT) throw new Error('No track'); }
-    catch (e) {
-        try { stream = canvas.captureStream(24); } catch (e2) {
-            alert('Could not start recording: ' + e2.message);
-            vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none';
-            rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return;
-        }
-    }
+    catch (e) { try { stream = canvas.captureStream(24); } catch (e2) { alert('Could not start recording: ' + e2.message); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return; } }
     if (SE.recDest) { try { SE.recDest.stream.getAudioTracks().forEach(tr => stream.addTrack(tr)); } catch(e) { console.warn('attach audio failed', e); } }
     const mime = vmPickMime();
     let rec;
@@ -1671,8 +1499,7 @@ async function vmStartRender() {
     await stopped;
     if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } }
     if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch(e){} }
-    TTS.enabled = prevTtsEnabled;
-    TTS.stop();
+    TTS.enabled = prevTtsEnabled; TTS.stop();
     stream.getTracks().forEach(tr => tr.stop());
     vmMediaRec = null;
     const type = rec.mimeType || mime || 'video/webm';
@@ -1697,16 +1524,14 @@ function vmStopAll() {
     TTS.stop();
     if (vmMediaRec && vmMediaRec.state !== 'inactive') { try { vmMediaRec.stop(); } catch (e) { } }
     if (vmVoiceOver.recorder && vmVoiceOver.recorder.state !== 'inactive') { try { vmVoiceOver.recorder.stop(); } catch(e){} }
-    const pBtn = document.getElementById('vmPreviewBtn');
-    const rBtn = document.getElementById('vmRenderBtn');
-    const sBtn = document.getElementById('vmStopBtn');
+    const pBtn = document.getElementById('vmPreviewBtn'); const rBtn = document.getElementById('vmRenderBtn'); const sBtn = document.getElementById('vmStopBtn');
     if (pBtn) pBtn.disabled = false;
     if (rBtn) rBtn.disabled = false;
     if (sBtn) sBtn.style.display = 'none';
     const rB = document.getElementById('vmRecBadge'); if (rB) rB.classList.remove('on');
     const pW = document.getElementById('vmProgressWrap'); if (pW) pW.classList.remove('on');
     const lB = document.getElementById('vmLiveBadge'); if (lB) lB.classList.remove('on');
-    hideVoHud();
+    hideVoBar();
     vmRecording = false; vmPreviewPlaying = false; vmRecordingVoiceOver = false;
 }
 function vmSetStatus(html) { const el = document.getElementById('vmStatus'); if (el) el.innerHTML = html; }
@@ -1739,38 +1564,19 @@ function renderVideoStudio(data) {
     vmQuestions = data.q || [];
     vmTitle = data.quizTitle || 'My Quiz';
     vmLogoData = data.quizLogo || null;
-    vmThemeIdx = 0;
-    vmCustomTheme = null;
+    vmThemeIdx = 0; vmCustomTheme = null;
     vmSecPerQManual = 5; vmRevealSecManual = 3;
     vmSecPerQ = 5; vmRevealSec = 3;
-    vmShowIntro = true; vmShowReveal = true;
-    vmShowTimerBar = true; vmShowWatermark = true;
-    vmQuestionAnim = 'slideUp';
-    vmOptionAnim = 'cascade';
-    vmAnswerEffect = 'confetti';
-    vmOptionStyle = 'glass';
-    vmOptionShape = 'pill';
-    vmQuestionBox = 'rounded';
-    vmTimerStyle = 'bar';
-    vmBgStyle = 'particles';
-    vmBgColor = null; vmOptionColor = null;
-    vmFontFamily = 'Inter';
-    vmQFontSize = 86; vmQColor = null;
-    vmOFontSize = 44; vmOColor = null;
-    vmImagesPreloaded = false;
-    vmPreviewPlaying = false;
-    vmOrientation = 'portrait';
-    vmAudioEl = null;
-    vmMuted = false;
+    vmShowIntro = true; vmShowReveal = true; vmShowTimerBar = true; vmShowWatermark = true;
+    vmQuestionAnim = 'slideUp'; vmOptionAnim = 'cascade'; vmAnswerEffect = 'confetti';
+    vmOptionStyle = 'glass'; vmOptionShape = 'pill'; vmQuestionBox = 'rounded'; vmTimerStyle = 'bar';
+    vmBgStyle = 'particles'; vmBgColor = null; vmOptionColor = null;
+    vmFontFamily = 'Inter'; vmQFontSize = 86; vmQColor = null; vmOFontSize = 44; vmOColor = null;
+    vmImagesPreloaded = false; vmPreviewPlaying = false; vmOrientation = 'portrait'; vmAudioEl = null; vmMuted = false;
     if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch(e){} }
     if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch(e){} }
     vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
-    vmSound = {
-        ttsEnabled: false, ttsReadQ: true, ttsReadO: true, ttsReadA: true,
-        ttsVoice: null, ttsRate: 1.0, ttsPitch: 1.0, ttsVolume: 1.0,
-        qSfx: 'q_chime', oSfx: 'o_bubble', aSfx: 'a_tada',
-        sfxVolume: 0.8, musicVolume: 0.4
-    };
+    vmSound = { ttsEnabled: false, ttsReadQ: true, ttsReadO: true, ttsReadA: true, ttsVoice: null, ttsRate: 1.0, ttsPitch: 1.0, ttsVolume: 1.0, qSfx: 'q_chime', oSfx: 'o_bubble', aSfx: 'a_tada', sfxVolume: 0.8, musicVolume: 0.4 };
 
     const container = document.getElementById('renderZone');
     container.innerHTML = `
@@ -1799,26 +1605,22 @@ function renderVideoStudio(data) {
             <div class="vm-live-badge" id="vmLiveBadge"><span class="vm-live-dot"></span>LIVE</div>
             <div class="vm-rec-badge" id="vmRecBadge"><div class="vm-rec-dot"></div><span>REC</span><span id="vmRecTime">00:00</span>/<span id="vmRecTotal">00:00</span></div>
             <canvas id="vmCanvas"></canvas>
-            <div class="vo-hud" id="voHud" style="display:none;">
-              <div class="vo-hud-row" id="voHudRec" style="display:none;">
-                <div class="vo-rec-dot"></div>
-                <span class="vo-label">REC</span>
-                <span class="vo-time" id="voHudTime">00:00 / 00:00</span>
-                <button class="vo-btn-icon vo-btn-pause" id="voPauseBtn" title="Pause">⏸</button>
-                <button class="vo-btn-icon vo-btn-stop" id="voStopBtn" title="Stop &amp; Save">⏹</button>
-                <button class="vo-btn-icon vo-btn-discard" id="voDiscardBtn" title="Discard recording">✕</button>
+
+            <div class="vo-status-strip" id="voStatusStrip" style="display:none;">
+              <span class="dot"></span>
+              <span id="voStatusText2">RECORDING</span>
+              <span class="tm" id="voStatusTime">00:00 / 00:00</span>
+            </div>
+
+            <div class="vo-bar-wrap" id="voBar" style="display:none;">
+              <canvas class="vo-wave" id="voWaveCanvas" width="800" height="112"></canvas>
+              <div class="vo-btns">
+                <button class="vo-hbtn pause" id="voPauseBtn"><i class="fas fa-pause"></i><span>Pause</span></button>
+                <button class="vo-hbtn stop" id="voStopBtn"><i class="fas fa-stop"></i><span>Stop</span></button>
+                <button class="vo-hbtn rerec" id="voReRecBtn"><i class="fas fa-redo"></i><span>Record again</span></button>
+                <button class="vo-hbtn del" id="voDelBtn"><i class="fas fa-trash"></i><span>Delete</span></button>
+                <button class="vo-hbtn add" id="voAddBtn"><i class="fas fa-check"></i><span>Add</span></button>
               </div>
-              <div class="vo-hud-row" id="voHudDone" style="display:none;">
-                <span class="vo-ok">✓</span>
-                <span class="vo-done-label">VO ready</span>
-                <span class="vo-time" id="voHudDur">0.0s</span>
-                <button class="vo-btn-icon" id="voHudPlay" title="Play">▶</button>
-                <button class="vo-btn-icon vo-btn-add" id="voHudAdd" title="Add voice over">➕</button>
-                <button class="vo-btn-icon" id="voHudReRec" title="Record again">🔄</button>
-                <button class="vo-btn-icon vo-btn-del" id="voHudDel" title="Delete">🗑</button>
-                <button class="vo-btn-icon" id="voHudClose" title="Close">✕</button>
-              </div>
-              <div class="vo-bar" id="voHudBar"><div class="vo-fill" id="voHudFill"></div></div>
             </div>
           </div>
           <div class="vm-progress-wrap" id="vmProgressWrap"><div class="vm-progress-fill" id="vmRenderProgress" style="width:0%"></div><div class="vm-progress-text" id="vmRenderProgressText">0%</div></div>
@@ -1856,7 +1658,6 @@ function renderVideoStudio(data) {
             </div>
           </div>
         </div>
-
         <div class="vm-flyout left" data-key="background">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🖼️</span> Background</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -1872,7 +1673,6 @@ function renderVideoStudio(data) {
             <div class="vm-color-row"><div class="crl"><i class="fas fa-palette"></i> Background Color</div><div class="crt"><button class="vm-color-reset-chip" id="vmBgReset">↺</button><button class="vm-swatch-btn" id="vmBgSwatch"><span class="vm-swatch-fill" id="vmBgPreview"></span><span class="vm-swatch-ic"><i class="fas fa-palette"></i></span></button></div></div>
           </div>
         </div>
-
         <div class="vm-flyout left" data-key="optionstyle">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🎯</span> Option Background</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -1891,7 +1691,6 @@ function renderVideoStudio(data) {
             <div class="vm-color-row"><div class="crl"><i class="fas fa-palette"></i> Option Color</div><div class="crt"><button class="vm-color-reset-chip" id="vmOptReset">↺</button><button class="vm-swatch-btn" id="vmOptSwatch"><span class="vm-swatch-fill" id="vmOptPreview"></span><span class="vm-swatch-ic"><i class="fas fa-palette"></i></span></button></div></div>
           </div>
         </div>
-
         <div class="vm-flyout left" data-key="optshape">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🔲</span> Option Shape</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -1904,7 +1703,6 @@ function renderVideoStudio(data) {
             </div>
           </div>
         </div>
-
         <div class="vm-flyout left" data-key="sound">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🔊</span> Sound & Voice</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -1928,7 +1726,7 @@ function renderVideoStudio(data) {
                 </div>
               </div>
             </div>
-            <div class="vm-info">💡 When you tap <b>Record</b>, a small recording bar appears at the bottom of the video. Video sound auto-mutes so you only hear your own voice. Final mix is included in the exported video.</div>
+            <div class="vm-info">💡 When you tap <b>Record</b>, all panels hide and a compact 2-row bar appears at the bottom of the video: waveform on top, 5 buttons below (Pause · Stop · Record again · Delete · Add).</div>
 
             <div class="vm-section-label">🗣️ Text-to-Speech (preview only)</div>
             <div class="vm-toggle-row" id="toggleTTS"><span>🔊 Enable TTS Voice</span><div class="sw"></div></div>
@@ -1954,7 +1752,6 @@ function renderVideoStudio(data) {
               <button class="vm-tool" data-qsfx="q_ding"><span class="ti">🎯</span><span class="tt">Ding</span></button>
               <button class="vm-tool" data-qsfx="q_none"><span class="ti">🚫</span><span class="tt">None</span></button>
             </div>
-
             <div class="vm-section-label">🔤 Option Appear Sound</div>
             <div class="vm-tool-grid">
               <button class="vm-tool active" data-osfx="o_bubble"><span class="ti">💧</span><span class="tt">Bubble</span></button>
@@ -1965,7 +1762,6 @@ function renderVideoStudio(data) {
               <button class="vm-tool" data-osfx="o_blip"><span class="ti">🎵</span><span class="tt">Blip</span></button>
               <button class="vm-tool" data-osfx="o_none"><span class="ti">🚫</span><span class="tt">None</span></button>
             </div>
-
             <div class="vm-section-label">✅ Answer Reveal Sound</div>
             <div class="vm-tool-grid">
               <button class="vm-tool active" data-asfx="a_tada"><span class="ti">🎉</span><span class="tt">Tada</span></button>
@@ -1980,7 +1776,6 @@ function renderVideoStudio(data) {
             <div class="vm-sfx-play-hint">TAP TO PREVIEW • SFX + VOICE + MUSIC MIX INTO VIDEO</div>
           </div>
         </div>
-
         <div class="vm-flyout left" data-key="music">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🎵</span> Background Music</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -1991,7 +1786,6 @@ function renderVideoStudio(data) {
             <div class="vm-slider-row"><input type="range" id="musicVolSlider" min="0" max="1" step="0.05" value="0.4" style="flex:1;"><span class="vm-slider-val" id="musicVolVal">40%</span></div>
           </div>
         </div>
-
         <div class="vm-flyout right" data-key="qanim">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">📝</span> Question Animation</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body"><div class="vm-tool-grid">
@@ -2012,7 +1806,6 @@ function renderVideoStudio(data) {
             <button class="vm-tool" data-anim="bounce3d"><span class="ti">🏀</span><span class="tt">Bounce 3D</span></button>
           </div></div>
         </div>
-
         <div class="vm-flyout right" data-key="oanim">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🔤</span> Option Animation</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body"><div class="vm-tool-grid">
@@ -2035,7 +1828,6 @@ function renderVideoStudio(data) {
             <button class="vm-tool" data-oanim="elastic"><span class="ti">🎈</span><span class="tt">Elastic</span></button>
           </div></div>
         </div>
-
         <div class="vm-flyout right" data-key="aeff">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">✅</span> Answer Effect</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body"><div class="vm-tool-grid">
@@ -2047,7 +1839,6 @@ function renderVideoStudio(data) {
             <button class="vm-tool" data-eff="bounce"><span class="ti">🏀</span><span class="tt">Bounce</span></button>
           </div></div>
         </div>
-
         <div class="vm-flyout right" data-key="qbox">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">📦</span> Question Box</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body"><div class="vm-tool-grid">
@@ -2060,7 +1851,6 @@ function renderVideoStudio(data) {
             <button class="vm-tool" data-qbox="dark"><span class="ti">🌑</span><span class="tt">Dark Panel</span></button>
           </div></div>
         </div>
-
         <div class="vm-flyout right" data-key="timer">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">⌛</span> Timer Style</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body"><div class="vm-tool-grid">
@@ -2071,7 +1861,6 @@ function renderVideoStudio(data) {
             <button class="vm-tool" data-timer="none"><span class="ti">🚫</span><span class="tt">No Timer</span></button>
           </div></div>
         </div>
-
         <div class="vm-flyout right" data-key="text">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🔠</span> Text & Font</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -2085,7 +1874,6 @@ function renderVideoStudio(data) {
             <div class="vm-color-row"><div class="crl"><i class="fas fa-palette"></i> Option Color</div><div class="crt"><button class="vm-color-reset-chip" id="vmOColorReset">↺</button><button class="vm-swatch-btn" id="vmOColorSwatch"><span class="vm-swatch-fill" id="vmOColorPreview"></span><span class="vm-swatch-ic"><i class="fas fa-palette"></i></span></button></div></div>
           </div>
         </div>
-
         <div class="vm-flyout right" data-key="timing">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">⏱️</span> Timing</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -2094,7 +1882,6 @@ function renderVideoStudio(data) {
             <div class="vm-info" id="autoTimingInfo" style="display:none;">⏱️ <b>Auto‑timing active:</b> TTS speech is longer than your manual values. Scene durations extended automatically (≥12s per question when reading options).</div>
           </div>
         </div>
-
         <div class="vm-flyout right" data-key="layout">
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">📐</span> Layout & Show</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
@@ -2114,28 +1901,10 @@ function renderVideoStudio(data) {
     document.querySelectorAll('.vm-rail-btn').forEach(t => { t.onclick = () => vmOpenFlyout(t.dataset.side, t.dataset.key); });
     document.querySelectorAll('[data-close]').forEach(c => { c.onclick = vmCloseAllFlyouts; });
     document.getElementById('vmBackdrop').onclick = vmCloseAllFlyouts;
-    document.getElementById('vmShell').addEventListener('click', (e) => {
-        if (!e.target.closest('.vm-flyout') && !e.target.closest('.vm-rail-btn') && !e.target.closest('.vm-bottom-bar') && !e.target.closest('.vm-canvas-controls') && !e.target.closest('.vo-hud')) vmCloseAllFlyouts();
-    });
+    document.getElementById('vmShell').addEventListener('click', (e) => { if (!e.target.closest('.vm-flyout') && !e.target.closest('.vm-rail-btn') && !e.target.closest('.vm-bottom-bar') && !e.target.closest('.vm-canvas-controls') && !e.target.closest('.vo-bar-wrap')) vmCloseAllFlyouts(); });
 
-    document.querySelectorAll('[data-ori]').forEach(b => {
-        b.onclick = () => {
-            if (vmRecording || vmRecordingVoiceOver) return;
-            document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active')); b.classList.add('active');
-            document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active'));
-            const m = document.querySelector(`[data-ori2="${b.dataset.ori}"]`); if (m) m.classList.add('active');
-            vmSetOrientation(b.dataset.ori);
-        };
-    });
-    document.querySelectorAll('[data-ori2]').forEach(b => {
-        b.onclick = () => {
-            if (vmRecording || vmRecordingVoiceOver) return;
-            document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active')); b.classList.add('active');
-            document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active'));
-            const m = document.querySelector(`[data-ori="${b.dataset.ori2}"]`); if (m) m.classList.add('active');
-            vmSetOrientation(b.dataset.ori2);
-        };
-    });
+    document.querySelectorAll('[data-ori]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active')); const m = document.querySelector(`[data-ori2="${b.dataset.ori}"]`); if (m) m.classList.add('active'); vmSetOrientation(b.dataset.ori); }; });
+    document.querySelectorAll('[data-ori2]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active')); const m = document.querySelector(`[data-ori="${b.dataset.ori2}"]`); if (m) m.classList.add('active'); vmSetOrientation(b.dataset.ori2); }; });
 
     const introBtn = document.getElementById('introToggleBtn');
     introBtn.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; vmShowIntro = !vmShowIntro; introBtn.classList.toggle('on', vmShowIntro); vmSetStatusDefault(); vmScheduleAutoPreview(); };
@@ -2143,11 +1912,7 @@ function renderVideoStudio(data) {
     const muteBtn = document.getElementById('vmMuteBtn');
     if (muteBtn) { muteBtn.onclick = () => vmToggleMute(); }
 
-    function wireToggle(id, getter, setter) {
-        const el = document.getElementById(id); if (!el) return;
-        if (getter()) el.classList.add('on'); else el.classList.remove('on');
-        el.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; const nv = !el.classList.contains('on'); if (nv) el.classList.add('on'); else el.classList.remove('on'); setter(nv); vmSetStatusDefault(); vmScheduleAutoPreview(); };
-    }
+    function wireToggle(id, getter, setter) { const el = document.getElementById(id); if (!el) return; if (getter()) el.classList.add('on'); else el.classList.remove('on'); el.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; const nv = !el.classList.contains('on'); if (nv) el.classList.add('on'); else el.classList.remove('on'); setter(nv); vmSetStatusDefault(); vmScheduleAutoPreview(); }; }
     wireToggle('toggleTimerBar', () => vmShowTimerBar, v => vmShowTimerBar = v);
     wireToggle('toggleWatermark', () => vmShowWatermark, v => vmShowWatermark = v);
 
@@ -2159,40 +1924,11 @@ function renderVideoStudio(data) {
     document.querySelectorAll('[data-eff]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-eff]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmAnswerEffect = b.dataset.eff; vmSetStatusDefault(); vmScheduleAutoPreview(); }; });
     document.querySelectorAll('[data-qbox]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-qbox]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmQuestionBox = b.dataset.qbox; vmSetStatusDefault(); vmScheduleAutoPreview(); }; });
     document.querySelectorAll('[data-timer]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-timer]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmTimerStyle = b.dataset.timer; vmSetStatusDefault(); vmScheduleAutoPreview(); }; });
-    document.querySelectorAll('#vmThemeDots .vm-dot').forEach(el => {
-        el.onclick = () => {
-            if (vmRecording || vmRecordingVoiceOver) return;
-            document.querySelectorAll('#vmThemeDots .vm-dot').forEach(x => x.classList.remove('active')); el.classList.add('active');
-            const panel = document.getElementById('vmCustomPanel');
-            if (el.dataset.custom === '1') { panel.classList.add('open'); vmCustomTheme = { name: 'Custom', bg: [document.getElementById('vmC1').value, document.getElementById('vmC2').value], accent: document.getElementById('vmC3').value, accent2: document.getElementById('vmC4').value, text: '#0f172a', sub: '#475569', light: true }; }
-            else { panel.classList.remove('open'); vmCustomTheme = null; vmThemeIdx = parseInt(el.dataset.i); }
-            vmScheduleAutoPreview();
-        };
-    });
-    ['vmC1','vmC2','vmC3','vmC4'].forEach(id => {
-        document.getElementById(id).oninput = () => {
-            const c1 = document.getElementById('vmC1').value, c2 = document.getElementById('vmC2').value;
-            const isLight = ['#ffffff','#f8fafc','#f1f5f9','#ecfdf5','#fbc2eb','#ffe4e6','#fff1e6','#fff1f2'].some(x => x.toLowerCase() === c1.toLowerCase() || x.toLowerCase() === c2.toLowerCase());
-            vmCustomTheme = { name: 'Custom', bg: [c1, c2], accent: document.getElementById('vmC3').value, accent2: document.getElementById('vmC4').value, text: isLight ? '#0f172a' : '#ffffff', sub: isLight ? '#475569' : '#e2e8f0', light: isLight };
-            if (vmAutoPreviewTimeout) clearTimeout(vmAutoPreviewTimeout);
-            vmAutoPreviewTimeout = setTimeout(vmRefreshIdle, 120);
-        };
-    });
 
-    function wireSwatch(swatchId, previewId, resetId, getVal, setVal) {
-        const sw = document.getElementById(swatchId);
-        const pv = document.getElementById(previewId);
-        const rst = document.getElementById(resetId);
-        pv.style.background = getVal();
-        sw.onclick = () => {
-            openColorPicker({
-                title: 'Pick a color', current: getVal(),
-                onInput: (hex) => { setVal(hex); pv.style.background = hex; },
-                onReset: () => { setVal(null); pv.style.background = getVal(); closeColorPicker(); vmRefreshIdle(); }
-            });
-        };
-        rst.onclick = (e) => { e.preventDefault(); setVal(null); pv.style.background = getVal(); vmRefreshIdle(); };
-    }
+    document.querySelectorAll('#vmThemeDots .vm-dot').forEach(el => { el.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('#vmThemeDots .vm-dot').forEach(x => x.classList.remove('active')); el.classList.add('active'); const panel = document.getElementById('vmCustomPanel'); if (el.dataset.custom === '1') { panel.classList.add('open'); vmCustomTheme = { name: 'Custom', bg: [document.getElementById('vmC1').value, document.getElementById('vmC2').value], accent: document.getElementById('vmC3').value, accent2: document.getElementById('vmC4').value, text: '#0f172a', sub: '#475569', light: true }; } else { panel.classList.remove('open'); vmCustomTheme = null; vmThemeIdx = parseInt(el.dataset.i); } vmScheduleAutoPreview(); }; });
+    ['vmC1','vmC2','vmC3','vmC4'].forEach(id => { document.getElementById(id).oninput = () => { const c1 = document.getElementById('vmC1').value, c2 = document.getElementById('vmC2').value; const isLight = ['#ffffff','#f8fafc','#f1f5f9','#ecfdf5','#fbc2eb','#ffe4e6','#fff1e6','#fff1f2'].some(x => x.toLowerCase() === c1.toLowerCase() || x.toLowerCase() === c2.toLowerCase()); vmCustomTheme = { name: 'Custom', bg: [c1, c2], accent: document.getElementById('vmC3').value, accent2: document.getElementById('vmC4').value, text: isLight ? '#0f172a' : '#ffffff', sub: isLight ? '#475569' : '#e2e8f0', light: isLight }; if (vmAutoPreviewTimeout) clearTimeout(vmAutoPreviewTimeout); vmAutoPreviewTimeout = setTimeout(vmRefreshIdle, 120); }; });
+
+    function wireSwatch(swatchId, previewId, resetId, getVal, setVal) { const sw = document.getElementById(swatchId); const pv = document.getElementById(previewId); const rst = document.getElementById(resetId); pv.style.background = getVal(); sw.onclick = () => { openColorPicker({ title: 'Pick a color', current: getVal(), onInput: (hex) => { setVal(hex); pv.style.background = hex; }, onReset: () => { setVal(null); pv.style.background = getVal(); closeColorPicker(); vmRefreshIdle(); } }); }; rst.onclick = (e) => { e.preventDefault(); setVal(null); pv.style.background = getVal(); vmRefreshIdle(); }; }
     function getThemeDefault(kind) { const th = vmGetTheme(); if (kind === 'bg') return th.bg[0]; if (kind === 'opt') return th.accent; return th.text; }
     wireSwatch('vmBgSwatch', 'vmBgPreview', 'vmBgReset', () => vmBgColor || getThemeDefault('bg'), (v) => { vmBgColor = v; });
     wireSwatch('vmOptSwatch', 'vmOptPreview', 'vmOptReset', () => vmOptionColor || getThemeDefault('opt'), (v) => { vmOptionColor = v; });
@@ -2212,114 +1948,37 @@ function renderVideoStudio(data) {
     const secIn = document.getElementById('vmSecInput');
     const revIn = document.getElementById('vmRevealInput');
 
-    function computeEffectiveDurations() {
-        let minQ = vmSecPerQManual;
-        let minR = vmRevealSecManual;
-        if (vmSound.ttsEnabled) {
-            vmQuestions.forEach(q => {
-                const ttsQ = vmSound.ttsReadQ ? estimateSpeechDuration(q.text, vmSound.ttsRate) : 0;
-                let ttsOpts = 0;
-                if (vmSound.ttsReadO && q.options && q.options.length) {
-                    q.options.forEach((o, k) => { ttsOpts += estimateSpeechDuration(String.fromCharCode(65 + k) + '. ' + o, vmSound.ttsRate); });
-                }
-                let ttsA = 0;
-                if (vmSound.ttsReadA) {
-                    const prefix = detectCorrectAnswerPrefix(q.correct);
-                    ttsA = estimateSpeechDuration(prefix + ' — ' + q.correct, vmSound.ttsRate);
-                }
-                let needQ = ttsQ + ttsOpts + 2.0;
-                if (vmSound.ttsReadO && q.options && q.options.length) needQ = Math.max(needQ, 12);
-                else if (vmSound.ttsReadQ) needQ = Math.max(needQ, 6);
-                if (needQ > minQ) minQ = needQ;
-                let needR = Math.max(ttsA + 2.0, 4);
-                if (needR > minR) minR = needR;
-            });
-        }
-        return { q: Math.ceil(minQ), r: Math.ceil(minR) };
-    }
-
-    function refreshTimingUI() {
-        const { q, r } = computeEffectiveDurations();
-        vmSecPerQ = q;
-        vmRevealSec = r;
-        if (secIn) secIn.value = vmSecPerQ;
-        if (revIn) revIn.value = vmRevealSec;
-        updateAutoTimingInfo();
-        vmSetStatusDefault();
-    }
-
+    function computeEffectiveDurations() { let minQ = vmSecPerQManual, minR = vmRevealSecManual; if (vmSound.ttsEnabled) { vmQuestions.forEach(q => { const ttsQ = vmSound.ttsReadQ ? estimateSpeechDuration(q.text, vmSound.ttsRate) : 0; let ttsOpts = 0; if (vmSound.ttsReadO && q.options && q.options.length) { q.options.forEach((o, k) => { ttsOpts += estimateSpeechDuration(String.fromCharCode(65 + k) + '. ' + o, vmSound.ttsRate); }); } let ttsA = 0; if (vmSound.ttsReadA) { const prefix = detectCorrectAnswerPrefix(q.correct); ttsA = estimateSpeechDuration(prefix + ' — ' + q.correct, vmSound.ttsRate); } let needQ = ttsQ + ttsOpts + 2.0; if (vmSound.ttsReadO && q.options && q.options.length) needQ = Math.max(needQ, 12); else if (vmSound.ttsReadQ) needQ = Math.max(needQ, 6); if (needQ > minQ) minQ = needQ; let needR = Math.max(ttsA + 2.0, 4); if (needR > minR) minR = needR; }); } return { q: Math.ceil(minQ), r: Math.ceil(minR) }; }
+    function refreshTimingUI() { const { q, r } = computeEffectiveDurations(); vmSecPerQ = q; vmRevealSec = r; if (secIn) secIn.value = vmSecPerQ; if (revIn) revIn.value = vmRevealSec; updateAutoTimingInfo(); vmSetStatusDefault(); }
     secIn.oninput = () => { let v = parseInt(secIn.value); if (!isNaN(v)) { vmSecPerQManual = vmClamp(v, 2, 60); refreshTimingUI(); } };
     secIn.onblur = () => { let v = parseInt(secIn.value); if (isNaN(v)) v = vmSecPerQManual; vmSecPerQManual = vmClamp(v, 2, 60); refreshTimingUI(); };
     revIn.oninput = () => { let v = parseInt(revIn.value); if (!isNaN(v)) { vmRevealSecManual = vmClamp(v, 1, 30); refreshTimingUI(); } };
     revIn.onblur = () => { let v = parseInt(revIn.value); if (isNaN(v)) v = vmRevealSecManual; vmRevealSecManual = vmClamp(v, 1, 30); refreshTimingUI(); };
-
     window._refreshTimingUI = refreshTimingUI;
 
-    function updateAutoTimingInfo() {
-        const info = document.getElementById('autoTimingInfo');
-        if (!info) return;
-        if (!vmSound.ttsEnabled) { info.style.display = 'none'; return; }
-        const eff = computeEffectiveDurations();
-        const needsAdjust = eff.q > vmSecPerQManual || eff.r > vmRevealSecManual;
-        info.style.display = needsAdjust ? 'block' : 'none';
-    }
+    function updateAutoTimingInfo() { const info = document.getElementById('autoTimingInfo'); if (!info) return; if (!vmSound.ttsEnabled) { info.style.display = 'none'; return; } const eff = computeEffectiveDurations(); const needsAdjust = eff.q > vmSecPerQManual || eff.r > vmRevealSecManual; info.style.display = needsAdjust ? 'block' : 'none'; }
 
-    document.getElementById('vmMusic').onchange = async (e) => {
-        const f = e.target.files[0]; if (!f) return;
-        if (vmAudioEl) { try { vmAudioEl.pause(); } catch (er) { } }
-        vmAudioEl = new Audio(URL.createObjectURL(f));
-        vmAudioEl.loop = true; vmAudioEl.volume = 1;
-        await SE.attachMusic(vmAudioEl);
-        document.getElementById('vmMusicName').textContent = f.name;
-        document.getElementById('vmMusicClear').style.display = 'inline-flex';
-        qcToast('🎵 Music loaded: ' + f.name.slice(0, 30));
-    };
-    document.getElementById('vmMusicClear').onclick = () => {
-        if (vmAudioEl) { try { vmAudioEl.pause(); } catch (e) { } vmAudioEl = null; }
-        SE.attachMusic(null);
-        document.getElementById('vmMusic').value = '';
-        document.getElementById('vmMusicName').textContent = 'No music selected';
-        document.getElementById('vmMusicClear').style.display = 'none';
-        qcToast('Music cleared');
-    };
+    document.getElementById('vmMusic').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; if (vmAudioEl) { try { vmAudioEl.pause(); } catch (er) { } } vmAudioEl = new Audio(URL.createObjectURL(f)); vmAudioEl.loop = true; vmAudioEl.volume = 1; await SE.attachMusic(vmAudioEl); document.getElementById('vmMusicName').textContent = f.name; document.getElementById('vmMusicClear').style.display = 'inline-flex'; qcToast('🎵 Music loaded: ' + f.name.slice(0, 30)); };
+    document.getElementById('vmMusicClear').onclick = () => { if (vmAudioEl) { try { vmAudioEl.pause(); } catch (e) { } vmAudioEl = null; } SE.attachMusic(null); document.getElementById('vmMusic').value = ''; document.getElementById('vmMusicName').textContent = 'No music selected'; document.getElementById('vmMusicClear').style.display = 'none'; qcToast('Music cleared'); };
     const musicSlider = document.getElementById('musicVolSlider');
     musicSlider.value = vmSound.musicVolume;
     document.getElementById('musicVolVal').textContent = Math.round(vmSound.musicVolume * 100) + '%';
     musicSlider.oninput = () => { const v = parseFloat(musicSlider.value); vmSound.musicVolume = v; SE.setMusicVolume(v); document.getElementById('musicVolVal').textContent = Math.round(v * 100) + '%'; };
 
-    document.getElementById('voRecordBtn').onclick = () => {
-        if (vmRecordingVoiceOver) { stopVoiceOverRecording(); return; }
-        startVoiceOverRecording();
-    };
+    document.getElementById('voRecordBtn').onclick = () => { if (vmRecordingVoiceOver) { stopVoiceOverRecording(); return; } startVoiceOverRecording(); };
     document.getElementById('voHelpBtn').onclick = () => { openMicModal(); };
-    document.getElementById('voFileInput').onchange = async (e) => {
-        const f = e.target.files[0]; if (!f) return;
-        await handleVoiceOverUpload(f);
-        e.target.value = '';
-    };
+    document.getElementById('voFileInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; await handleVoiceOverUpload(f); e.target.value = ''; };
     document.getElementById('voPlayBtn').onclick = () => { playVoiceOverPreview(); };
     document.getElementById('voDeleteBtn').onclick = () => { deleteVoiceOver(); };
 
-    function wireSoundToggle(id, getter, setter) {
-        const el = document.getElementById(id); if (!el) return;
-        if (getter()) el.classList.add('on'); else el.classList.remove('on');
-        el.onclick = () => {
-            const nv = !el.classList.contains('on');
-            if (nv) el.classList.add('on'); else el.classList.remove('on');
-            setter(nv);
-            if (window._refreshTimingUI) window._refreshTimingUI();
-        };
-    }
+    function wireSoundToggle(id, getter, setter) { const el = document.getElementById(id); if (!el) return; if (getter()) el.classList.add('on'); else el.classList.remove('on'); el.onclick = () => { const nv = !el.classList.contains('on'); if (nv) el.classList.add('on'); else el.classList.remove('on'); setter(nv); if (window._refreshTimingUI) window._refreshTimingUI(); }; }
     wireSoundToggle('toggleTTS', () => vmSound.ttsEnabled, v => { vmSound.ttsEnabled = v; TTS.enabled = v; if (!v) TTS.stop(); qcToast(v ? '🗣️ TTS ON — timing auto‑adjusts (min 12s)' : '🔇 TTS OFF'); });
     wireSoundToggle('toggleTTSQ', () => vmSound.ttsReadQ, v => vmSound.ttsReadQ = v);
     wireSoundToggle('toggleTTSO', () => vmSound.ttsReadO, v => vmSound.ttsReadO = v);
     wireSoundToggle('toggleTTSA', () => vmSound.ttsReadA, v => vmSound.ttsReadA = v);
 
     const voiceSel = document.getElementById('ttsVoiceSelect');
-    function fillVoices() {
-        voiceSel.innerHTML = '<option value="">Default</option>';
-        TTS.voices.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = `${v.name} (${v.lang})`; voiceSel.appendChild(o); });
-    }
+    function fillVoices() { voiceSel.innerHTML = '<option value="">Default</option>'; TTS.voices.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = `${v.name} (${v.lang})`; voiceSel.appendChild(o); }); }
     fillVoices();
     try { speechSynthesis.onvoiceschanged = () => { TTS.load(); fillVoices(); }; } catch(e){}
     setTimeout(() => { TTS.load(); fillVoices(); }, 250);
@@ -2371,68 +2030,29 @@ const templates = { default: { bg: "#f5f7fc", accent: "#1a73e8" }, ocean: { bg: 
 const gradients = ["gradient-1", "gradient-2", "gradient-3", "gradient-4", "gradient-5", "gradient-6", "gradient-7", "gradient-8"];
 function applyTemplate() { document.body.style.background = templates[selectedTemplate]?.bg || "#f5f7fc"; }
 
-function goBackInApp() {
-    const created = document.getElementById("createdArea");
-    const upload = document.getElementById("stepUpload");
-    const home = document.getElementById("stepHome");
-    if (created.style.display === "block") { created.style.display = "none"; upload.style.display = "block"; home.style.display = "none"; vmStopAll(); return true; }
-    if (upload.style.display === "block") { upload.style.display = "none"; home.style.display = "grid"; document.querySelectorAll(".home-card").forEach(c => c.classList.remove("active")); return true; }
-    return false;
-}
-window.addEventListener('keydown', (e) => {
-    const inField = ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName) || e.target.isContentEditable;
-    if ((e.key === 'Backspace' || e.key === 'Escape') && !inField) { e.preventDefault(); goBackInApp(); }
-});
+function goBackInApp() { const created = document.getElementById("createdArea"); const upload = document.getElementById("stepUpload"); const home = document.getElementById("stepHome"); if (created.style.display === "block") { created.style.display = "none"; upload.style.display = "block"; home.style.display = "none"; vmStopAll(); return true; } if (upload.style.display === "block") { upload.style.display = "none"; home.style.display = "grid"; document.querySelectorAll(".home-card").forEach(c => c.classList.remove("active")); return true; } return false; }
+window.addEventListener('keydown', (e) => { const inField = ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName) || e.target.isContentEditable; if ((e.key === 'Backspace' || e.key === 'Escape') && !inField) { e.preventDefault(); goBackInApp(); } });
 history.pushState({ qcp: true }, "");
 window.addEventListener('popstate', (e) => { goBackInApp(); history.pushState({ qcp: true }, ""); });
 
 function parseBulk() {
-    let raw = document.getElementById("bulkTextArea").value;
-    let lines = raw.split(/\r?\n/);
-    let questions = [], errors = [];
-    if (currentType === "truefalse") {
-        for (let line of lines) { line = line.trim(); if (!line) continue; let p = line.split(',').map(s => s.trim()); if (p.length < 2) errors.push("Need: Statement, true/false"); else { let isTrue = p[1].toLowerCase() === 'true'; questions.push({ text: p[0], correct: isTrue, image: (p.length > 2 && p[2].startsWith("http")) ? p[2] : null }); } }
-    } else if (currentType === "splash") {
-        for (let line of lines) { line = line.trim(); if (!line) continue; let p = line.split(',').map(s => s.trim()); if (p.length < 2) errors.push("Need: Question, Answer"); else { questions.push({ question: p[0], answer: p[1], image: (p.length > 2 && p[2].startsWith("http")) ? p[2] : null }); } }
-    } else {
-        for (let line of lines) { line = line.trim(); if (!line) continue; let p = line.split(',').map(s => s.trim()); if (p.length < 6) errors.push("Need: Question, 4 options, Correct"); else { questions.push({ text: p[0], options: p.slice(1, 5), correct: p[5], image: (p.length > 6 && p[6].startsWith("http")) ? p[6] : null }); } }
-    }
+    let raw = document.getElementById("bulkTextArea").value; let lines = raw.split(/\r?\n/); let questions = [], errors = [];
+    if (currentType === "truefalse") { for (let line of lines) { line = line.trim(); if (!line) continue; let p = line.split(',').map(s => s.trim()); if (p.length < 2) errors.push("Need: Statement, true/false"); else { let isTrue = p[1].toLowerCase() === 'true'; questions.push({ text: p[0], correct: isTrue, image: (p.length > 2 && p[2].startsWith("http")) ? p[2] : null }); } } }
+    else if (currentType === "splash") { for (let line of lines) { line = line.trim(); if (!line) continue; let p = line.split(',').map(s => s.trim()); if (p.length < 2) errors.push("Need: Question, Answer"); else { questions.push({ question: p[0], answer: p[1], image: (p.length > 2 && p[2].startsWith("http")) ? p[2] : null }); } } }
+    else { for (let line of lines) { line = line.trim(); if (!line) continue; let p = line.split(',').map(s => s.trim()); if (p.length < 6) errors.push("Need: Question, 4 options, Correct"); else { questions.push({ text: p[0], options: p.slice(1, 5), correct: p[5], image: (p.length > 6 && p[6].startsWith("http")) ? p[6] : null }); } } }
     questionsBank = questions;
     document.getElementById("validationErrors").innerHTML = errors.map(e => `<div class="error-line">⚠️ ${e}</div>`).join('');
     let preview = document.getElementById("parsedPreview");
-    if (questions.length) {
-        let html = `<div style="background:#e6f4ea; border-radius:12px; padding:8px; margin-bottom:8px; font-weight:600; font-size:.82rem;">✅ ${questions.length} questions loaded</div><div style="max-height:160px; overflow:auto;">`;
-        questions.forEach((q, idx) => { let hasImg = q.image; let imgPreview = hasImg ? `<img src="${q.image}" class="image-preview-small" onerror="this.style.display='none'">` : ''; html += `<div class="question-preview-row"><b>${idx + 1}.</b> ${(q.text || q.question).substring(0, 50)} ${hasImg ? '📷' : ''} ${imgPreview}</div>`; });
-        html += `</div>`;
-        preview.innerHTML = html;
-    } else preview.innerHTML = "";
+    if (questions.length) { let html = `<div style="background:#e6f4ea; border-radius:12px; padding:8px; margin-bottom:8px; font-weight:600; font-size:.82rem;">✅ ${questions.length} questions loaded</div><div style="max-height:160px; overflow:auto;">`; questions.forEach((q, idx) => { let hasImg = q.image; let imgPreview = hasImg ? `<img src="${q.image}" class="image-preview-small" onerror="this.style.display='none'">` : ''; html += `<div class="question-preview-row"><b>${idx + 1}.</b> ${(q.text || q.question).substring(0, 50)} ${hasImg ? '📷' : ''} ${imgPreview}</div>`; }); html += `</div>`; preview.innerHTML = html; } else preview.innerHTML = "";
     document.getElementById("finalCreateBtn").style.opacity = questions.length ? "1" : "0.5";
 }
-const DEMO_QUIZ = `What is the capital of France?, Berlin, Madrid, Paris, London, Paris
-Which planet is known as the Red Planet?, Venus, Mars, Jupiter, Saturn, Mars
-What is 2 + 2?, 3, 4, 5, 6, 4
-Who painted the Mona Lisa?, Van Gogh, Picasso, Da Vinci, Rembrandt, Da Vinci
-What is the largest ocean on Earth?, Atlantic, Indian, Arctic, Pacific, Pacific`;
+const DEMO_QUIZ = `What is the capital of France?, Berlin, Madrid, Paris, London, Paris\nWhich planet is known as the Red Planet?, Venus, Mars, Jupiter, Saturn, Mars\nWhat is 2 + 2?, 3, 4, 5, 6, 4\nWho painted the Mona Lisa?, Van Gogh, Picasso, Da Vinci, Rembrandt, Da Vinci\nWhat is the largest ocean on Earth?, Atlantic, Indian, Arctic, Pacific, Pacific`;
 document.getElementById("demoLoadBtn").onclick = () => { document.getElementById("quizNameInput").value = "General Knowledge Quiz"; document.getElementById("bulkTextArea").value = DEMO_QUIZ; parseBulk(); };
 document.getElementById("demoClearBtn").onclick = () => { document.getElementById("bulkTextArea").value = ""; document.getElementById("quizNameInput").value = "My Quiz"; document.getElementById("logoPreview").innerHTML = ""; quizLogo = null; parseBulk(); };
 document.getElementById("chooseFileBtn").onclick = () => document.getElementById("fileInput").click();
 document.getElementById("fileInput").onchange = (e) => { let file = e.target.files[0]; if (file) { let r = new FileReader(); r.onload = () => { document.getElementById("bulkTextArea").value = r.result; parseBulk(); }; r.readAsText(file); } };
 document.getElementById("bulkTextArea").addEventListener("input", parseBulk);
-document.querySelectorAll(".home-card").forEach(card => {
-    card.addEventListener("click", () => {
-        document.querySelectorAll(".home-card").forEach(c => c.classList.remove("active"));
-        card.classList.add("active");
-        currentType = card.dataset.type;
-        document.getElementById("stepHome").style.display = "none";
-        document.getElementById("stepUpload").style.display = "block";
-        document.getElementById("createdArea").style.display = "none";
-        if (currentType === "quiz" || currentType === "mock") document.getElementById("timerOptions").style.display = "block";
-        else document.getElementById("timerOptions").style.display = "none";
-        document.getElementById("finalCreateBtn").innerHTML = currentType === "video" ? '<i class="fas fa-video"></i> Open Video Studio' : '<i class="fas fa-check-circle"></i> Create &amp; Publish';
-        parseBulk();
-        applyTemplate();
-    });
-});
+document.querySelectorAll(".home-card").forEach(card => { card.addEventListener("click", () => { document.querySelectorAll(".home-card").forEach(c => c.classList.remove("active")); card.classList.add("active"); currentType = card.dataset.type; document.getElementById("stepHome").style.display = "none"; document.getElementById("stepUpload").style.display = "block"; document.getElementById("createdArea").style.display = "none"; if (currentType === "quiz" || currentType === "mock") document.getElementById("timerOptions").style.display = "block"; else document.getElementById("timerOptions").style.display = "none"; document.getElementById("finalCreateBtn").innerHTML = currentType === "video" ? '<i class="fas fa-video"></i> Open Video Studio' : '<i class="fas fa-check-circle"></i> Create &amp; Publish'; parseBulk(); applyTemplate(); }); });
 document.getElementById("logoUpload").onchange = (e) => { let file = e.target.files[0]; if (file) { let r = new FileReader(); r.onload = (ev) => { quizLogo = ev.target.result; document.getElementById("logoPreview").innerHTML = `<img src="${quizLogo}" class="logo-preview-img">`; }; r.readAsDataURL(file); } };
 document.querySelectorAll(".template-item").forEach(el => { el.onclick = () => { document.querySelectorAll(".template-item").forEach(t => t.classList.remove("active")); el.classList.add("active"); selectedTemplate = el.dataset.template; applyTemplate(); }; });
 document.querySelector(".template-item").classList.add("active");
@@ -2442,131 +2062,22 @@ document.getElementById("finalCreateBtn").onclick = () => {
     if (!questionsBank.length) { alert("Please add questions first!"); return; }
     quizTitle = document.getElementById("quizNameInput").value || "My Quiz";
     timerEnabled = enableTimerCheck.checked; timerSeconds = parseInt(timerSecInput.value) || 30;
-    if (currentType === "video") {
-        document.getElementById("createdArea").style.display = "block";
-        document.getElementById("stepUpload").style.display = "none";
-        document.getElementById("shareCard").style.display = "none";
-        document.getElementById("quizFooter").style.display = "block";
-        document.getElementById("copyLinkBtn").style.display = "none";
-        renderVideoStudio({ q: questionsBank, quizTitle: quizTitle, quizLogo: quizLogo });
-        return;
-    }
+    if (currentType === "video") { document.getElementById("createdArea").style.display = "block"; document.getElementById("stepUpload").style.display = "none"; document.getElementById("shareCard").style.display = "none"; document.getElementById("quizFooter").style.display = "block"; document.getElementById("copyLinkBtn").style.display = "none"; renderVideoStudio({ q: questionsBank, quizTitle: quizTitle, quizLogo: quizLogo }); return; }
     let data = { type: currentType, q: questionsBank, template: selectedTemplate, quizTitle, quizLogo, timerEnabled, timerSeconds };
     let shortUrl = generateShortLink(data);
-    document.getElementById("createdArea").style.display = "block";
-    document.getElementById("stepUpload").style.display = "none";
-    document.getElementById("shareCard").style.display = "flex";
-    document.getElementById("copyLinkBtn").style.display = "";
+    document.getElementById("createdArea").style.display = "block"; document.getElementById("stepUpload").style.display = "none"; document.getElementById("shareCard").style.display = "flex"; document.getElementById("copyLinkBtn").style.display = "";
     document.getElementById("copyLinkBtn").onclick = () => { navigator.clipboard.writeText(shortUrl); alert("✅ Link copied!"); };
     renderAssessment(data);
     document.getElementById("quizFooter").style.display = "block";
 };
-function generateShortLink(data) {
-    try {
-        let encoded = btoa(encodeURIComponent(JSON.stringify(data)));
-        let id = Math.random().toString(36).substring(2, 10);
-        let url = `${window.location.origin}${window.location.pathname}?q=${id}`;
-        let map = JSON.parse(localStorage.getItem("quizShortLinks") || "{}");
-        map[id] = encoded; localStorage.setItem("quizShortLinks", JSON.stringify(map));
-        return url;
-    } catch (e) { return window.location.href; }
-}
-function renderAssessment(data) {
-    let t = templates[data.template];
-    let header = `<div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #eef2ff;">${data.quizLogo ? `<img src="${data.quizLogo}" style="width:40px; height:40px; border-radius:50%;">` : `<i class="fas fa-clipboard-list" style="font-size:28px; color:${t.accent}"></i>`}<h1 style="font-size:1.2rem; font-weight:700;">${data.quizTitle}</h1></div>`;
-    if (data.type === "quiz") renderQuiz(data.q, t, header, data.timerEnabled, data.timerSeconds);
-    else if (data.type === "mock") renderMock(data.q, t, header, data.timerEnabled, data.timerSeconds);
-    else if (data.type === "splash") renderSplash(data.q, t, header);
-    else if (data.type === "truefalse") renderTrueFalse(data.q, t, header);
-}
-function renderQuiz(questions, theme, header, hasTimer, timerSec) {
-    let container = document.getElementById("renderZone");
-    let answers = new Array(questions.length).fill(null);
-    container.innerHTML = `<div>${header}${hasTimer ? `<div class="timer-badge"><i class="far fa-clock"></i> ${timerSec}s</div>` : ''}<div class="booklet-container"><div class="booklet" id="scBk"></div></div><div id="scArea" style="max-height:480px; overflow-y:auto;"></div></div>`;
-    let area = document.getElementById("scArea");
-    let bk = document.getElementById("scBk");
-    for (let i = 0; i < questions.length; i++) { let btn = document.createElement("button"); btn.innerText = i + 1; btn.classList.add("booklet-btn"); bk.appendChild(btn); }
-    questions.forEach((q, idx) => {
-        let card = document.createElement("div"); card.className = "question-card";
-        card.innerHTML = `<h3 style="color:${theme.accent}; font-size:.95rem; margin-bottom:8px;">${idx + 1}. ${q.text}</h3>${q.image ? `<img src="${q.image}" class="question-image" onerror="this.style.display='none'">` : ""}<div class="options-area"></div>`;
-        q.options.forEach((opt, optIdx) => {
-            let od = document.createElement("div"); od.className = "option-row";
-            od.innerHTML = `<span class="option-number">${String.fromCharCode(65 + optIdx)}</span><span>${opt}</span>`;
-            od.onclick = () => { if (answers[idx] === null) { answers[idx] = opt; card.querySelectorAll(".option-row").forEach(o => { if (o.innerText.includes(q.correct)) o.classList.add("correct-feedback"); if (o.innerText.includes(opt) && opt !== q.correct) o.classList.add("wrong-feedback"); }); bk.children[idx].classList.add("answered"); } };
-            card.querySelector(".options-area").appendChild(od);
-        });
-        area.appendChild(card);
-    });
-}
-function renderMock(questions, theme, header, hasTimer, timerSec) {
-    let container = document.getElementById("renderZone");
-    container.innerHTML = `<div>${header}<div class="tf-scroll">${questions.map((q, idx) => {
-        let opts = q.options.map(opt => `<label style="display:flex;align-items:center;gap:10px;margin:8px 0;padding:9px;background:#f8fafc;border-radius:50px;cursor:pointer;font-size:.85rem;"><input type="radio" name="m_${idx}" value="${opt}"> <span>${opt}</span></label>`).join('');
-        return `<div class="tf-card"><h3 style="color:${theme.accent}; font-size:.95rem;">${idx + 1}. ${q.text}</h3>${q.image ? `<img src="${q.image}" class="question-image">` : ""}${opts}</div>`;
-    }).join('')}</div></div>`;
-}
-function renderSplash(questions, theme, header) {
-    let container = document.getElementById("renderZone");
-    container.innerHTML = `<div>${header}<div class="splash-carousel" id="spC"></div></div>`;
-    let c = document.getElementById("spC");
-    questions.forEach((q, idx) => {
-        let gc = gradients[idx % gradients.length];
-        let card = document.createElement("div");
-        card.className = `splash-card-horizontal ${gc}`;
-        card.innerHTML = `<div class="question-text">${q.question}</div>${q.image ? `<img src="${q.image}" style="max-height:90px; border-radius:10px; margin:8px 0;">` : ""}<div class="answer-text">${q.answer}</div><button class="got-it-btn">Got It! ✓</button>`;
-        card.onclick = (e) => { if (!e.target.classList.contains("got-it-btn")) card.classList.toggle("revealed"); };
-        card.querySelector(".got-it-btn").onclick = (e) => { e.stopPropagation(); card.remove(); };
-        c.appendChild(card);
-    });
-}
-function renderTrueFalse(questions, theme, header) {
-    let container = document.getElementById("renderZone");
-    let answers = new Array(questions.length).fill(null);
-    container.innerHTML = `<div>${header}<div class="tf-scroll" id="tfC"></div><button id="tfSub" class="btn btn-success" style="width:100%; margin-top:12px;">Submit</button></div>`;
-    let d = document.getElementById("tfC");
-    questions.forEach((q, idx) => {
-        let card = document.createElement("div"); card.className = "tf-card";
-        card.innerHTML = `<div class="tf-question-text">${idx + 1}. ${q.text}</div>${q.image ? `<img src="${q.image}" class="question-image" style="max-height:80px;">` : ""}<div class="tf-options"><div class="tf-btn true" data-val="true">✓ True</div><div class="tf-btn false" data-val="false">✗ False</div></div><div class="tf-feedback" id="tfF_${idx}" style="display:none;"></div>`;
-        card.querySelectorAll(".tf-btn").forEach(b => b.onclick = () => {
-            answers[idx] = b.dataset.val === "true";
-            card.querySelectorAll(".tf-btn").forEach(x => x.classList.remove("selected-true", "selected-false"));
-            b.classList.add(b.dataset.val === "true" ? "selected-true" : "selected-false");
-            let fb = document.getElementById(`tfF_${idx}`); let ok = answers[idx] === q.correct;
-            fb.style.display = "block"; fb.className = `tf-feedback ${ok ? 'correct' : 'wrong'}`;
-            fb.innerHTML = ok ? '✅ Correct!' : `❌ Correct: ${q.correct ? "True" : "False"}`;
-        });
-        d.appendChild(card);
-    });
-    document.getElementById("tfSub").onclick = () => {
-        let correct = answers.filter((a, i) => a === questions[i].correct).length;
-        let pct = (correct / questions.length) * 100;
-        let m = document.createElement("div"); m.className = "modal-overlay active";
-        m.innerHTML = `<div class="modal-card"><h2 style="font-size:1.1rem;">🎯 Score</h2><div style="position:relative; width:130px; margin:10px auto;"><canvas id="tfc"></canvas><div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:1.4rem; font-weight:700;">${Math.round(pct)}%</div></div><p style="font-size:.82rem;">${correct}/${questions.length}</p><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()" style="margin-top:8px;">Close</button></div>`;
-        document.body.appendChild(m);
-        new Chart(document.getElementById("tfc").getContext("2d"), { type: 'doughnut', data: { labels: ['Correct', 'Wrong'], datasets: [{ data: [correct, questions.length - correct], backgroundColor: ['#0f9d58', '#d93025'], cutout: '65%' }] }, options: { plugins: { legend: { display: false } } } });
-    };
-}
+function generateShortLink(data) { try { let encoded = btoa(encodeURIComponent(JSON.stringify(data))); let id = Math.random().toString(36).substring(2, 10); let url = `${window.location.origin}${window.location.pathname}?q=${id}`; let map = JSON.parse(localStorage.getItem("quizShortLinks") || "{}"); map[id] = encoded; localStorage.setItem("quizShortLinks", JSON.stringify(map)); return url; } catch (e) { return window.location.href; } }
+function renderAssessment(data) { let t = templates[data.template]; let header = `<div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #eef2ff;">${data.quizLogo ? `<img src="${data.quizLogo}" style="width:40px; height:40px; border-radius:50%;">` : `<i class="fas fa-clipboard-list" style="font-size:28px; color:${t.accent}"></i>`}<h1 style="font-size:1.2rem; font-weight:700;">${data.quizTitle}</h1></div>`; if (data.type === "quiz") renderQuiz(data.q, t, header, data.timerEnabled, data.timerSeconds); else if (data.type === "mock") renderMock(data.q, t, header, data.timerEnabled, data.timerSeconds); else if (data.type === "splash") renderSplash(data.q, t, header); else if (data.type === "truefalse") renderTrueFalse(data.q, t, header); }
+function renderQuiz(questions, theme, header, hasTimer, timerSec) { let container = document.getElementById("renderZone"); let answers = new Array(questions.length).fill(null); container.innerHTML = `<div>${header}${hasTimer ? `<div class="timer-badge"><i class="far fa-clock"></i> ${timerSec}s</div>` : ''}<div class="booklet-container"><div class="booklet" id="scBk"></div></div><div id="scArea" style="max-height:480px; overflow-y:auto;"></div></div>`; let area = document.getElementById("scArea"); let bk = document.getElementById("scBk"); for (let i = 0; i < questions.length; i++) { let btn = document.createElement("button"); btn.innerText = i + 1; btn.classList.add("booklet-btn"); bk.appendChild(btn); } questions.forEach((q, idx) => { let card = document.createElement("div"); card.className = "question-card"; card.innerHTML = `<h3 style="color:${theme.accent}; font-size:.95rem; margin-bottom:8px;">${idx + 1}. ${q.text}</h3>${q.image ? `<img src="${q.image}" class="question-image" onerror="this.style.display='none'">` : ""}<div class="options-area"></div>`; q.options.forEach((opt, optIdx) => { let od = document.createElement("div"); od.className = "option-row"; od.innerHTML = `<span class="option-number">${String.fromCharCode(65 + optIdx)}</span><span>${opt}</span>`; od.onclick = () => { if (answers[idx] === null) { answers[idx] = opt; card.querySelectorAll(".option-row").forEach(o => { if (o.innerText.includes(q.correct)) o.classList.add("correct-feedback"); if (o.innerText.includes(opt) && opt !== q.correct) o.classList.add("wrong-feedback"); }); bk.children[idx].classList.add("answered"); } }; card.querySelector(".options-area").appendChild(od); }); area.appendChild(card); }); }
+function renderMock(questions, theme, header, hasTimer, timerSec) { let container = document.getElementById("renderZone"); container.innerHTML = `<div>${header}<div class="tf-scroll">${questions.map((q, idx) => { let opts = q.options.map(opt => `<label style="display:flex;align-items:center;gap:10px;margin:8px 0;padding:9px;background:#f8fafc;border-radius:50px;cursor:pointer;font-size:.85rem;"><input type="radio" name="m_${idx}" value="${opt}"> <span>${opt}</span></label>`).join(''); return `<div class="tf-card"><h3 style="color:${theme.accent}; font-size:.95rem;">${idx + 1}. ${q.text}</h3>${q.image ? `<img src="${q.image}" class="question-image">` : ""}${opts}</div>`; }).join('')}</div></div>`; }
+function renderSplash(questions, theme, header) { let container = document.getElementById("renderZone"); container.innerHTML = `<div>${header}<div class="splash-carousel" id="spC"></div></div>`; let c = document.getElementById("spC"); questions.forEach((q, idx) => { let gc = gradients[idx % gradients.length]; let card = document.createElement("div"); card.className = `splash-card-horizontal ${gc}`; card.innerHTML = `<div class="question-text">${q.question}</div>${q.image ? `<img src="${q.image}" style="max-height:90px; border-radius:10px; margin:8px 0;">` : ""}<div class="answer-text">${q.answer}</div><button class="got-it-btn">Got It! ✓</button>`; card.onclick = (e) => { if (!e.target.classList.contains("got-it-btn")) card.classList.toggle("revealed"); }; card.querySelector(".got-it-btn").onclick = (e) => { e.stopPropagation(); card.remove(); }; c.appendChild(card); }); }
+function renderTrueFalse(questions, theme, header) { let container = document.getElementById("renderZone"); let answers = new Array(questions.length).fill(null); container.innerHTML = `<div>${header}<div class="tf-scroll" id="tfC"></div><button id="tfSub" class="btn btn-success" style="width:100%; margin-top:12px;">Submit</button></div>`; let d = document.getElementById("tfC"); questions.forEach((q, idx) => { let card = document.createElement("div"); card.className = "tf-card"; card.innerHTML = `<div class="tf-question-text">${idx + 1}. ${q.text}</div>${q.image ? `<img src="${q.image}" class="question-image" style="max-height:80px;">` : ""}<div class="tf-options"><div class="tf-btn true" data-val="true">✓ True</div><div class="tf-btn false" data-val="false">✗ False</div></div><div class="tf-feedback" id="tfF_${idx}" style="display:none;"></div>`; card.querySelectorAll(".tf-btn").forEach(b => b.onclick = () => { answers[idx] = b.dataset.val === "true"; card.querySelectorAll(".tf-btn").forEach(x => x.classList.remove("selected-true", "selected-false")); b.classList.add(b.dataset.val === "true" ? "selected-true" : "selected-false"); let fb = document.getElementById(`tfF_${idx}`); let ok = answers[idx] === q.correct; fb.style.display = "block"; fb.className = `tf-feedback ${ok ? 'correct' : 'wrong'}`; fb.innerHTML = ok ? '✅ Correct!' : `❌ Correct: ${q.correct ? "True" : "False"}`; }); d.appendChild(card); }); document.getElementById("tfSub").onclick = () => { let correct = answers.filter((a, i) => a === questions[i].correct).length; let pct = (correct / questions.length) * 100; let m = document.createElement("div"); m.className = "modal-overlay active"; m.innerHTML = `<div class="modal-card"><h2 style="font-size:1.1rem;">🎯 Score</h2><div style="position:relative; width:130px; margin:10px auto;"><canvas id="tfc"></canvas><div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:1.4rem; font-weight:700;">${Math.round(pct)}%</div></div><p style="font-size:.82rem;">${correct}/${questions.length}</p><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()" style="margin-top:8px;">Close</button></div>`; document.body.appendChild(m); new Chart(document.getElementById("tfc").getContext("2d"), { type: 'doughnut', data: { labels: ['Correct', 'Wrong'], datasets: [{ data: [correct, questions.length - correct], backgroundColor: ['#0f9d58', '#d93025'], cutout: '65%' }] }, options: { plugins: { legend: { display: false } } } }); }; }
 
-function resolveShared() {
-    let id = new URLSearchParams(window.location.search).get("q");
-    if (!id) return;
-    let map = JSON.parse(localStorage.getItem("quizShortLinks") || "{}");
-    let enc = map[id]; if (!enc) return;
-    try {
-        let data = JSON.parse(decodeURIComponent(atob(enc)));
-        if (data.q && data.q.length) {
-            document.getElementById("stepHome").style.display = "none";
-            document.getElementById("stepUpload").style.display = "none";
-            document.getElementById("createdArea").style.display = "block";
-            selectedTemplate = data.template || "default";
-            applyTemplate();
-            renderAssessment(data);
-            document.getElementById("copyLinkBtn").style.display = "none";
-            document.getElementById("shareCard").style.display = "none";
-            document.querySelector(".brand-header").style.display = "none";
-        }
-    } catch (e) { }
-}
+function resolveShared() { let id = new URLSearchParams(window.location.search).get("q"); if (!id) return; let map = JSON.parse(localStorage.getItem("quizShortLinks") || "{}"); let enc = map[id]; if (!enc) return; try { let data = JSON.parse(decodeURIComponent(atob(enc))); if (data.q && data.q.length) { document.getElementById("stepHome").style.display = "none"; document.getElementById("stepUpload").style.display = "none"; document.getElementById("createdArea").style.display = "block"; selectedTemplate = data.template || "default"; applyTemplate(); renderAssessment(data); document.getElementById("copyLinkBtn").style.display = "none"; document.getElementById("shareCard").style.display = "none"; document.querySelector(".brand-header").style.display = "none"; } } catch (e) { } }
 
 resolveShared();
 parseBulk();
