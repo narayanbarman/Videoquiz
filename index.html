@@ -255,18 +255,18 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .mic-browser-pane { display: none; }
 .mic-browser-pane.active { display: block; }
 
-/* ★★★ VOICE OVER — 2-ROW FLOATING BAR ★★★ */
+/* ★★★ VOICE OVER BAR — FIXED TO BOTTOM OF VIEWPORT ★★★ */
 .vo-bar-wrap {
     position: fixed;
     left: 0; right: 0; bottom: 0;
-    z-index: 999999;
-    background: linear-gradient(to top, rgba(0,0,0,.96) 0%, rgba(0,0,0,.86) 70%, rgba(0,0,0,.5) 100%);
+    z-index: 2147483000;
+    background: linear-gradient(to top, rgba(0,0,0,.97) 0%, rgba(0,0,0,.88) 70%, rgba(0,0,0,.55) 100%);
     padding: 10px 10px calc(12px + env(safe-area-inset-bottom, 0px));
     display: none;
     flex-direction: column;
     gap: 8px;
     pointer-events: auto;
-    box-shadow: 0 -8px 40px rgba(0,0,0,.5);
+    box-shadow: 0 -8px 40px rgba(0,0,0,.55);
 }
 .vo-bar-wrap.show { display: flex; }
 .vo-wave { width: 100%; height: 62px; display: block; background: rgba(15,23,42,0.75); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
@@ -280,35 +280,12 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .vo-hbtn.rerec { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
 .vo-hbtn.del { background: rgba(239,68,68,0.25); color: #fca5a5; border-color: rgba(239,68,68,0.45); }
 .vo-hbtn.add { background: #22c55e; color: #fff; border-color: #22c55e; }
-.vo-status-strip { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.92); color: #fff; padding: 6px 16px; border-radius: 30px; font-size: .64rem; font-weight: 800; letter-spacing: .04em; display: none; align-items: center; gap: 8px; z-index: 1000000; pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.vo-status-strip { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.94); color: #fff; padding: 6px 16px; border-radius: 30px; font-size: .64rem; font-weight: 800; letter-spacing: .04em; display: none; align-items: center; gap: 8px; z-index: 2147483001; pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
 .vo-status-strip.show { display: flex; }
 .vo-status-strip .dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse-rec 1s infinite; }
 .vo-status-strip.paused { background: rgba(245, 158, 11, .96); }
 .vo-status-strip.paused .dot { background: #fff; animation: none; }
 .vo-status-strip .tm { font-family: ui-monospace, monospace; font-size: .62rem; color: #cbd5e1; }
-
-/* ★★★ KILL EVERYTHING IN RECORDING MODE ★★★ */
-body.vo-recording-mode .vm-flyout,
-body.vo-recording-mode .vm-rail,
-body.vo-recording-mode .vm-canvas-controls,
-body.vo-recording-mode .vm-bottom-bar,
-body.vo-recording-mode .vm-status-line,
-body.vo-recording-mode .vm-backdrop,
-body.vo-recording-mode .vm-live-badge,
-body.vo-recording-mode .vm-rec-badge,
-body.vo-recording-mode .vm-progress-wrap,
-body.vo-recording-mode .brand-header,
-body.vo-recording-mode .quiz-footer,
-body.vo-recording-mode #shareCard,
-body.vo-recording-mode #stepHome,
-body.vo-recording-mode #stepUpload {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
-body.vo-recording-mode .vm-shell { grid-template-columns: 1fr !important; }
-body.vo-recording-mode .vm-canvas-wrap { border-radius: 8px; }
 
 @media (max-width: 900px) {
     .vm-shell { grid-template-columns: 58px 1fr 58px; gap: 4px; height: calc(100vh - 68px); padding: 4px; border-radius: 12px; }
@@ -326,7 +303,7 @@ body.vo-recording-mode .vm-canvas-wrap { border-radius: 8px; }
     .vm-intro-toggle.on .sw-mini::after { transform: translateX(10px); }
     .vm-mute-btn { height: 28px; min-width: 38px; font-size: 13px; padding: 0 10px; }
     .vm-bottom-bar .btn { padding: 10px 6px; font-size: .68rem; }
-    .vm-flyout, .vm-flyout.left, .vm-flyout.right { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 78vh; border-radius: 22px 22px 0 0; transform: translateY(110%); background: rgba(255, 255, 255, 0.85); }
+    .vm-flyout, .vm-flyout.left, .vm-flyout.right { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 78vh; border-radius: 22px 22px 0 0; transform: translateY(110%); background: rgba(255, 255, 255, 0.9); }
     .vm-flyout.open { transform: translateY(0); }
     .vm-tool { min-height: 42px; padding: 8px 10px; font-size: .7rem; }
     .vm-tool .ti { font-size: 16px; }
@@ -391,7 +368,7 @@ body.vo-recording-mode .vm-canvas-wrap { border-radius: 8px; }
     </div>
 </div>
 
-<!-- ★★★ VOICE OVER BAR — TOP OF BODY, ALWAYS ON TOP ★★★ -->
+<!-- ★★★ VOICE OVER BAR — TOP OF BODY, HIGHEST Z-INDEX ★★★ -->
 <div class="vo-status-strip" id="voStatusStrip"><span class="dot"></span><span id="voStatusText2">RECORDING</span><span class="tm" id="voStatusTime">00:00 / 00:00</span></div>
 <div class="vo-bar-wrap" id="voBar">
   <canvas class="vo-wave" id="voWaveCanvas" width="800" height="124"></canvas>
@@ -513,6 +490,9 @@ let vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: 
 let vmRecordingVoiceOver = false;
 let voAudioCtx = null, voAnalyser = null, voSource = null, voWaveRaf = null, voWaveData = null;
 
+/* ★★★ SAVED REMOVED FLYOUTS FOR FULL DISAPPEARANCE ★★★ */
+let _savedFlyouts = [];
+
 /* ============ MIC PERMISSION ============ */
 async function queryMicPermission() { try { if (navigator.permissions && navigator.permissions.query) { const r = await navigator.permissions.query({ name: 'microphone' }); return r.state; } } catch (e) { } return 'unknown'; }
 function updateMicStatusUI(state) { const box = document.getElementById('micStatusBox'); if (!box) return; box.className = 'mic-status ' + state; if (state === 'granted') box.innerHTML = '✅ <b>Microphone is allowed.</b> You can record voice over now.'; else if (state === 'denied') box.innerHTML = '🚫 <b>Microphone is BLOCKED.</b> Enable it manually below, then reload and try again.'; else if (state === 'prompt') box.innerHTML = '🎤 <b>Permission not yet given.</b> Tap <b>Try Request Permission</b> — a popup should appear.'; else box.innerHTML = 'ℹ️ <b>Could not detect status.</b> Tap <b>Try Request Permission</b> to attempt.'; }
@@ -625,55 +605,8 @@ function vmFitFont(ctx, text, maxW, maxH, maxSize, minSize, weight, lineHeight, 
 function vmRoundImage(ctx, img, x, y, w, h, r) { ctx.save(); vmRR(ctx, x, y, w, h, r); ctx.clip(); ctx.drawImage(img, x, y, w, h); ctx.restore(); }
 function vmSize() { return vmOrientation === 'portrait' ? { W: 1080, H: 1920 } : { W: 1920, H: 1080 }; }
 
-function vmQuestionAnimParams(progress, style) {
-    const p = vmClamp(progress, 0, 1);
-    const out = { offsetX: 0, offsetY: 0, scale: 1, alpha: 1, blur: 0, typewriter: 1, rotate: 0 };
-    switch (style) {
-        case 'fade': out.alpha = p; break;
-        case 'slideUp': out.alpha = vmEaseOutQuart(p); out.offsetY = (1 - vmEaseOutQuart(p)) * 80; break;
-        case 'slideDown': out.alpha = vmEaseOutQuart(p); out.offsetY = -(1 - vmEaseOutQuart(p)) * 80; break;
-        case 'slideLeft': out.alpha = vmEaseOutQuart(p); out.offsetX = -(1 - vmEaseOutQuart(p)) * 120; break;
-        case 'slideRight': out.alpha = vmEaseOutQuart(p); out.offsetX = (1 - vmEaseOutQuart(p)) * 120; break;
-        case 'zoom': out.alpha = vmEaseOutCubic(p); out.scale = 0.82 + 0.18 * vmEaseOutBack(p); break;
-        case 'blur': out.alpha = vmEaseOutCubic(p); out.blur = (1 - vmEaseOutCubic(p)) * 16; break;
-        case 'typewriter': out.alpha = 1; out.typewriter = p; break;
-        case 'wave': out.alpha = vmEaseOutCubic(p); out.offsetY = (1 - vmEaseOutCubic(p)) * 40; break;
-        case 'rotate': out.alpha = vmEaseOutCubic(p); out.scale = 0.9 + 0.1 * vmEaseOutCubic(p); out.offsetX = (1 - vmEaseOutCubic(p)) * 100; break;
-        case 'flipIn': out.alpha = vmEaseOutCubic(p); out.scale = 0.02 + 0.98 * vmEaseOutBack(p); out.rotate = (1 - vmEaseOutBack(p)) * -0.35; break;
-        case 'dropIn': out.alpha = vmEaseOutQuart(p); out.offsetY = -(1 - vmEaseOutBack(p)) * 160; break;
-        case 'elastic': out.alpha = vmEaseOutCubic(Math.min(1, p * 1.5)); out.scale = 0.6 + 0.4 * vmEaseOutElastic(p); break;
-        case 'sparkle': out.alpha = vmEaseOutCubic(p); out.scale = 0.9 + 0.1 * vmEaseOutQuart(p); break;
-        case 'bounce3d': out.alpha = vmEaseOutCubic(Math.min(1, p * 1.4)); out.offsetY = -(1 - vmEaseOutBack(p)) * 100; out.scale = 0.7 + 0.3 * vmEaseOutQuart(p); break;
-        default: out.alpha = p;
-    }
-    return out;
-}
-function vmOptionAnimParams(progress, style) {
-    const p = vmClamp(progress, 0, 1);
-    const alphaRamp = vmClamp(p * 1.4, 0, 1);
-    const out = { offsetX: 0, offsetY: 0, scaleX: 1, scaleY: 1, alpha: 1, rotate: 0, shine: 0 };
-    switch (style) {
-        case 'fade': out.alpha = vmEaseOutCubic(p); break;
-        case 'slideUp': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutQuart(p)) * 110; break;
-        case 'slideDown': out.alpha = alphaRamp; out.offsetY = -(1 - vmEaseOutQuart(p)) * 110; break;
-        case 'slideLeft': out.alpha = alphaRamp; out.offsetX = -(1 - vmEaseOutQuart(p)) * 160; break;
-        case 'slideRight': out.alpha = alphaRamp; out.offsetX = (1 - vmEaseOutQuart(p)) * 160; break;
-        case 'cascade': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutQuint(p)) * 130; out.scaleX = 0.88 + 0.12 * vmEaseOutQuart(p); out.scaleY = out.scaleX; break;
-        case 'flip': out.alpha = vmClamp(p * 2, 0, 1); out.scaleY = Math.max(0.02, vmEaseOutBack(p)); break;
-        case 'pop': out.alpha = alphaRamp; out.scaleX = 0.35 + 0.65 * vmEaseOutBack(p); out.scaleY = out.scaleX; break;
-        case 'bounce': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutBack(p)) * 150; out.scaleY = 0.85 + 0.15 * vmEaseOutQuart(p); break;
-        case 'zoom': out.alpha = vmEaseOutCubic(p); out.scaleX = 0.4 + 0.6 * vmEaseOutBack(p); out.scaleY = out.scaleX; break;
-        case 'growUp': out.alpha = alphaRamp; out.scaleX = 0.6 + 0.4 * vmEaseOutQuart(p); out.scaleY = out.scaleX; out.offsetY = (1 - vmEaseOutQuart(p)) * 60; break;
-        case 'sparkle': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutQuart(p)) * 50; out.shine = p; break;
-        case 'rotateIn': out.alpha = alphaRamp; out.rotate = (1 - vmEaseOutQuart(p)) * -0.18; out.scaleX = 0.8 + 0.2 * vmEaseOutQuart(p); out.scaleY = out.scaleX; out.offsetY = (1 - vmEaseOutQuart(p)) * 50; break;
-        case 'swing': out.alpha = alphaRamp; out.rotate = Math.sin(p * Math.PI * 3) * (1 - p) * 0.4; out.offsetY = (1 - vmEaseOutQuart(p)) * 60; break;
-        case 'zoomOutIn': out.alpha = vmEaseOutCubic(p); out.scaleX = 1.6 - 0.6 * vmEaseOutBack(p); out.scaleY = out.scaleX; break;
-        case 'diagonalIn': out.alpha = alphaRamp; out.offsetX = -(1 - vmEaseOutQuart(p)) * 100; out.offsetY = (1 - vmEaseOutQuart(p)) * 100; break;
-        case 'elastic': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutElastic(p)) * 150; out.scaleX = 0.5 + 0.5 * vmEaseOutBack(p); out.scaleY = out.scaleX; break;
-        default: out.alpha = p;
-    }
-    return out;
-}
+function vmQuestionAnimParams(progress, style) { const p = vmClamp(progress, 0, 1); const out = { offsetX: 0, offsetY: 0, scale: 1, alpha: 1, blur: 0, typewriter: 1, rotate: 0 }; switch (style) { case 'fade': out.alpha = p; break; case 'slideUp': out.alpha = vmEaseOutQuart(p); out.offsetY = (1 - vmEaseOutQuart(p)) * 80; break; case 'slideDown': out.alpha = vmEaseOutQuart(p); out.offsetY = -(1 - vmEaseOutQuart(p)) * 80; break; case 'slideLeft': out.alpha = vmEaseOutQuart(p); out.offsetX = -(1 - vmEaseOutQuart(p)) * 120; break; case 'slideRight': out.alpha = vmEaseOutQuart(p); out.offsetX = (1 - vmEaseOutQuart(p)) * 120; break; case 'zoom': out.alpha = vmEaseOutCubic(p); out.scale = 0.82 + 0.18 * vmEaseOutBack(p); break; case 'blur': out.alpha = vmEaseOutCubic(p); out.blur = (1 - vmEaseOutCubic(p)) * 16; break; case 'typewriter': out.alpha = 1; out.typewriter = p; break; case 'wave': out.alpha = vmEaseOutCubic(p); out.offsetY = (1 - vmEaseOutCubic(p)) * 40; break; case 'rotate': out.alpha = vmEaseOutCubic(p); out.scale = 0.9 + 0.1 * vmEaseOutCubic(p); out.offsetX = (1 - vmEaseOutCubic(p)) * 100; break; case 'flipIn': out.alpha = vmEaseOutCubic(p); out.scale = 0.02 + 0.98 * vmEaseOutBack(p); out.rotate = (1 - vmEaseOutBack(p)) * -0.35; break; case 'dropIn': out.alpha = vmEaseOutQuart(p); out.offsetY = -(1 - vmEaseOutBack(p)) * 160; break; case 'elastic': out.alpha = vmEaseOutCubic(Math.min(1, p * 1.5)); out.scale = 0.6 + 0.4 * vmEaseOutElastic(p); break; case 'sparkle': out.alpha = vmEaseOutCubic(p); out.scale = 0.9 + 0.1 * vmEaseOutQuart(p); break; case 'bounce3d': out.alpha = vmEaseOutCubic(Math.min(1, p * 1.4)); out.offsetY = -(1 - vmEaseOutBack(p)) * 100; out.scale = 0.7 + 0.3 * vmEaseOutQuart(p); break; default: out.alpha = p; } return out; }
+function vmOptionAnimParams(progress, style) { const p = vmClamp(progress, 0, 1); const alphaRamp = vmClamp(p * 1.4, 0, 1); const out = { offsetX: 0, offsetY: 0, scaleX: 1, scaleY: 1, alpha: 1, rotate: 0, shine: 0 }; switch (style) { case 'fade': out.alpha = vmEaseOutCubic(p); break; case 'slideUp': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutQuart(p)) * 110; break; case 'slideDown': out.alpha = alphaRamp; out.offsetY = -(1 - vmEaseOutQuart(p)) * 110; break; case 'slideLeft': out.alpha = alphaRamp; out.offsetX = -(1 - vmEaseOutQuart(p)) * 160; break; case 'slideRight': out.alpha = alphaRamp; out.offsetX = (1 - vmEaseOutQuart(p)) * 160; break; case 'cascade': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutQuint(p)) * 130; out.scaleX = 0.88 + 0.12 * vmEaseOutQuart(p); out.scaleY = out.scaleX; break; case 'flip': out.alpha = vmClamp(p * 2, 0, 1); out.scaleY = Math.max(0.02, vmEaseOutBack(p)); break; case 'pop': out.alpha = alphaRamp; out.scaleX = 0.35 + 0.65 * vmEaseOutBack(p); out.scaleY = out.scaleX; break; case 'bounce': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutBack(p)) * 150; out.scaleY = 0.85 + 0.15 * vmEaseOutQuart(p); break; case 'zoom': out.alpha = vmEaseOutCubic(p); out.scaleX = 0.4 + 0.6 * vmEaseOutBack(p); out.scaleY = out.scaleX; break; case 'growUp': out.alpha = alphaRamp; out.scaleX = 0.6 + 0.4 * vmEaseOutQuart(p); out.scaleY = out.scaleX; out.offsetY = (1 - vmEaseOutQuart(p)) * 60; break; case 'sparkle': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutQuart(p)) * 50; out.shine = p; break; case 'rotateIn': out.alpha = alphaRamp; out.rotate = (1 - vmEaseOutQuart(p)) * -0.18; out.scaleX = 0.8 + 0.2 * vmEaseOutQuart(p); out.scaleY = out.scaleX; out.offsetY = (1 - vmEaseOutQuart(p)) * 50; break; case 'swing': out.alpha = alphaRamp; out.rotate = Math.sin(p * Math.PI * 3) * (1 - p) * 0.4; out.offsetY = (1 - vmEaseOutQuart(p)) * 60; break; case 'zoomOutIn': out.alpha = vmEaseOutCubic(p); out.scaleX = 1.6 - 0.6 * vmEaseOutBack(p); out.scaleY = out.scaleX; break; case 'diagonalIn': out.alpha = alphaRamp; out.offsetX = -(1 - vmEaseOutQuart(p)) * 100; out.offsetY = (1 - vmEaseOutQuart(p)) * 100; break; case 'elastic': out.alpha = alphaRamp; out.offsetY = (1 - vmEaseOutElastic(p)) * 150; out.scaleX = 0.5 + 0.5 * vmEaseOutBack(p); out.scaleY = out.scaleX; break; default: out.alpha = p; } return out; }
 async function vmPreloadImages(force) { if (vmImagesPreloaded && !force) return; vmImages = {}; vmLogoImg = null; const jobs = []; if (vmLogoData) jobs.push(new Promise(res => { const i = new Image(); i.onload = () => { vmLogoImg = i; res(); }; i.onerror = () => res(); i.src = vmLogoData; })); const urls = [...new Set(vmQuestions.filter(q => q.image).map(q => q.image))]; urls.forEach(u => jobs.push(new Promise(res => { const i = new Image(); i.crossOrigin = 'anonymous'; i.onload = () => { vmImages[u] = i; res(); }; i.onerror = () => res(); i.src = u; }))); await Promise.all(jobs); vmImagesPreloaded = true; }
 function vmInitParticles(W, H) { vmParticles = []; for (let i = 0; i < 70; i++) vmParticles.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 4 + 1, s: Math.random() * 0.6 + 0.15, a: Math.random() * 0.55 + 0.15, o: Math.random() * Math.PI * 2 }); }
 function vmDrawBG(ctx, W, H, t, th) { if (vmBgColor) { ctx.fillStyle = vmBgColor; ctx.fillRect(0, 0, W, H); } else { const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, th.bg[0]); g.addColorStop(0.5, th.bg[1]); g.addColorStop(1, th.bg[0]); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); } const base = Math.min(W, H); if (vmBgStyle === 'none') return; if (vmBgStyle === 'blobs' || vmBgStyle === 'particles') { const blobs = [{ x: 0.15, y: 0.20, r: 0.70, c: th.accent, a: th.light ? 0.12 : 0.38, sp: 0.14 }, { x: 0.88, y: 0.75, r: 0.72, c: th.accent2 || th.accent, a: th.light ? 0.10 : 0.30, sp: -0.10 }, { x: 0.50, y: 1.05, r: 0.60, c: th.accent, a: th.light ? 0.06 : 0.18, sp: 0.08 }]; blobs.forEach((b, i) => { const x = (b.x + Math.sin(t * b.sp + i * 1.7) * 0.09) * W; const y = (b.y + Math.cos(t * b.sp * 1.3 + i) * 0.07) * H; const r = b.r * base; const rg = ctx.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, vmHexA(b.c, b.a)); rg.addColorStop(1, vmHexA(b.c, 0)); ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); }); } if (vmBgStyle === 'particles') { ctx.save(); for (const p of vmParticles) { let y = (p.y - t * p.s * 65) % H; if (y < 0) y += H; const x = p.x + Math.sin(t * 0.7 + p.o) * 26; ctx.globalAlpha = (th.light ? p.a * 0.35 : p.a) * (0.5 + 0.5 * Math.sin(t * 2.1 + p.o)); ctx.fillStyle = th.light ? '#334155' : '#ffffff'; ctx.beginPath(); ctx.arc(x, y, p.r, 0, 7); ctx.fill(); } ctx.restore(); } if (vmBgStyle === 'waves') { ctx.save(); for (let layer = 0; layer < 4; layer++) { const alpha = (th.light ? 0.08 : 0.16) - layer * 0.02; const speed = 0.5 + layer * 0.3; const amp = base * (0.03 + layer * 0.015); const yBase = H * (0.20 + layer * 0.20); ctx.beginPath(); ctx.moveTo(0, yBase); for (let x = 0; x <= W; x += 8) { const y = yBase + Math.sin((x / W) * 4 * Math.PI + t * speed) * amp; ctx.lineTo(x, y); } ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); const grad = ctx.createLinearGradient(0, yBase, 0, H); grad.addColorStop(0, vmHexA(layer % 2 === 0 ? th.accent : (th.accent2 || th.accent), alpha)); grad.addColorStop(1, vmHexA(th.accent, 0.02)); ctx.fillStyle = grad; ctx.fill(); } ctx.restore(); } if (vmBgStyle === 'aurora') { ctx.save(); for (let i = 0; i < 5; i++) { const ang = (i / 5) * Math.PI * 2 + t * 0.15; const x = W / 2 + Math.cos(ang + Math.sin(t * 0.4 + i)) * W * 0.35; const y = H / 2 + Math.sin(ang * 1.3 + t * 0.3) * H * 0.30; const r = base * (0.55 + 0.15 * Math.sin(t * 0.6 + i)); const color = i % 2 === 0 ? th.accent : (th.accent2 || th.accent); const rg = ctx.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, vmHexA(color, th.light ? 0.15 : 0.30)); rg.addColorStop(1, vmHexA(color, 0)); ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H); } ctx.restore(); } if (vmBgStyle === 'bokeh') { ctx.save(); for (let i = 0; i < 12; i++) { const seed = i * 37.1; const x = ((Math.sin(seed) * 0.5 + 0.5) * W + Math.sin(t * 0.4 + i) * 40) % W; const y = ((Math.cos(seed) * 0.5 + 0.5) * H + Math.cos(t * 0.35 + i) * 40) % H; const r = base * (0.06 + (i % 4) * 0.03); const a = (th.light ? 0.03 : 0.05) + 0.06 * Math.sin(t * 0.8 + i); const rg = ctx.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, vmHexA(i % 2 === 0 ? th.accent : (th.accent2 || th.accent), Math.abs(a))); rg.addColorStop(1, vmHexA(th.accent, 0)); ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); } ctx.restore(); } }
@@ -687,126 +620,80 @@ function vmDrawIntro(ctx, W, H, t, th) { const u = Math.min(W, H) / 1080; const 
 function vmDrawOptionBg(ctx, x, y, w, h, th, isCorrect, isHighlight) { const radius = vmGetOptionRadius(vmOptionShape, h); if (isHighlight) { const hg = ctx.createLinearGradient(x, y, x + w, y + h); hg.addColorStop(0, 'rgba(34,197,94,0.98)'); hg.addColorStop(1, 'rgba(16,185,129,0.98)'); ctx.fillStyle = hg; ctx.shadowColor = 'rgba(34,197,94,0.75)'; ctx.shadowBlur = 46 * Math.min(w, h) / 60; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = 4 * Math.min(w, h) / 60; ctx.strokeStyle = '#22c55e'; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: '#ffffff', letterBg: 'rgba(255,255,255,0.95)', letterText: '#15803d', letterBorder: null }; } const sc = Math.min(w, h) / 60; if (vmOptionColor) { ctx.fillStyle = vmOptionColor; ctx.shadowColor = 'rgba(0,0,0,0.15)'; ctx.shadowBlur = 14 * sc; ctx.shadowOffsetY = 3 * sc; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.45); ctx.lineWidth = 2 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.20), letterText: th.accent }; } switch (vmOptionStyle) { case 'solid': { ctx.fillStyle = th.light ? '#ffffff' : 'rgba(30,41,59,0.92)'; ctx.shadowColor = 'rgba(0,0,0,0.12)'; ctx.shadowBlur = 14 * sc; ctx.shadowOffsetY = 3 * sc; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.1)'; ctx.lineWidth = 1.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.15), letterText: th.accent }; } case 'gradient': { const grad = ctx.createLinearGradient(x, y, x + w, y + h); grad.addColorStop(0, vmHexA(th.accent, 0.15)); grad.addColorStop(1, vmHexA(th.accent2 || th.accent, 0.15)); ctx.fillStyle = grad; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.strokeStyle = vmHexA(th.accent, 0.4); ctx.lineWidth = 2 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: th.accent, letterText: '#ffffff' }; } case 'outline': { ctx.fillStyle = th.light ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.03)'; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.strokeStyle = th.accent; ctx.lineWidth = 2.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: 'transparent', letterText: th.accent, letterBorder: th.accent }; } case 'neon': { ctx.fillStyle = vmHexA(th.accent, 0.08); vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowColor = th.accent; ctx.shadowBlur = 22 * sc; ctx.strokeStyle = th.accent; ctx.lineWidth = 2.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); ctx.shadowBlur = 0; return { textColor: vmGetOColor(), letterBg: th.accent, letterText: '#ffffff' }; } case 'filled': { const grad = ctx.createLinearGradient(x, y, x + w, y + h); grad.addColorStop(0, th.accent); grad.addColorStop(1, th.accent2 || th.accent); ctx.fillStyle = grad; ctx.shadowColor = vmHexA(th.accent, 0.55); ctx.shadowBlur = 18 * sc; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; return { textColor: '#ffffff', letterBg: 'rgba(255,255,255,0.88)', letterText: th.accent }; } case 'stripe': { ctx.fillStyle = th.light ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.08)'; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); const sw = 6 * sc; ctx.save(); vmRR(ctx, x, y, w, h, radius); ctx.clip(); ctx.fillStyle = th.accent; ctx.fillRect(x, y, sw, h); ctx.restore(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.15), letterText: th.accent, letterOffset: sw }; } case 'neumorphic': { ctx.fillStyle = th.light ? '#eef2f7' : 'rgba(15,23,42,0.65)'; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.strokeStyle = th.light ? 'rgba(163,177,198,0.55)' : 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2 * sc; ctx.beginPath(); ctx.moveTo(x + radius, y + h - 1); ctx.lineTo(x + w - radius, y + h - 1); ctx.stroke(); ctx.strokeStyle = th.light ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.06)'; ctx.beginPath(); ctx.moveTo(x + radius, y + 1); ctx.lineTo(x + w - radius, y + 1); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: th.accent, letterText: '#ffffff' }; } case 'shadow': { ctx.shadowColor = th.light ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.65)'; ctx.shadowBlur = 30 * sc; ctx.shadowOffsetY = 10 * sc; ctx.fillStyle = th.light ? '#ffffff' : 'rgba(30,41,59,0.95)'; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.25); ctx.lineWidth = 1.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, 0.18), letterText: th.accent }; } default: { ctx.fillStyle = th.light ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.1)'; vmRR(ctx, x, y, w, h, radius); ctx.fill(); ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.18)'; ctx.lineWidth = 2.5 * sc; vmRR(ctx, x, y, w, h, radius); ctx.stroke(); return { textColor: vmGetOColor(), letterBg: vmHexA(th.accent, th.light ? 0.14 : 0.26), letterText: th.accent }; } } }
 function vmDrawQuestionBox(ctx, boxX, boxY, boxW, boxH, th) { if (vmQuestionBox === 'none') return; const radius = vmGetQuestionRadius(vmQuestionBox, boxH); ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.10)'; ctx.shadowBlur = 24; ctx.shadowOffsetY = 5; switch (vmQuestionBox) { case 'rect': { ctx.fillStyle = th.light ? 'rgba(255,255,255,0.98)' : 'rgba(15,23,42,0.6)'; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.35); ctx.lineWidth = 2; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.stroke(); break; } case 'rounded': { const g = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY + boxH); g.addColorStop(0, th.light ? 'rgba(255,255,255,0.98)' : vmHexA(th.accent, 0.20)); g.addColorStop(1, th.light ? 'rgba(240,247,255,0.95)' : vmHexA(th.accent2 || th.accent, 0.20)); ctx.fillStyle = g; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.35); ctx.lineWidth = 2.5; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.stroke(); break; } case 'pill': { ctx.fillStyle = th.light ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.12)'; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.35); ctx.lineWidth = 2.5; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.stroke(); break; } case 'glass': { ctx.fillStyle = th.light ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.08)'; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.2)'; ctx.lineWidth = 2; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.stroke(); break; } case 'gradient': { const g = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY + boxH); g.addColorStop(0, th.accent); g.addColorStop(1, th.accent2 || th.accent); ctx.fillStyle = g; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; break; } case 'dark': { ctx.fillStyle = 'rgba(15,23,42,0.85)'; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.fill(); ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.strokeStyle = vmHexA(th.accent, 0.5); ctx.lineWidth = 2; vmRR(ctx, boxX, boxY, boxW, boxH, radius); ctx.stroke(); break; } } ctx.restore(); }
 function vmDrawTimer(ctx, cx, topY, t, th, u, sceneDur) { if (!vmShowTimerBar || vmTimerStyle === 'none' || !sceneDur || sceneDur <= 0) return; const tR = vmClamp(1 - (t / sceneDur), 0, 1); const tColor = tR > 0.5 ? th.accent : (tR > 0.25 ? '#f59e0b' : '#ef4444'); if (vmTimerStyle === 'bar') { const tbH = 8 * u, tbW = 1080 * u * 0.60, tbX = cx - tbW / 2; vmRR(ctx, tbX, topY, tbW, tbH, tbH / 2); ctx.fillStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.15)'; ctx.fill(); if (tR > 0) { vmRR(ctx, tbX, topY, tbW * tR, tbH, tbH / 2); const tg = ctx.createLinearGradient(tbX, 0, tbX + tbW, 0); if (tR > 0.5) { tg.addColorStop(0, th.accent); tg.addColorStop(1, th.accent2 || th.accent); } else if (tR > 0.25) { tg.addColorStop(0, '#f59e0b'); tg.addColorStop(1, '#fbbf24'); } else { tg.addColorStop(0, '#ef4444'); tg.addColorStop(1, '#f87171'); } ctx.fillStyle = tg; ctx.fill(); } } else if (vmTimerStyle === 'ring') { const R = 38 * u, rcx = cx, rcy = topY + R; ctx.beginPath(); ctx.arc(rcx, rcy, R, 0, Math.PI * 2); ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.10)' : 'rgba(255,255,255,0.15)'; ctx.lineWidth = 6 * u; ctx.stroke(); ctx.beginPath(); ctx.arc(rcx, rcy, R, -Math.PI / 2, -Math.PI / 2 + tR * Math.PI * 2); ctx.strokeStyle = tColor; ctx.lineWidth = 6 * u; ctx.lineCap = 'round'; ctx.stroke(); ctx.fillStyle = vmGetQColor(); ctx.font = `800 ${22 * u}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(Math.ceil(sceneDur * tR), rcx, rcy + 1); } else if (vmTimerStyle === 'dots') { const total = Math.min(20, Math.max(1, Math.ceil(sceneDur))); const dotsPerRow = 10, dotR = 8 * u, gap = 16 * u; const totalW = dotsPerRow * gap - gap + dotR * 2; const x0 = cx - totalW / 2 + dotR; const filled = Math.round(tR * total); for (let i = 0; i < total; i++) { const row = Math.floor(i / dotsPerRow), col = i % dotsPerRow; const dx = x0 + col * gap, dy = topY + row * gap * 1.4 + dotR; ctx.beginPath(); ctx.arc(dx, dy, dotR, 0, 7); ctx.fillStyle = i < filled ? tColor : (th.light ? 'rgba(15,23,42,0.15)' : 'rgba(255,255,255,0.2)'); ctx.fill(); } } else if (vmTimerStyle === 'numbers') { ctx.fillStyle = tColor; ctx.font = `900 ${60 * u}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.shadowColor = vmHexA(tColor, 0.6); ctx.shadowBlur = 24 * u; ctx.fillText(Math.ceil(sceneDur * tR), cx, topY); ctx.shadowBlur = 0; } }
-function vmDrawQuestion(ctx, W, H, t, th, q, idx, total, reveal, sceneDur) {
-    const u = Math.min(W, H) / 1080;
-    const pad = W * 0.075, maxW = W - pad * 2, cx = W / 2;
-    const prog = (idx + (reveal ? 1 : 0.55)) / total;
-    ctx.fillStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.13)'; ctx.fillRect(0, 0, W, 9 * u);
-    const pg = ctx.createLinearGradient(0, 0, W, 0); pg.addColorStop(0, th.accent); pg.addColorStop(1, th.accent2 || th.accent); ctx.fillStyle = pg; ctx.fillRect(0, 0, W * vmClamp(prog, 0, 1), 9 * u);
-    const pillH = 58 * u; ctx.font = `800 ${26 * u}px ${vmFontStack()}`;
-    const label = reveal ? `ANSWER  ${idx + 1} / ${total}` : `QUESTION  ${idx + 1} / ${total}`;
-    const pillW = ctx.measureText(label).width + 74 * u;
-    vmRR(ctx, cx - pillW / 2, 42 * u, pillW, pillH, pillH / 2);
-    ctx.fillStyle = th.light ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.1)'; ctx.fill();
-    ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.2)'; ctx.lineWidth = 2 * u; ctx.stroke();
-    ctx.fillStyle = reveal ? '#22c55e' : th.accent; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, cx, 42 * u + pillH / 2 + 1);
-    if (!reveal) vmDrawTimer(ctx, cx, 42 * u + pillH + 12 * u, t, th, u, sceneDur);
-    const imgObj = q.image ? vmImages[q.image] : null;
-    const hasImg = !!imgObj;
-    const qAnim = reveal ? { offsetX: 0, offsetY: 0, scale: 1, alpha: 1, blur: 0, typewriter: 1, rotate: 0 } : vmQuestionAnimParams(t / 0.65, vmQuestionAnim);
-    if (hasImg) { const iTop = H * 0.145; const iMaxH = H * 0.155; const ratio = imgObj.width / imgObj.height; let ih = iMaxH, iw = ih * ratio; const maxIW = W * 0.62; if (iw > maxIW) { iw = maxIW; ih = iw / ratio; } ctx.save(); ctx.globalAlpha = qAnim.alpha; ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 34 * u; vmRoundImage(ctx, imgObj, cx - iw / 2 + qAnim.offsetX * u, iTop + qAnim.offsetY * u, iw, ih, 26 * u); ctx.restore(); }
-    const qTop = hasImg ? H * 0.315 : H * 0.155;
-    const qMaxH = hasImg ? H * 0.155 : H * 0.26;
-    const qFit = vmFitFont(ctx, q.text, maxW - 40 * u, qMaxH, vmQFontSize * u, 26 * u, 900, 1.2, hasImg ? 3 : 4);
-    const boxPadY = 22 * u, boxY = qTop - boxPadY, boxH = qMaxH + boxPadY * 2;
-    const boxX = pad + 10 * u, boxW = maxW - 20 * u;
-    ctx.save(); ctx.globalAlpha = reveal ? 1 : qAnim.alpha;
-    vmDrawQuestionBox(ctx, boxX, boxY, boxW, boxH, th); ctx.restore();
-    ctx.save(); ctx.globalAlpha = qAnim.alpha;
-    if (qAnim.blur > 0.5) ctx.filter = `blur(${qAnim.blur.toFixed(1)}px)`;
-    ctx.translate(cx + qAnim.offsetX * u, qTop + qMaxH / 2 + qAnim.offsetY * u); ctx.rotate(qAnim.rotate || 0); ctx.scale(qAnim.scale, qAnim.scale); ctx.translate(-cx, -(qTop + qMaxH / 2));
-    ctx.font = `900 ${qFit.size}px ${vmFontStack()}`;
-    const useWhite = vmQuestionBox === 'gradient' || vmQuestionBox === 'dark';
-    ctx.fillStyle = useWhite ? '#ffffff' : vmGetQColor();
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.shadowColor = useWhite ? 'rgba(0,0,0,.5)' : (th.light ? 'rgba(15,23,42,.18)' : 'rgba(0,0,0,.55)'); ctx.shadowBlur = 20 * u;
-    const lh = qFit.size * 1.2;
-    if (vmQuestionAnim === 'typewriter' && !reveal) { const totalChars = qFit.lines.reduce((a, l) => a + l.length, 0); const revealChars = Math.floor(totalChars * qAnim.typewriter); let drawn = 0; qFit.lines.forEach((l, i) => { const remaining = revealChars - drawn; const showText = remaining > 0 ? l.substring(0, Math.min(l.length, remaining)) : ''; ctx.fillText(showText, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh); drawn += l.length; }); } else if (vmQuestionAnim === 'wave' && !reveal) { qFit.lines.forEach((l, i) => { const wOff = Math.sin(t * 2.2 + i * 0.7) * 4 * u; ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh + wOff); }); } else { qFit.lines.forEach((l, i) => ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh)); }
-    ctx.filter = 'none'; ctx.restore();
-    const optTop = hasImg ? H * 0.51 : H * 0.47;
-    const bottomPad = H * 0.07;
-    const n = q.options.length, gap = 22 * u;
-    const avail = H - optTop - bottomPad;
-    const oh = Math.min(178 * u, (avail - gap * (n - 1)) / n);
-    const blockH = n * oh + (n - 1) * gap;
-    const y0 = optTop + Math.max(0, (avail - blockH) / 2);
-    let correctRect = null;
-    for (let i = 0; i < n; i++) {
-        const opt = q.options[i], isCorrect = (opt === q.correct);
-        const sD = vmOptionAnim === 'cascade' ? 0.55 + 0.18 * i : vmOptionAnim === 'flip' ? 0.5 + 0.16 * i : 0.4 + 0.12 * i;
-        const aD = 0.75;
-        const appear = reveal ? 1 : vmClamp((t - sD) / aD, 0, 1);
-        const a = reveal ? { offsetX: 0, offsetY: 0, scaleX: 1, scaleY: 1, alpha: 1, rotate: 0, shine: 0 } : vmOptionAnimParams(appear, vmOptionAnim);
-        if (a.alpha <= 0.001) continue;
-        const dim = reveal && !isCorrect && t > 0.35;
-        const hl = reveal && isCorrect && t > 0.35;
-        const hp = vmClamp((t - 0.35) / 0.5, 0, 1);
-        let pulse = 1;
-        if (hl) { if (vmAnswerEffect === 'pulse') pulse = 1 + 0.1 * Math.sin(hp * Math.PI * 2); else if (vmAnswerEffect === 'bounce') pulse = 1 + 0.08 * Math.abs(Math.sin(hp * Math.PI * 3)); else pulse = 1 + 0.06 * Math.sin(hp * Math.PI); }
-        const oy = y0 + i * (oh + gap) + a.offsetY * u;
-        const ox = a.offsetX * u;
-        if (hl) correctRect = { x: pad, y: oy, w: maxW, h: oh };
-        ctx.save();
-        ctx.globalAlpha = a.alpha * (dim ? 0.26 : 1);
-        ctx.translate(cx + ox, oy + oh / 2); ctx.rotate(a.rotate || 0); ctx.scale(pulse * a.scaleX, pulse * a.scaleY); ctx.translate(-cx, -(oy + oh / 2));
-        const si = vmDrawOptionBg(ctx, pad, oy, maxW, oh, th, isCorrect, hl);
-        const cr = oh * 0.30, lOff = si.letterOffset || 0;
-        const bx = pad + oh * 0.55 + lOff, by = oy + oh / 2;
-        ctx.beginPath(); ctx.arc(bx, by, cr, 0, 7);
-        if (si.letterBg === 'transparent') { ctx.fillStyle = 'transparent'; ctx.fill(); ctx.strokeStyle = si.letterBorder || th.accent; ctx.lineWidth = 2 * u; ctx.stroke(); } else { ctx.fillStyle = si.letterBg; ctx.fill(); }
-        ctx.fillStyle = si.letterText; ctx.font = `900 ${cr * 1.05}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('ABCDEFGH'[i] || (i + 1), bx, by + 1);
-        const rP = hl ? oh * 0.95 : oh * 0.5;
-        const tX = pad + oh * 1.02 + lOff;
-        const tW = maxW - oh * 1.02 - rP - lOff;
-        const oFit = vmFitFont(ctx, opt, tW, oh * 0.72, vmOFontSize * u, 18 * u, 700, 1.15, 2);
-        ctx.font = `700 ${oFit.size}px ${vmFontStack()}`; ctx.fillStyle = si.textColor; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-        const tlh = oFit.size * 1.15;
-        oFit.lines.forEach((l, k) => ctx.fillText(l, tX, by - (oFit.lines.length - 1) * tlh / 2 + k * tlh));
-        if (hl) { const cxp = pad + maxW - oh * 0.46; ctx.beginPath(); ctx.arc(cxp, by, oh * 0.25, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.98)'; ctx.fill(); ctx.strokeStyle = '#15803d'; ctx.lineWidth = oh * 0.08; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cxp - oh * 0.115, by); ctx.lineTo(cxp - oh * 0.028, by + oh * 0.09); ctx.lineTo(cxp + oh * 0.125, by - oh * 0.09); ctx.stroke(); }
-        if (a.shine > 0 && a.shine < 1) { const radius = vmGetOptionRadius(vmOptionShape, oh); ctx.save(); vmRR(ctx, pad, oy, maxW, oh, radius); ctx.clip(); const sX = pad + maxW * (a.shine * 1.5 - 0.25); const sW = maxW * 0.15; const sg = ctx.createLinearGradient(sX - sW, oy, sX + sW, oy + oh); sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,0.42)'); sg.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = sg; ctx.fillRect(sX - sW, oy, sW * 2, oh); ctx.restore(); }
-        ctx.restore();
-    }
-    if (reveal && t > 0.35 && correctRect) { const effT = t - 0.35; if (vmAnswerEffect === 'confetti') vmDrawConfetti(ctx, W, H, effT, idx); else if (vmAnswerEffect === 'sparkle') vmDrawSparkles(ctx, W, H, effT, idx, correctRect); else if (vmAnswerEffect === 'glow') { const glowR = Math.max(correctRect.w, correctRect.h) * (0.8 + 0.3 * effT); const gg = ctx.createRadialGradient(correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, 0, correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, glowR); const a = Math.max(0, 0.7 - effT * 0.5); gg.addColorStop(0, `rgba(34,197,94,${a})`); gg.addColorStop(0.5, `rgba(34,197,94,${a * 0.4})`); gg.addColorStop(1, 'rgba(34,197,94,0)'); ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H); } }
-}
+function vmDrawQuestion(ctx, W, H, t, th, q, idx, total, reveal, sceneDur) { const u = Math.min(W, H) / 1080; const pad = W * 0.075, maxW = W - pad * 2, cx = W / 2; const prog = (idx + (reveal ? 1 : 0.55)) / total; ctx.fillStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.13)'; ctx.fillRect(0, 0, W, 9 * u); const pg = ctx.createLinearGradient(0, 0, W, 0); pg.addColorStop(0, th.accent); pg.addColorStop(1, th.accent2 || th.accent); ctx.fillStyle = pg; ctx.fillRect(0, 0, W * vmClamp(prog, 0, 1), 9 * u); const pillH = 58 * u; ctx.font = `800 ${26 * u}px ${vmFontStack()}`; const label = reveal ? `ANSWER  ${idx + 1} / ${total}` : `QUESTION  ${idx + 1} / ${total}`; const pillW = ctx.measureText(label).width + 74 * u; vmRR(ctx, cx - pillW / 2, 42 * u, pillW, pillH, pillH / 2); ctx.fillStyle = th.light ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.1)'; ctx.fill(); ctx.strokeStyle = th.light ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.2)'; ctx.lineWidth = 2 * u; ctx.stroke(); ctx.fillStyle = reveal ? '#22c55e' : th.accent; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, cx, 42 * u + pillH / 2 + 1); if (!reveal) vmDrawTimer(ctx, cx, 42 * u + pillH + 12 * u, t, th, u, sceneDur); const imgObj = q.image ? vmImages[q.image] : null; const hasImg = !!imgObj; const qAnim = reveal ? { offsetX: 0, offsetY: 0, scale: 1, alpha: 1, blur: 0, typewriter: 1, rotate: 0 } : vmQuestionAnimParams(t / 0.65, vmQuestionAnim); if (hasImg) { const iTop = H * 0.145; const iMaxH = H * 0.155; const ratio = imgObj.width / imgObj.height; let ih = iMaxH, iw = ih * ratio; const maxIW = W * 0.62; if (iw > maxIW) { iw = maxIW; ih = iw / ratio; } ctx.save(); ctx.globalAlpha = qAnim.alpha; ctx.shadowColor = 'rgba(0,0,0,.3)'; ctx.shadowBlur = 34 * u; vmRoundImage(ctx, imgObj, cx - iw / 2 + qAnim.offsetX * u, iTop + qAnim.offsetY * u, iw, ih, 26 * u); ctx.restore(); } const qTop = hasImg ? H * 0.315 : H * 0.155; const qMaxH = hasImg ? H * 0.155 : H * 0.26; const qFit = vmFitFont(ctx, q.text, maxW - 40 * u, qMaxH, vmQFontSize * u, 26 * u, 900, 1.2, hasImg ? 3 : 4); const boxPadY = 22 * u, boxY = qTop - boxPadY, boxH = qMaxH + boxPadY * 2; const boxX = pad + 10 * u, boxW = maxW - 20 * u; ctx.save(); ctx.globalAlpha = reveal ? 1 : qAnim.alpha; vmDrawQuestionBox(ctx, boxX, boxY, boxW, boxH, th); ctx.restore(); ctx.save(); ctx.globalAlpha = qAnim.alpha; if (qAnim.blur > 0.5) ctx.filter = `blur(${qAnim.blur.toFixed(1)}px)`; ctx.translate(cx + qAnim.offsetX * u, qTop + qMaxH / 2 + qAnim.offsetY * u); ctx.rotate(qAnim.rotate || 0); ctx.scale(qAnim.scale, qAnim.scale); ctx.translate(-cx, -(qTop + qMaxH / 2)); ctx.font = `900 ${qFit.size}px ${vmFontStack()}`; const useWhite = vmQuestionBox === 'gradient' || vmQuestionBox === 'dark'; ctx.fillStyle = useWhite ? '#ffffff' : vmGetQColor(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.shadowColor = useWhite ? 'rgba(0,0,0,.5)' : (th.light ? 'rgba(15,23,42,.18)' : 'rgba(0,0,0,.55)'); ctx.shadowBlur = 20 * u; const lh = qFit.size * 1.2; if (vmQuestionAnim === 'typewriter' && !reveal) { const totalChars = qFit.lines.reduce((a, l) => a + l.length, 0); const revealChars = Math.floor(totalChars * qAnim.typewriter); let drawn = 0; qFit.lines.forEach((l, i) => { const remaining = revealChars - drawn; const showText = remaining > 0 ? l.substring(0, Math.min(l.length, remaining)) : ''; ctx.fillText(showText, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh); drawn += l.length; }); } else if (vmQuestionAnim === 'wave' && !reveal) { qFit.lines.forEach((l, i) => { const wOff = Math.sin(t * 2.2 + i * 0.7) * 4 * u; ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh + wOff); }); } else { qFit.lines.forEach((l, i) => ctx.fillText(l, cx, qTop + qMaxH / 2 - (qFit.lines.length - 1) * lh / 2 + i * lh)); } ctx.filter = 'none'; ctx.restore(); const optTop = hasImg ? H * 0.51 : H * 0.47; const bottomPad = H * 0.07; const n = q.options.length, gap = 22 * u; const avail = H - optTop - bottomPad; const oh = Math.min(178 * u, (avail - gap * (n - 1)) / n); const blockH = n * oh + (n - 1) * gap; const y0 = optTop + Math.max(0, (avail - blockH) / 2); let correctRect = null; for (let i = 0; i < n; i++) { const opt = q.options[i], isCorrect = (opt === q.correct); const sD = vmOptionAnim === 'cascade' ? 0.55 + 0.18 * i : vmOptionAnim === 'flip' ? 0.5 + 0.16 * i : 0.4 + 0.12 * i; const aD = 0.75; const appear = reveal ? 1 : vmClamp((t - sD) / aD, 0, 1); const a = reveal ? { offsetX: 0, offsetY: 0, scaleX: 1, scaleY: 1, alpha: 1, rotate: 0, shine: 0 } : vmOptionAnimParams(appear, vmOptionAnim); if (a.alpha <= 0.001) continue; const dim = reveal && !isCorrect && t > 0.35; const hl = reveal && isCorrect && t > 0.35; const hp = vmClamp((t - 0.35) / 0.5, 0, 1); let pulse = 1; if (hl) { if (vmAnswerEffect === 'pulse') pulse = 1 + 0.1 * Math.sin(hp * Math.PI * 2); else if (vmAnswerEffect === 'bounce') pulse = 1 + 0.08 * Math.abs(Math.sin(hp * Math.PI * 3)); else pulse = 1 + 0.06 * Math.sin(hp * Math.PI); } const oy = y0 + i * (oh + gap) + a.offsetY * u; const ox = a.offsetX * u; if (hl) correctRect = { x: pad, y: oy, w: maxW, h: oh }; ctx.save(); ctx.globalAlpha = a.alpha * (dim ? 0.26 : 1); ctx.translate(cx + ox, oy + oh / 2); ctx.rotate(a.rotate || 0); ctx.scale(pulse * a.scaleX, pulse * a.scaleY); ctx.translate(-cx, -(oy + oh / 2)); const si = vmDrawOptionBg(ctx, pad, oy, maxW, oh, th, isCorrect, hl); const cr = oh * 0.30, lOff = si.letterOffset || 0; const bx = pad + oh * 0.55 + lOff, by = oy + oh / 2; ctx.beginPath(); ctx.arc(bx, by, cr, 0, 7); if (si.letterBg === 'transparent') { ctx.fillStyle = 'transparent'; ctx.fill(); ctx.strokeStyle = si.letterBorder || th.accent; ctx.lineWidth = 2 * u; ctx.stroke(); } else { ctx.fillStyle = si.letterBg; ctx.fill(); } ctx.fillStyle = si.letterText; ctx.font = `900 ${cr * 1.05}px ${vmFontStack()}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('ABCDEFGH'[i] || (i + 1), bx, by + 1); const rP = hl ? oh * 0.95 : oh * 0.5; const tX = pad + oh * 1.02 + lOff; const tW = maxW - oh * 1.02 - rP - lOff; const oFit = vmFitFont(ctx, opt, tW, oh * 0.72, vmOFontSize * u, 18 * u, 700, 1.15, 2); ctx.font = `700 ${oFit.size}px ${vmFontStack()}`; ctx.fillStyle = si.textColor; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; const tlh = oFit.size * 1.15; oFit.lines.forEach((l, k) => ctx.fillText(l, tX, by - (oFit.lines.length - 1) * tlh / 2 + k * tlh)); if (hl) { const cxp = pad + maxW - oh * 0.46; ctx.beginPath(); ctx.arc(cxp, by, oh * 0.25, 0, 7); ctx.fillStyle = 'rgba(255,255,255,0.98)'; ctx.fill(); ctx.strokeStyle = '#15803d'; ctx.lineWidth = oh * 0.08; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(cxp - oh * 0.115, by); ctx.lineTo(cxp - oh * 0.028, by + oh * 0.09); ctx.lineTo(cxp + oh * 0.125, by - oh * 0.09); ctx.stroke(); } if (a.shine > 0 && a.shine < 1) { const radius = vmGetOptionRadius(vmOptionShape, oh); ctx.save(); vmRR(ctx, pad, oy, maxW, oh, radius); ctx.clip(); const sX = pad + maxW * (a.shine * 1.5 - 0.25); const sW = maxW * 0.15; const sg = ctx.createLinearGradient(sX - sW, oy, sX + sW, oy + oh); sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,0.42)'); sg.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = sg; ctx.fillRect(sX - sW, oy, sW * 2, oh); ctx.restore(); } ctx.restore(); } if (reveal && t > 0.35 && correctRect) { const effT = t - 0.35; if (vmAnswerEffect === 'confetti') vmDrawConfetti(ctx, W, H, effT, idx); else if (vmAnswerEffect === 'sparkle') vmDrawSparkles(ctx, W, H, effT, idx, correctRect); else if (vmAnswerEffect === 'glow') { const glowR = Math.max(correctRect.w, correctRect.h) * (0.8 + 0.3 * effT); const gg = ctx.createRadialGradient(correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, 0, correctRect.x + correctRect.w / 2, correctRect.y + correctRect.h / 2, glowR); const a = Math.max(0, 0.7 - effT * 0.5); gg.addColorStop(0, `rgba(34,197,94,${a})`); gg.addColorStop(0.5, `rgba(34,197,94,${a * 0.4})`); gg.addColorStop(1, 'rgba(34,197,94,0)'); ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H); } } }
 function vmDrawFrame(ctx, t, scenes) { const { W, H } = vmSize(); const th = vmGetTheme(); ctx.clearRect(0, 0, W, H); vmDrawBG(ctx, W, H, t, th); let sc = scenes[scenes.length - 1]; for (const s of scenes) { if (t >= s.start && t < s.end) { sc = s; break; } } const lt = t - sc.start; if (sc.type === 'intro') vmDrawIntro(ctx, W, H, lt, th); else if (sc.type === 'question') vmDrawQuestion(ctx, W, H, lt, th, sc.q, sc.idx, sc.total, false, sc.dur); else if (sc.type === 'reveal') vmDrawQuestion(ctx, W, H, lt, th, sc.q, sc.idx, sc.total, true, sc.dur); const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.34, W / 2, H / 2, Math.max(W, H) * 0.8); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, th.light ? 'rgba(15,23,42,0.06)' : 'rgba(0,0,0,0.46)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H); if (vmShowWatermark) { const u = Math.min(W, H) / 1080; ctx.save(); ctx.globalAlpha = 0.45; ctx.font = `800 ${22 * u}px ${vmFontStack()}`; ctx.fillStyle = th.light ? 'rgba(15,23,42,0.4)' : 'rgba(255,255,255,0.55)'; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom'; ctx.fillText('QuizCraft Pro', W - 32 * u, H - 32 * u); ctx.restore(); } }
 
 function vmRunTimeline(isRecording = false, muteTTS = false) { return new Promise(resolve => { const canvas = document.getElementById('vmCanvas'); const ctx = canvas.getContext('2d'); const scenes = vmSceneList(); const total = scenes[scenes.length - 1].end; const start = performance.now(); const renderStartTime = Date.now(); vmStopFlag = false; vmSoundRuntime = { lastSceneIdx: -1, playedOptions: {} }; const prevTtsEnabled = TTS.enabled; if (muteTTS) TTS.enabled = false; const finish = () => { TTS.enabled = prevTtsEnabled; TTS.stop(); resolve(); }; const frame = (now) => { if (vmStopFlag) { finish(); return; } const t = (now - start) / 1000; if (isRecording) { const elapsed = (Date.now() - renderStartTime) / 1000; const progress = Math.min(1, elapsed / total); const tEl = document.getElementById('vmRecTime'); if (tEl) tEl.textContent = vmFormatTime(elapsed); const totEl = document.getElementById('vmRecTotal'); if (totEl) totEl.textContent = vmFormatTime(total); const pEl = document.getElementById('vmRenderProgress'); if (pEl) pEl.style.width = (progress * 100) + '%'; const pTxt = document.getElementById('vmRenderProgressText'); if (pTxt) pTxt.textContent = Math.round(progress * 100) + '%'; } if (t >= total) { vmDrawFrame(ctx, Math.max(0, total - 0.05), scenes); finish(); return; } vmProcessSoundEvents(t, scenes); vmDrawFrame(ctx, t, scenes); vmRaf = requestAnimationFrame(frame); }; vmRaf = requestAnimationFrame(frame); }); }
 
 function vmProcessSoundEvents(t, scenes) { let curIdx = -1, sc = null, scT = 0; for (let i = 0; i < scenes.length; i++) { if (t >= scenes[i].start && t < scenes[i].end) { curIdx = i; sc = scenes[i]; scT = t - scenes[i].start; break; } } if (curIdx < 0 || !sc) return; if (vmSoundRuntime.lastSceneIdx !== curIdx) { vmSoundRuntime.lastSceneIdx = curIdx; vmSoundRuntime.playedOptions = {}; if (!vmMuted) { if (sc.type === 'question') { SE.playSfx(vmSound.qSfx); if (vmSound.ttsEnabled && vmSound.ttsReadQ) TTS.speak(sc.q.text); } else if (sc.type === 'reveal') { SE.playSfx(vmSound.aSfx); if (vmSound.ttsEnabled && vmSound.ttsReadA) { const prefix = detectCorrectAnswerPrefix(sc.q.correct); TTS.speak(prefix + ' — ' + sc.q.correct); } } } } if (sc.type === 'question') { const n = sc.q.options.length; for (let i = 0; i < n; i++) { const sD = vmOptionAnim === 'cascade' ? 0.55 + 0.18 * i : vmOptionAnim === 'flip' ? 0.5 + 0.16 * i : 0.4 + 0.12 * i; if (scT >= sD && !vmSoundRuntime.playedOptions[i]) { vmSoundRuntime.playedOptions[i] = true; if (!vmMuted) { if (vmSound.oSfx && !vmSound.oSfx.endsWith('_none')) SE.playSfx(vmSound.oSfx); if (vmSound.ttsEnabled && vmSound.ttsReadO) { const letter = String.fromCharCode(65 + i); TTS.enqueue(letter + '. ' + sc.q.options[i]); } } } } } }
 
-/* ★★★ VOICE OVER — 2-ROW BAR ★★★ */
+/* ★★★ VOICE OVER — DISAPPEAR EVERYTHING ★★★ */
 function enterVoMode() {
-    // Synchronously hide EVERYTHING
-    document.body.classList.add('vo-recording-mode');
-    document.querySelectorAll('.vm-flyout').forEach(f => {
-        f.classList.remove('open');
-        f.style.setProperty('display', 'none', 'important');
-        f.style.setProperty('visibility', 'hidden', 'important');
-        f.style.setProperty('opacity', '0', 'important');
-    });
-    document.querySelectorAll('.vm-rail-btn').forEach(t => t.classList.remove('active'));
-    const bd = document.getElementById('vmBackdrop'); if (bd) bd.classList.remove('on');
-    // Show the bar
-    const bar = document.getElementById('voBar'); if (bar) bar.style.display = 'flex';
-    const strip = document.getElementById('voStatusStrip'); if (strip) { strip.style.display = 'flex'; strip.classList.remove('paused'); }
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => { try { vmFitCanvas(); } catch (e) { } });
+    try {
+        // ★ STEP 1: REMOVE every flyout element from the DOM entirely
+        _savedFlyouts = [];
+        document.querySelectorAll('.vm-flyout').forEach(f => {
+            _savedFlyouts.push({
+                el: f,
+                parent: f.parentElement,
+                next: f.nextElementSibling
+            });
+            f.remove();
+        });
+        // ★ STEP 2: Hide everything else with inline !important
+        const toHide = ['.vm-rail', '.vm-canvas-controls', '.vm-bottom-bar', '.vm-status-line', '.vm-backdrop', '.vm-live-badge', '.vm-rec-badge', '.vm-progress-wrap', '.brand-header', '.quiz-footer', '#shareCard', '#stepHome', '#stepUpload'];
+        toHide.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                el.style.setProperty('display', 'none', 'important');
+            });
+        });
+        // Force shell to single column
+        const shell = document.getElementById('vmShell');
+        if (shell) shell.style.setProperty('grid-template-columns', '1fr', 'important');
+        // ★ STEP 3: Show the 2-row bar
+        const bar = document.getElementById('voBar');
+        if (bar) { bar.classList.add('show'); bar.style.setProperty('display', 'flex', 'important'); }
+        const strip = document.getElementById('voStatusStrip');
+        if (strip) { strip.classList.add('show'); strip.classList.remove('paused'); strip.style.setProperty('display', 'flex', 'important'); }
+        // Prevent scroll
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        // Force reflow
+        void document.body.offsetHeight;
+        requestAnimationFrame(() => { try { vmFitCanvas(); } catch (e) { } });
+    } catch (e) { console.error('enterVoMode', e); }
 }
 function exitVoMode() {
-    document.body.classList.remove('vo-recording-mode');
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    const bar = document.getElementById('voBar'); if (bar) bar.style.display = 'none';
-    const strip = document.getElementById('voStatusStrip'); if (strip) { strip.style.display = 'none'; strip.classList.remove('paused'); }
-    document.querySelectorAll('.vm-flyout').forEach(f => {
-        f.style.removeProperty('display');
-        f.style.removeProperty('visibility');
-        f.style.removeProperty('opacity');
-    });
-    if (voWaveRaf) { cancelAnimationFrame(voWaveRaf); voWaveRaf = null; }
-    if (voAudioCtx) { try { voAudioCtx.close(); } catch (e) { } voAudioCtx = null; voAnalyser = null; voSource = null; }
-    requestAnimationFrame(() => { try { vmFitCanvas(); } catch (e) { } });
+    try {
+        // Restore flyouts
+        _savedFlyouts.forEach(({ el, parent, next }) => {
+            try {
+                if (parent) {
+                    if (next && next.parentElement === parent) parent.insertBefore(el, next);
+                    else parent.appendChild(el);
+                }
+            } catch (e) { try { if (parent) parent.appendChild(el); } catch (e2) { } }
+        });
+        _savedFlyouts = [];
+        // Unhide everything
+        const toShow = ['.vm-rail', '.vm-canvas-controls', '.vm-bottom-bar', '.vm-status-line', '.vm-backdrop', '.vm-live-badge', '.vm-rec-badge', '.vm-progress-wrap', '.brand-header', '.quiz-footer', '#shareCard', '#stepHome', '#stepUpload'];
+        toShow.forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => {
+                el.style.removeProperty('display');
+            });
+        });
+        const shell = document.getElementById('vmShell');
+        if (shell) shell.style.removeProperty('grid-template-columns');
+        const bar = document.getElementById('voBar');
+        if (bar) { bar.classList.remove('show'); bar.style.removeProperty('display'); }
+        const strip = document.getElementById('voStatusStrip');
+        if (strip) { strip.classList.remove('show', 'paused'); strip.style.removeProperty('display'); }
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        if (voWaveRaf) { cancelAnimationFrame(voWaveRaf); voWaveRaf = null; }
+        if (voAudioCtx) { try { voAudioCtx.close(); } catch (e) { } voAudioCtx = null; voAnalyser = null; voSource = null; }
+        requestAnimationFrame(() => { try { vmFitCanvas(); } catch (e) { } });
+    } catch (e) { console.error('exitVoMode', e); }
 }
 function drawVoWave() {
     const c = document.getElementById('voWaveCanvas');
@@ -872,9 +759,6 @@ async function startVoiceOverRecording() {
         if (wc) { wc.width = Math.max(600, wc.clientWidth * 2); wc.height = Math.max(80, wc.clientHeight * 2); }
         drawVoWave();
     } catch (e) { console.warn('waveform init failed', e); }
-
-    const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Recording…';
-    const voBtn = document.getElementById('voRecordBtn'); if (voBtn) voBtn.classList.add('active');
 
     let mime = '';
     try { const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus']; for (const c of candidates) { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; } } } catch (e) { }
@@ -957,19 +841,15 @@ async function startVoiceOverRecording() {
     stream.getTracks().forEach(t => t.stop());
     vmRecordingVoiceOver = false;
     vmSetMute(prevMuted, true);
-    if (voBtn) voBtn.classList.remove('active');
     if (voWaveRaf) { cancelAnimationFrame(voWaveRaf); voWaveRaf = null; }
     if (voAudioCtx) { try { voAudioCtx.close(); } catch (e) { } voAudioCtx = null; voAnalyser = null; voSource = null; }
 
     pauseBtn.onclick = null; stopBtn.onclick = null; reRecBtn.onclick = null; delBtn.onclick = null; addBtn.onclick = null;
 
-    // Exit recording mode — remove class, restore flyouts
     exitVoMode();
 
     if (voReRecordRequested) {
         vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
-        const voStatus2 = document.getElementById('voStatusText'); if (voStatus2) voStatus2.textContent = 'Record Voice Over';
-        const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none';
         qcToast('🔄 Starting new recording…');
         setTimeout(() => { enterVoMode(); startVoiceOverRecording(); }, 350);
         return;
@@ -977,8 +857,6 @@ async function startVoiceOverRecording() {
 
     if (voCancelled) {
         vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
-        const voStatus2 = document.getElementById('voStatusText'); if (voStatus2) voStatus2.textContent = 'Record Voice Over';
-        const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none';
         qcToast('🗑️ Discarded');
         return;
     }
@@ -986,29 +864,20 @@ async function startVoiceOverRecording() {
     vmVoiceOver.duration = (Date.now() - recStart) / 1000;
     const type = rec.mimeType || mime || 'audio/webm';
     const blob = new Blob(vmVoiceOver.chunks, { type });
-    if (!blob.size) {
-        qcToast('❌ Empty recording');
-        const voStatus2 = document.getElementById('voStatusText'); if (voStatus2) voStatus2.textContent = 'Record Voice Over';
-        return;
-    }
+    if (!blob.size) { qcToast('❌ Empty recording'); return; }
     vmVoiceOver.blob = blob;
     vmVoiceOver.url = URL.createObjectURL(blob);
     vmVoiceOver.audio = new Audio(vmVoiceOver.url);
     vmVoiceOver.audio.preload = 'auto';
     await SE.attachVoiceover(vmVoiceOver.audio);
-
-    const voStatus2 = document.getElementById('voStatusText'); if (voStatus2) voStatus2.textContent = 'Re-record Voice Over';
-    const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex';
-    const voPlayBtn = document.getElementById('voPlayBtn'); if (voPlayBtn) voPlayBtn.innerHTML = '<i class="fas fa-play"></i> Play';
-
     qcToast('✅ Voice over saved (' + vmVoiceOver.duration.toFixed(1) + 's)');
 }
 function stopVoiceOverRecording() { if (!vmRecordingVoiceOver) return; vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); setTimeout(() => { qcToast('Recording stopped'); }, 300); }
-async function handleVoiceOverUpload(file) { if (!file) return; if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (e) { } } vmVoiceOver = { blob: file, url: URL.createObjectURL(file), audio: null, recorder: null, stream: null, chunks: [], duration: 0 }; vmVoiceOver.audio = new Audio(vmVoiceOver.url); vmVoiceOver.audio.preload = 'auto'; vmVoiceOver.audio.addEventListener('loadedmetadata', () => { vmVoiceOver.duration = vmVoiceOver.audio.duration || 0; const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Re-upload Voice Over'; }); await SE.attachVoiceover(vmVoiceOver.audio); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Voice Over File Loaded'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex'; qcToast('✅ Voice over file loaded: ' + file.name.slice(0, 30)); }
-function playVoiceOverPreview() { if (!vmVoiceOver.audio) return; const a = vmVoiceOver.audio; if (a.paused) { try { a.currentTime = 0; a.play(); } catch (e) { } const pb = document.getElementById('voPlayBtn'); if (pb) pb.innerHTML = '<i class="fas fa-pause"></i> Pause'; a.onended = () => { if (pb) pb.innerHTML = '<i class="fas fa-play"></i> Play'; }; } else { a.pause(); const pb = document.getElementById('voPlayBtn'); if (pb) pb.innerHTML = '<i class="fas fa-play"></i> Play'; } }
-function deleteVoiceOver() { if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch (e) { } } if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (e) { } } vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 }; SE.attachVoiceover(null); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Record Voice Over'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none'; qcToast('🗑️ Voice over deleted'); }
+async function handleVoiceOverUpload(file) { if (!file) return; if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (e) { } } vmVoiceOver = { blob: file, url: URL.createObjectURL(file), audio: null, recorder: null, stream: null, chunks: [], duration: 0 }; vmVoiceOver.audio = new Audio(vmVoiceOver.url); vmVoiceOver.audio.preload = 'auto'; vmVoiceOver.audio.addEventListener('loadedmetadata', () => { vmVoiceOver.duration = vmVoiceOver.audio.duration || 0; }); await SE.attachVoiceover(vmVoiceOver.audio); qcToast('✅ Voice over file loaded: ' + file.name.slice(0, 30)); }
+function playVoiceOverPreview() { if (!vmVoiceOver.audio) return; const a = vmVoiceOver.audio; if (a.paused) { try { a.currentTime = 0; a.play(); } catch (e) { } } else { a.pause(); } }
+function deleteVoiceOver() { if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch (e) { } } if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (e) { } } vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 }; SE.attachVoiceover(null); exitVoMode(); qcToast('🗑️ Voice over deleted'); }
 
-function vmSetMute(m, silent) { vmMuted = m; SE.setMasterMute(m); if (m) TTS.stop(); const btn = document.getElementById('vmMuteBtn'); if (btn) { btn.textContent = m ? '🔕' : '🔊'; btn.classList.toggle('muted', m); btn.title = m ? 'Unmute all sounds' : 'Mute all sounds'; } if (!silent) qcToast(m ? '🔕 All sounds muted' : '🔊 Sound on'); }
+function vmSetMute(m, silent) { vmMuted = m; SE.setMasterMute(m); if (m) TTS.stop(); const btn = document.getElementById('vmMuteBtn'); if (btn) { btn.textContent = m ? '🔕' : '🔊'; btn.classList.toggle('muted', m); } if (!silent) qcToast(m ? '🔕 Muted' : '🔊 Sound on'); }
 function vmToggleMute() { vmSetMute(!vmMuted); }
 
 async function vmPlayPreview() { if (vmRecording || vmPreviewPlaying || vmRecordingVoiceOver) return; vmPreviewPlaying = true; await SE.init(); await vmPreloadImages(); try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { } const pBtn = document.getElementById('vmPreviewBtn'); const sBtn = document.getElementById('vmStopBtn'); const lB = document.getElementById('vmLiveBadge'); if (pBtn) pBtn.disabled = true; if (sBtn) sBtn.style.display = 'inline-flex'; if (lB) lB.classList.add('on'); document.getElementById('vmRecBadge').classList.remove('on'); document.getElementById('vmProgressWrap').classList.remove('on'); vmSetStatus('▶ Live preview…'); if (vmAudioEl) { try { vmAudioEl.currentTime = 0; await vmAudioEl.play(); } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.currentTime = 0; vmVoiceOver.audio.play(); } catch (e) { } } await vmRunTimeline(false, false); if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } } TTS.stop(); if (pBtn) pBtn.disabled = false; if (sBtn) sBtn.style.display = 'none'; if (lB) lB.classList.remove('on'); vmSetStatusDefault(); vmPreviewPlaying = false; }
@@ -1019,68 +888,14 @@ function hideDownloadModal() { document.getElementById('dlModal').classList.remo
 document.getElementById('dlClose').onclick = hideDownloadModal;
 document.getElementById('dlModal').addEventListener('click', (e) => { if (e.target.id === 'dlModal') hideDownloadModal(); });
 
-async function vmStartRender() {
-    if (vmRecording || vmRecordingVoiceOver) return;
-    if (typeof MediaRecorder === 'undefined') { alert('Your browser does not support video recording.'); return; }
-    if (vmPreviewPlaying) { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); await new Promise(r => setTimeout(r, 180)); vmPreviewPlaying = false; vmStopFlag = false; }
-    if (vmAutoPreviewTimeout) { clearTimeout(vmAutoPreviewTimeout); vmAutoPreviewTimeout = null; }
-    hideDownloadModal();
-    const pBtn = document.getElementById('vmPreviewBtn'); const rBtn = document.getElementById('vmRenderBtn'); const sBtn = document.getElementById('vmStopBtn'); const rBadge = document.getElementById('vmRecBadge'); const pW = document.getElementById('vmProgressWrap'); const lB = document.getElementById('vmLiveBadge');
-    vmRecording = true; pBtn.disabled = true; rBtn.disabled = true; sBtn.style.display = 'inline-flex'; rBadge.classList.add('on'); pW.classList.add('on'); if (lB) lB.classList.remove('on');
-    document.getElementById('vmRecTime').textContent = '00:00'; document.getElementById('vmRecTotal').textContent = '00:00';
-    document.getElementById('vmRenderProgress').style.width = '0%'; document.getElementById('vmRenderProgressText').textContent = '0%';
-    vmSetStatus('⏳ Preparing…');
-    await vmPreloadImages(); await SE.init(); try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { }
-    const canvas = document.getElementById('vmCanvas'); const { W, H } = vmSize();
-    let stream;
-    try { stream = canvas.captureStream(30); const vT = stream.getVideoTracks()[0]; if (!vT) throw new Error('No track'); }
-    catch (e) { try { stream = canvas.captureStream(24); } catch (e2) { alert('Could not start recording: ' + e2.message); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return; } }
-    if (SE.recDest) { try { SE.recDest.stream.getAudioTracks().forEach(tr => stream.addTrack(tr)); } catch (e) { console.warn('attach audio failed', e); } }
-    const mime = vmPickMime(); let rec;
-    try { const opts = mime ? { mimeType: mime, videoBitsPerSecond: 5000000, audioBitsPerSecond: 128000 } : { videoBitsPerSecond: 5000000 }; rec = new MediaRecorder(stream, opts); }
-    catch (e) { try { rec = new MediaRecorder(stream); } catch (e2) { alert('Recording is not supported.'); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); return; } }
-    const chunks = []; rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
-    const stopped = new Promise(res => { rec.onstop = res; });
-    vmMediaRec = rec; rec.start(1000);
-    if (vmAudioEl) { try { vmAudioEl.currentTime = 0; await vmAudioEl.play(); } catch (e) { } }
-    if (vmVoiceOver.audio) { try { vmVoiceOver.audio.currentTime = 0; await vmVoiceOver.audio.play(); } catch (e) { } }
-    const prevTtsEnabled = TTS.enabled; TTS.enabled = false;
-    vmSetStatus(`🔴 Recording ${W}×${H}…`);
-    await vmRunTimeline(true, false);
-    await new Promise(r => setTimeout(r, 800));
-    if (rec.state !== 'inactive') rec.stop();
-    await stopped;
-    if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } }
-    if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } }
-    TTS.enabled = prevTtsEnabled; TTS.stop();
-    stream.getTracks().forEach(tr => tr.stop());
-    vmMediaRec = null;
-    const type = rec.mimeType || mime || 'video/webm';
-    const blob = new Blob(chunks, { type });
-    const ext = type.includes('mp4') ? 'mp4' : 'webm';
-    const safeName = (vmTitle || 'quiz').replace(/[^\w\-]+/g, '_').slice(0, 40) || 'quiz';
-    const filename = `${safeName}_${vmOrientation}_${W}x${H}.${ext}`;
-    if (blob.size === 0) { alert('Recording produced an empty file.'); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return; }
-    vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on');
-    const mb = (blob.size / 1048576).toFixed(1);
-    vmSetStatus(`✅ Ready! <b>${mb} MB • ${ext.toUpperCase()} • ${W}×${H}</b>`);
-    showDownloadModal(blob, filename, W, H, ext);
-}
+async function vmStartRender() { if (vmRecording || vmRecordingVoiceOver) return; if (typeof MediaRecorder === 'undefined') { alert('Your browser does not support video recording.'); return; } if (vmPreviewPlaying) { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); await new Promise(r => setTimeout(r, 180)); vmPreviewPlaying = false; vmStopFlag = false; } if (vmAutoPreviewTimeout) { clearTimeout(vmAutoPreviewTimeout); vmAutoPreviewTimeout = null; } hideDownloadModal(); const pBtn = document.getElementById('vmPreviewBtn'); const rBtn = document.getElementById('vmRenderBtn'); const sBtn = document.getElementById('vmStopBtn'); const rBadge = document.getElementById('vmRecBadge'); const pW = document.getElementById('vmProgressWrap'); const lB = document.getElementById('vmLiveBadge'); vmRecording = true; pBtn.disabled = true; rBtn.disabled = true; sBtn.style.display = 'inline-flex'; rBadge.classList.add('on'); pW.classList.add('on'); if (lB) lB.classList.remove('on'); document.getElementById('vmRecTime').textContent = '00:00'; document.getElementById('vmRecTotal').textContent = '00:00'; document.getElementById('vmRenderProgress').style.width = '0%'; document.getElementById('vmRenderProgressText').textContent = '0%'; vmSetStatus('⏳ Preparing…'); await vmPreloadImages(); await SE.init(); try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { } const canvas = document.getElementById('vmCanvas'); const { W, H } = vmSize(); let stream; try { stream = canvas.captureStream(30); const vT = stream.getVideoTracks()[0]; if (!vT) throw new Error('No track'); } catch (e) { try { stream = canvas.captureStream(24); } catch (e2) { alert('Could not start recording: ' + e2.message); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return; } } if (SE.recDest) { try { SE.recDest.stream.getAudioTracks().forEach(tr => stream.addTrack(tr)); } catch (e) { console.warn('attach audio failed', e); } } const mime = vmPickMime(); let rec; try { const opts = mime ? { mimeType: mime, videoBitsPerSecond: 5000000, audioBitsPerSecond: 128000 } : { videoBitsPerSecond: 5000000 }; rec = new MediaRecorder(stream, opts); } catch (e) { try { rec = new MediaRecorder(stream); } catch (e2) { alert('Recording is not supported.'); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); return; } } const chunks = []; rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); }; const stopped = new Promise(res => { rec.onstop = res; }); vmMediaRec = rec; rec.start(1000); if (vmAudioEl) { try { vmAudioEl.currentTime = 0; await vmAudioEl.play(); } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.currentTime = 0; await vmVoiceOver.audio.play(); } catch (e) { } } const prevTtsEnabled = TTS.enabled; TTS.enabled = false; vmSetStatus(`🔴 Recording ${W}×${H}…`); await vmRunTimeline(true, false); await new Promise(r => setTimeout(r, 800)); if (rec.state !== 'inactive') rec.stop(); await stopped; if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } } TTS.enabled = prevTtsEnabled; TTS.stop(); stream.getTracks().forEach(tr => tr.stop()); vmMediaRec = null; const type = rec.mimeType || mime || 'video/webm'; const blob = new Blob(chunks, { type }); const ext = type.includes('mp4') ? 'mp4' : 'webm'; const safeName = (vmTitle || 'quiz').replace(/[^\w\-]+/g, '_').slice(0, 40) || 'quiz'; const filename = `${safeName}_${vmOrientation}_${W}x${H}.${ext}`; if (blob.size === 0) { alert('Empty file.'); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return; } vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); const mb = (blob.size / 1048576).toFixed(1); vmSetStatus(`✅ Ready! <b>${mb} MB • ${ext.toUpperCase()} • ${W}×${H}</b>`); showDownloadModal(blob, filename, W, H, ext); }
 function vmStopAll() { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } } TTS.stop(); if (vmMediaRec && vmMediaRec.state !== 'inactive') { try { vmMediaRec.stop(); } catch (e) { } } if (vmVoiceOver.recorder && vmVoiceOver.recorder.state !== 'inactive') { try { vmVoiceOver.recorder.stop(); } catch (e) { } } const pBtn = document.getElementById('vmPreviewBtn'); const rBtn = document.getElementById('vmRenderBtn'); const sBtn = document.getElementById('vmStopBtn'); if (pBtn) pBtn.disabled = false; if (rBtn) rBtn.disabled = false; if (sBtn) sBtn.style.display = 'none'; const rB = document.getElementById('vmRecBadge'); if (rB) rB.classList.remove('on'); const pW = document.getElementById('vmProgressWrap'); if (pW) pW.classList.remove('on'); const lB = document.getElementById('vmLiveBadge'); if (lB) lB.classList.remove('on'); exitVoMode(); vmRecording = false; vmPreviewPlaying = false; vmRecordingVoiceOver = false; }
 function vmSetStatus(html) { const el = document.getElementById('vmStatus'); if (el) el.innerHTML = html; }
 function vmSetStatusDefault() { const n = vmQuestions.length; const { W, H } = vmSize(); const total = Math.round(vmTotalDuration()); const el = document.getElementById('vmStatus'); const parts = [`🎬 ${n}Q`, `⏱️ ${total}s`, `📐 ${W}×${H}`, vmOrientation === 'portrait' ? 'Portrait' : 'Landscape']; if (vmSound.ttsEnabled) parts.push('🗣️ TTS'); if (vmVoiceOver.blob) parts.push('🎙️ VO'); if (vmMuted) parts.push('🔕 Muted'); if (el) el.innerHTML = parts.join(' • '); }
 function vmFitCanvas() { const c = document.getElementById('vmCanvas'); if (!c) return; const wrap = c.parentElement; const availW = Math.max(120, wrap.clientWidth - 20); const availH = Math.max(180, wrap.clientHeight - 20); const ratio = c.width / c.height; let w = availW, h = w / ratio; if (h > availH) { h = availH; w = h * ratio; } c.style.width = Math.round(w) + 'px'; c.style.height = Math.round(h) + 'px'; }
 async function vmRefreshIdle() { const canvas = document.getElementById('vmCanvas'); if (!canvas) return; await vmPreloadImages(); try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { } const ctx = canvas.getContext('2d'); const scenes = vmSceneList(); vmDrawFrame(ctx, Math.min(0.8, scenes[0].dur * 0.3), scenes); vmSetStatusDefault(); }
 function vmSetOrientation(ori) { vmOrientation = ori; const canvas = document.getElementById('vmCanvas'); const { W, H } = vmSize(); canvas.width = W; canvas.height = H; vmInitParticles(W, H); requestAnimationFrame(() => vmFitCanvas()); vmRefreshIdle(); vmScheduleAutoPreview(); }
-function vmOpenFlyout(side, key) {
-    if (vmRecordingVoiceOver || document.body.classList.contains('vo-recording-mode')) return; // Block during recording
-    document.querySelectorAll('.vm-flyout').forEach(f => { if (f.dataset.key !== key) f.classList.remove('open'); });
-    const flyout = document.querySelector(`.vm-flyout[data-key="${key}"]`); if (!flyout) return;
-    const wasOpen = flyout.classList.contains('open');
-    document.querySelectorAll('.vm-rail-btn').forEach(t => { if (t.dataset.key === key) t.classList.toggle('active', !wasOpen); else t.classList.remove('active'); });
-    if (wasOpen) { flyout.classList.remove('open'); document.getElementById('vmBackdrop').classList.remove('on'); }
-    else { flyout.classList.add('open'); if (window.innerWidth <= 900) document.getElementById('vmBackdrop').classList.add('on'); }
-}
+function vmOpenFlyout(side, key) { if (vmRecordingVoiceOver) return; document.querySelectorAll('.vm-flyout').forEach(f => { if (f.dataset.key !== key) f.classList.remove('open'); }); const flyout = document.querySelector(`.vm-flyout[data-key="${key}"]`); if (!flyout) return; const wasOpen = flyout.classList.contains('open'); document.querySelectorAll('.vm-rail-btn').forEach(t => { if (t.dataset.key === key) t.classList.toggle('active', !wasOpen); else t.classList.remove('active'); }); if (wasOpen) { flyout.classList.remove('open'); document.getElementById('vmBackdrop').classList.remove('on'); } else { flyout.classList.add('open'); if (window.innerWidth <= 900) document.getElementById('vmBackdrop').classList.add('on'); } }
 function vmCloseAllFlyouts() { document.querySelectorAll('.vm-flyout').forEach(f => f.classList.remove('open')); document.querySelectorAll('.vm-rail-btn').forEach(t => t.classList.remove('active')); document.getElementById('vmBackdrop').classList.remove('on'); }
 
 function renderVideoStudio(data) {
@@ -1118,7 +933,7 @@ function renderVideoStudio(data) {
                 <button class="vm-orient-btn" data-ori="landscape"><span class="ic">🖥️</span> Landscape</button>
               </div>
               <div class="vm-right-controls">
-                <button class="vm-mute-btn" id="vmMuteBtn" title="Mute all sounds">🔊</button>
+                <button class="vm-mute-btn" id="vmMuteBtn">🔊</button>
                 <button class="vm-intro-toggle on" id="introToggleBtn"><span class="sw-mini"></span><span>🎬 Intro</span></button>
               </div>
             </div>
@@ -1217,7 +1032,7 @@ function renderVideoStudio(data) {
             <div class="vm-vo-status" id="voControls" style="display:none;">
               <div class="vo-row"><span><i class="fas fa-check-circle"></i> Voice over ready</span><div class="vm-file-row" style="margin:0;"><button class="vm-file-btn" id="voPlayBtn"><i class="fas fa-play"></i> Play</button><button class="vm-file-btn" id="voDeleteBtn" style="color:#991b1b;"><i class="fas fa-trash"></i> Delete</button></div></div>
             </div>
-            <div class="vm-info">💡 Tap <b>Record</b> → everything hides → only a small 2-row bar appears at the bottom: live waveform + Pause / Stop / Record again / Delete / Add.</div>
+            <div class="vm-info">💡 Tap <b>Record</b> → this whole popup disappears → only a small 2-row bar at the bottom shows: live waveform + Pause / Stop / Record again / Delete / Add.</div>
             <div class="vm-section-label">🗣️ Text-to-Speech (preview only)</div>
             <div class="vm-toggle-row" id="toggleTTS"><span>🔊 Enable TTS Voice</span><div class="sw"></div></div>
             <div class="vm-toggle-row on" id="toggleTTSQ"><span>📝 Read Question</span><div class="sw"></div></div>
@@ -1226,8 +1041,8 @@ function renderVideoStudio(data) {
             <div class="vm-row"><span>🎤 Voice</span><select id="ttsVoiceSelect" style="max-width:180px;"><option value="">Default</option></select></div>
             <div class="vm-row"><span>⚡ Speed</span><input type="number" id="ttsRateInput" value="1" min="0.5" max="2" step="0.1"></div>
             <div class="vm-row"><span>🎵 Pitch</span><input type="number" id="ttsPitchInput" value="1" min="0" max="2" step="0.1"></div>
-            <div class="vm-info">🌍 Answer prefix auto-detects language (English, বাংলা, हिन्दी, العربية, 中文, +14 more)</div>
-            <div class="vm-warn">⚠️ TTS plays in live preview only. For exported video, use 🎙️ Voice Over.</div>
+            <div class="vm-info">🌍 Answer prefix auto-detects language.</div>
+            <div class="vm-warn">⚠️ TTS plays in live preview only.</div>
             <div class="vm-section-label">🔊 Master SFX Volume</div>
             <div class="vm-slider-row"><input type="range" id="sfxVolSlider" min="0" max="1" step="0.05" value="0.8" style="flex:1;"><span class="vm-slider-val" id="sfxVolVal">80%</span></div>
             <div class="vm-section-label">❓ Question Appear Sound</div>
@@ -1261,7 +1076,7 @@ function renderVideoStudio(data) {
               <button class="vm-tool" data-asfx="a_applause"><span class="ti">👏</span><span class="tt">Applause</span></button>
               <button class="vm-tool" data-asfx="a_none"><span class="ti">🚫</span><span class="tt">None</span></button>
             </div>
-            <div class="vm-sfx-play-hint">TAP TO PREVIEW • SFX + VOICE + MUSIC MIX INTO VIDEO</div>
+            <div class="vm-sfx-play-hint">TAP TO PREVIEW</div>
           </div>
         </div>
         <div class="vm-flyout left" data-key="music">
@@ -1292,7 +1107,7 @@ function renderVideoStudio(data) {
         <div class="vm-flyout right" data-key="timing"><div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">⏱️</span> Timing</div><button class="vm-flyout-close" data-close>✕</button></div><div class="vm-flyout-body">
           <div class="vm-row"><span>📝 Time per Question</span><div><input type="number" id="vmSecInput" value="5" min="2" max="60"><span style="font-size:.6rem;color:#94a3b8;margin-left:3px;">sec</span></div></div>
           <div class="vm-row"><span>✅ Answer Reveal</span><div><input type="number" id="vmRevealInput" value="3" min="1" max="30"><span style="font-size:.6rem;color:#94a3b8;margin-left:3px;">sec</span></div></div>
-          <div class="vm-info" id="autoTimingInfo" style="display:none;">⏱️ <b>Auto‑timing active:</b> TTS speech is longer than your manual values. Scene durations extended automatically (≥12s per question when reading options).</div>
+          <div class="vm-info" id="autoTimingInfo" style="display:none;">⏱️ <b>Auto‑timing active:</b> scene durations extended.</div>
         </div></div>
         <div class="vm-flyout right" data-key="layout"><div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">📐</span> Layout & Show</div><button class="vm-flyout-close" data-close>✕</button></div><div class="vm-flyout-body">
           <div style="font-size:.58rem; font-weight:900; color:#475569; text-transform:uppercase; letter-spacing:.06em; margin:0 0 6px;">Orientation</div>
@@ -1310,7 +1125,6 @@ function renderVideoStudio(data) {
     document.querySelectorAll('.vm-rail-btn').forEach(t => { t.onclick = () => vmOpenFlyout(t.dataset.side, t.dataset.key); });
     document.querySelectorAll('[data-close]').forEach(c => { c.onclick = vmCloseAllFlyouts; });
     document.getElementById('vmBackdrop').onclick = vmCloseAllFlyouts;
-    document.getElementById('vmShell').addEventListener('click', (e) => { if (!e.target.closest('.vm-flyout') && !e.target.closest('.vm-rail-btn') && !e.target.closest('.vm-bottom-bar') && !e.target.closest('.vm-canvas-controls')) vmCloseAllFlyouts(); });
     document.querySelectorAll('[data-ori]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active')); const m = document.querySelector(`[data-ori2="${b.dataset.ori}"]`); if (m) m.classList.add('active'); vmSetOrientation(b.dataset.ori); }; });
     document.querySelectorAll('[data-ori2]').forEach(b => { b.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active')); const m = document.querySelector(`[data-ori="${b.dataset.ori2}"]`); if (m) m.classList.add('active'); vmSetOrientation(b.dataset.ori2); }; });
     const introBtn = document.getElementById('introToggleBtn'); introBtn.onclick = () => { if (vmRecording || vmRecordingVoiceOver) return; vmShowIntro = !vmShowIntro; introBtn.classList.toggle('on', vmShowIntro); vmSetStatusDefault(); vmScheduleAutoPreview(); };
@@ -1343,16 +1157,20 @@ function renderVideoStudio(data) {
     revIn.oninput = () => { let v = parseInt(revIn.value); if (!isNaN(v)) { vmRevealSecManual = vmClamp(v, 1, 30); refreshTimingUI(); } }; revIn.onblur = () => { let v = parseInt(revIn.value); if (isNaN(v)) v = vmRevealSecManual; vmRevealSecManual = vmClamp(v, 1, 30); refreshTimingUI(); };
     window._refreshTimingUI = refreshTimingUI;
     function updateAutoTimingInfo() { const info = document.getElementById('autoTimingInfo'); if (!info) return; if (!vmSound.ttsEnabled) { info.style.display = 'none'; return; } const eff = computeEffectiveDurations(); const needsAdjust = eff.q > vmSecPerQManual || eff.r > vmRevealSecManual; info.style.display = needsAdjust ? 'block' : 'none'; }
-    document.getElementById('vmMusic').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; if (vmAudioEl) { try { vmAudioEl.pause(); } catch (er) { } } vmAudioEl = new Audio(URL.createObjectURL(f)); vmAudioEl.loop = true; vmAudioEl.volume = 1; await SE.attachMusic(vmAudioEl); document.getElementById('vmMusicName').textContent = f.name; document.getElementById('vmMusicClear').style.display = 'inline-flex'; qcToast('🎵 Music loaded: ' + f.name.slice(0, 30)); };
+    document.getElementById('vmMusic').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; if (vmAudioEl) { try { vmAudioEl.pause(); } catch (er) { } } vmAudioEl = new Audio(URL.createObjectURL(f)); vmAudioEl.loop = true; vmAudioEl.volume = 1; await SE.attachMusic(vmAudioEl); document.getElementById('vmMusicName').textContent = f.name; document.getElementById('vmMusicClear').style.display = 'inline-flex'; qcToast('🎵 Music loaded'); };
     document.getElementById('vmMusicClear').onclick = () => { if (vmAudioEl) { try { vmAudioEl.pause(); } catch (e) { } vmAudioEl = null; } SE.attachMusic(null); document.getElementById('vmMusic').value = ''; document.getElementById('vmMusicName').textContent = 'No music selected'; document.getElementById('vmMusicClear').style.display = 'none'; qcToast('Music cleared'); };
     const musicSlider = document.getElementById('musicVolSlider'); musicSlider.value = vmSound.musicVolume; document.getElementById('musicVolVal').textContent = Math.round(vmSound.musicVolume * 100) + '%'; musicSlider.oninput = () => { const v = parseFloat(musicSlider.value); vmSound.musicVolume = v; SE.setMusicVolume(v); document.getElementById('musicVolVal').textContent = Math.round(v * 100) + '%'; };
 
-    /* ★★★ THE CRITICAL FIX: Immediate hide on record click ★★★ */
+    /* ★★★ CRITICAL: Hide popup IMMEDIATELY, before any async mic permission ★★★ */
     document.getElementById('voRecordBtn').onclick = () => {
-        // 1) HIDE EVERYTHING SYNCHRONOUSLY — before anything async
+        // Step 1: Kill EVERY flyout and popup right now
         enterVoMode();
-        // 2) Now start recording (async)
-        setTimeout(() => { startVoiceOverRecording(); }, 20);
+        // Step 2: After DOM has updated, start recording
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                startVoiceOverRecording();
+            });
+        });
     };
     document.getElementById('voHelpBtn').onclick = () => { openMicModal(); };
     document.getElementById('voFileInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; await handleVoiceOverUpload(f); e.target.value = ''; };
@@ -1360,7 +1178,7 @@ function renderVideoStudio(data) {
     document.getElementById('voDeleteBtn').onclick = () => { deleteVoiceOver(); };
 
     function wireSoundToggle(id, getter, setter) { const el = document.getElementById(id); if (!el) return; if (getter()) el.classList.add('on'); else el.classList.remove('on'); el.onclick = () => { const nv = !el.classList.contains('on'); if (nv) el.classList.add('on'); else el.classList.remove('on'); setter(nv); if (window._refreshTimingUI) window._refreshTimingUI(); }; }
-    wireSoundToggle('toggleTTS', () => vmSound.ttsEnabled, v => { vmSound.ttsEnabled = v; TTS.enabled = v; if (!v) TTS.stop(); qcToast(v ? '🗣️ TTS ON — timing auto‑adjusts (min 12s)' : '🔇 TTS OFF'); });
+    wireSoundToggle('toggleTTS', () => vmSound.ttsEnabled, v => { vmSound.ttsEnabled = v; TTS.enabled = v; if (!v) TTS.stop(); qcToast(v ? '🗣️ TTS ON' : '🔇 TTS OFF'); });
     wireSoundToggle('toggleTTSQ', () => vmSound.ttsReadQ, v => vmSound.ttsReadQ = v);
     wireSoundToggle('toggleTTSO', () => vmSound.ttsReadO, v => vmSound.ttsReadO = v);
     wireSoundToggle('toggleTTSA', () => vmSound.ttsReadA, v => vmSound.ttsReadA = v);
