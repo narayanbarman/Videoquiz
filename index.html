@@ -91,6 +91,11 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .vm-rail-btn.active { background: linear-gradient(135deg, #1a73e8, #2563eb); color: #fff; box-shadow: 0 4px 12px rgba(26,115,232,.5); }
 .vm-rail-btn .ri { font-size: 22px; line-height: 1; }
 .vm-rail-btn .rt { font-size: .48rem; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; opacity: .95; line-height: 1.05; text-align: center; padding: 0 2px; }
+/* Voice rail button — distinctive green accent */
+.vm-rail-btn[data-key="voice"] { background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #065f46; border: 1px solid #6ee7b7; }
+.vm-rail-btn[data-key="voice"]:hover { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #064e3b; }
+.vm-rail-btn[data-key="voice"].recording { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; border-color: #b91c1c; animation: voicePulse 1.4s infinite; }
+@keyframes voicePulse { 0%,100%{box-shadow: 0 4px 12px rgba(239,68,68,.4);} 50%{box-shadow: 0 4px 22px rgba(239,68,68,.9);} }
 .vm-center { display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 0; }
 .vm-canvas-controls { position: absolute; top: 14px; left: 88px; right: 14px; display: flex; flex-wrap: wrap; gap: 6px; z-index: 20; align-items: center; pointer-events: none; }
 .vm-canvas-controls > * { pointer-events: auto; }
@@ -255,24 +260,24 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .mic-browser-pane { display: none; }
 .mic-browser-pane.active { display: block; }
 
-/* ★★★ STANDALONE VOICE RECORDER — COMPACT 2-ROW BOTTOM BAR ★★★ */
+/* ★★★ VOICE RECORDER — 2-ROW BOTTOM POPUP ★★★ */
 #voiceRecorderBar {
     position: fixed;
     left: 50%;
     bottom: 0;
     width: min(620px, calc(100vw - 16px));
     z-index: 9999999;
-    background: rgba(10, 14, 20, 0.96);
+    background: rgba(10, 14, 20, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
     border-bottom: none;
     border-radius: 18px 18px 0 0;
     padding: 10px 10px calc(12px + env(safe-area-inset-bottom, 0px)) 10px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: 0 -12px 44px rgba(0,0,0,0.65);
+    box-shadow: 0 -12px 44px rgba(0,0,0,0.7);
     font-family: 'Inter', sans-serif;
     opacity: 0;
     visibility: hidden;
@@ -287,13 +292,13 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
     transform: translateX(-50%) translateY(0);
 }
 
-/* ── ROW 1 : LIVE WAVEFORM ── */
+/* ROW 1 — WAVEFORM */
 .vr-wave-wrap {
     position: relative;
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
-    background: rgba(15, 23, 42, 0.75);
+    background: rgba(15, 23, 42, 0.8);
     border: 1px solid rgba(255,255,255,0.08);
     flex-shrink: 0;
 }
@@ -310,7 +315,7 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
     font-size: .58rem;
     font-weight: 700;
     color: #cbd5e1;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.55);
     padding: 2px 9px;
     border-radius: 20px;
     letter-spacing: .03em;
@@ -324,7 +329,7 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
     display: flex;
     align-items: center;
     gap: 6px;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.55);
     padding: 3px 10px;
     border-radius: 20px;
     pointer-events: none;
@@ -348,7 +353,7 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 }
 .vr-label.paused { color: #fbbf24; }
 
-/* ── ROW 2 : CONTROLS ── */
+/* ROW 2 — CONTROLS */
 .vr-row2 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -390,7 +395,7 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .vr-btn.add    { background: #22c55e; border-color: #22c55e; }
 .vr-btn.add:hover    { background: #16a34a; }
 
-/* While recording: hide every panel / modal so ONLY the 2-row bar is on screen */
+/* ── While recording: hide every panel so ONLY the 2-row bar shows ── */
 body.vr-active { overflow: hidden !important; }
 body.vr-active .vm-shell { grid-template-columns: 1fr !important; }
 body.vr-active .vm-rail,
@@ -494,7 +499,7 @@ body.vr-active .dl-modal {
     </div>
 </div>
 
-<!-- ★★★ COMPACT 2-ROW VOICE RECORDER BAR ★★★ -->
+<!-- ★★★ 2-ROW VOICE RECORDER BOTTOM POPUP ★★★ -->
 <div id="voiceRecorderBar">
   <!-- ROW 1 : LIVE WAVEFORM -->
   <div class="vr-wave-wrap">
@@ -756,7 +761,7 @@ function vmRunTimeline(isRecording = false, muteTTS = false) { return new Promis
 function vmProcessSoundEvents(t, scenes) { let curIdx = -1, sc = null, scT = 0; for (let i = 0; i < scenes.length; i++) { if (t >= scenes[i].start && t < scenes[i].end) { curIdx = i; sc = scenes[i]; scT = t - scenes[i].start; break; } } if (curIdx < 0 || !sc) return; if (vmSoundRuntime.lastSceneIdx !== curIdx) { vmSoundRuntime.lastSceneIdx = curIdx; vmSoundRuntime.playedOptions = {}; if (!vmMuted) { if (sc.type === 'question') { SE.playSfx(vmSound.qSfx); if (vmSound.ttsEnabled && vmSound.ttsReadQ) TTS.speak(sc.q.text); } else if (sc.type === 'reveal') { SE.playSfx(vmSound.aSfx); if (vmSound.ttsEnabled && vmSound.ttsReadA) { const prefix = detectCorrectAnswerPrefix(sc.q.correct); TTS.speak(prefix + ' — ' + sc.q.correct); } } } } if (sc.type === 'question') { const n = sc.q.options.length; for (let i = 0; i < n; i++) { const sD = vmOptionAnim === 'cascade' ? 0.55 + 0.18 * i : vmOptionAnim === 'flip' ? 0.5 + 0.16 * i : 0.4 + 0.12 * i; if (scT >= sD && !vmSoundRuntime.playedOptions[i]) { vmSoundRuntime.playedOptions[i] = true; if (!vmMuted) { if (vmSound.oSfx && !vmSound.oSfx.endsWith('_none')) SE.playSfx(vmSound.oSfx); if (vmSound.ttsEnabled && vmSound.ttsReadO) { const letter = String.fromCharCode(65 + i); TTS.enqueue(letter + '. ' + sc.q.options[i]); } } } } } }
 
 /* =========================================================================
-   ★★★ STANDALONE VOICE RECORDER — 2-ROW BAR, NO POPUPS ★★★
+   ★★★ VOICE RECORDER — 2-ROW BOTTOM POPUP ★★★
    ========================================================================= */
 const VR = {
     bar: null,
@@ -784,7 +789,6 @@ const VR = {
         this.canvas.height = Math.max(60, Math.round(rect.height * 2));
     },
 
-    /* Show ONLY the 2-row bar */
     open() {
         if (!this.bar) this.init();
         if (this.bar) this.bar.classList.add('open');
@@ -793,6 +797,9 @@ const VR = {
         const lbl = document.getElementById('vrLabel');
         if (dot) dot.classList.remove('paused');
         if (lbl) { lbl.classList.remove('paused'); lbl.textContent = 'RECORDING'; }
+        // Highlight the Voice rail button as "recording"
+        const vb = document.querySelector('.vm-rail-btn[data-key="voice"]');
+        if (vb) vb.classList.add('recording');
         requestAnimationFrame(() => {
             this.resizeCanvas();
             try { vmFitCanvas(); } catch (e) {}
@@ -802,6 +809,8 @@ const VR = {
     close() {
         if (this.bar) this.bar.classList.remove('open');
         document.body.classList.remove('vr-active');
+        const vb = document.querySelector('.vm-rail-btn[data-key="voice"]');
+        if (vb) vb.classList.remove('recording');
         if (this.waveRaf) { cancelAnimationFrame(this.waveRaf); this.waveRaf = null; }
         if (this.audioCtx) { try { this.audioCtx.close(); } catch (e) {} this.audioCtx = null; this.analyser = null; this.source = null; }
         requestAnimationFrame(() => { try { vmFitCanvas(); } catch (e) {} });
@@ -827,17 +836,14 @@ const VR = {
         if (this.isRecording) return;
         this.init();
 
-        /* ── Close every panel / modal FIRST, then show ONLY the 2-row bar ── */
+        // 1) Close every panel / modal so ONLY the 2-row bar shows
         try { vmCloseAllFlyouts(); } catch (e) {}
-        const mm = document.getElementById('micModal');
-        if (mm) mm.classList.remove('active');
-        const dl = document.getElementById('dlModal');
-        if (dl) dl.classList.remove('active');
-        const cp = document.getElementById('cpModal');
-        if (cp) cp.classList.remove('active');
+        document.querySelectorAll('.mic-modal, .modal-overlay, .cp-modal, .dl-modal').forEach(m => m.classList.remove('active'));
 
+        // 2) Show the 2-row bar immediately
         this.open();
 
+        // 3) Check support
         const isSecure = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
         if (!isSecure) {
             qcToast('⚠️ Microphone needs <b>HTTPS</b>. Use “Upload Voice Over File” instead.', 4800);
@@ -845,11 +851,12 @@ const VR = {
             return;
         }
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            qcToast('⚠️ Mic not supported in this browser. Use “Upload Voice Over File”.', 4800);
+            qcToast('⚠️ Mic not supported. Use “Upload Voice Over File”.', 4800);
             this.close();
             return;
         }
 
+        // 4) Request mic
         let stream;
         try {
             stream = await navigator.mediaDevices.getUserMedia({
@@ -862,6 +869,7 @@ const VR = {
             return;
         }
 
+        // 5) Set up recorder
         this.stream = stream;
         this.isRecording = true;
         this.isPaused = false;
@@ -869,12 +877,11 @@ const VR = {
         this.pausedTotal = 0;
         this.cancelled = false;
 
-        /* Mute all quiz audio so only the mic gets recorded */
         vmMuted = true;
         SE.setMasterMute(true);
         TTS.stop();
 
-        /* Waveform analyser */
+        // 6) Waveform
         try {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             this.analyser = this.audioCtx.createAnalyser();
@@ -882,13 +889,15 @@ const VR = {
             this.analyser.smoothingTimeConstant = 0.78;
             this.source = this.audioCtx.createMediaStreamSource(stream);
             this.source.connect(this.analyser);
-        } catch (e) { console.warn('waveform init failed', e); }
+        } catch (e) {}
 
-        /* Recorder */
+        // 7) MediaRecorder
         let mime = '';
         try {
             const list = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
-            for (const c of list) { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; } }
+            for (const c of list) {
+                if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; }
+            }
         } catch (e) {}
         try {
             this.mediaRec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
@@ -902,6 +911,7 @@ const VR = {
         this.mediaRec.ondataavailable = e => { if (e.data && e.data.size) this.chunks.push(e.data); };
         this.stoppedPromise = new Promise(res => { this.mediaRec.onstop = res; });
 
+        // 8) Wire buttons & start
         this.wireButtons();
         this.mediaRec.start(500);
         this.startedAt = Date.now();
@@ -910,7 +920,7 @@ const VR = {
         this.setPaused(false);
         this.drawWaveform();
 
-        /* Play quiz video behind and record voice over in sync */
+        // 9) Play the quiz behind, record voice over
         await this.runQuizTimeline();
     },
 
@@ -927,7 +937,7 @@ const VR = {
         vmStopFlag = false;
         vmSoundRuntime = { lastSceneIdx: -1, playedOptions: {} };
         const prevTtsEnabled = TTS.enabled;
-        TTS.enabled = false;   /* no TTS while recording voice over */
+        TTS.enabled = false;
 
         const timeEl = document.getElementById('vrTime');
         const t0 = performance.now();
@@ -963,7 +973,7 @@ const VR = {
         vmMuted = false;
         SE.setMasterMute(false);
 
-        /* Stop recorder */
+        // Stop recorder
         if (this.mediaRec && this.mediaRec.state !== 'inactive') {
             try { this.mediaRec.stop(); } catch (e) {}
         }
@@ -976,7 +986,7 @@ const VR = {
 
         const duration = (Date.now() - this.startedAt) / 1000;
 
-        /* ── DELETE ── */
+        // DELETE
         if (this.cancelled) {
             this.cancelled = false;
             this.chunks = [];
@@ -991,7 +1001,7 @@ const VR = {
 
         if (!this.chunks.length) { this.close(); qcToast('❌ Empty recording'); return; }
 
-        /* ── STOP / ADD ── save the take */
+        // STOP / ADD — save the take
         const type = this.mediaRec.mimeType || 'audio/webm';
         const blob = new Blob(this.chunks, { type });
         if (!blob.size) { this.close(); qcToast('❌ Empty recording'); return; }
@@ -1009,7 +1019,6 @@ const VR = {
 
     wireButtons() {
         const self = this;
-        /* clone to remove any previous handlers */
         ['vrPauseBtn', 'vrStopBtn', 'vrDelBtn', 'vrAddBtn'].forEach(id => {
             const btn = document.getElementById(id);
             if (!btn) return;
@@ -1035,12 +1044,9 @@ const VR = {
             }
             self.setPaused(self.isPaused);
         };
-        /* STOP → finish & save */
-        if (s) s.onclick = () => { vmStopFlag = true; };
-        /* DELETE → throw away */
-        if (d) d.onclick = () => { self.cancelled = true; vmStopFlag = true; };
-        /* ADD → finish & save */
-        if (a) a.onclick = () => { vmStopFlag = true; };
+        if (s) s.onclick = () => { vmStopFlag = true; };      // Stop  → finish & save
+        if (d) d.onclick = () => { self.cancelled = true; vmStopFlag = true; };  // Delete → discard
+        if (a) a.onclick = () => { vmStopFlag = true; };      // Add   → finish & save
     },
 
     drawWaveform() {
@@ -1056,14 +1062,12 @@ const VR = {
             }
             self.analyser.getByteTimeDomainData(self.dataArr);
 
-            /* vertical grid */
             ctx.strokeStyle = 'rgba(255,255,255,0.05)';
             ctx.lineWidth = 1;
             for (let i = 1; i < 12; i++) {
                 const x = (W / 12) * i;
                 ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, H - 4); ctx.stroke();
             }
-            /* centre line */
             ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2);
             ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.stroke();
 
@@ -1122,7 +1126,7 @@ function connectRecordButton() {
 }
 window._connectRecordButton = connectRecordButton;
 
-/* ============ REST OF APP (unchanged) ============ */
+/* ============ REST OF APP ============ */
 async function vmPlayPreview() { if (vmRecording || vmPreviewPlaying) return; vmPreviewPlaying = true; await SE.init(); await vmPreloadImages(); try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { } const pBtn = document.getElementById('vmPreviewBtn'); const sBtn = document.getElementById('vmStopBtn'); const lB = document.getElementById('vmLiveBadge'); if (pBtn) pBtn.disabled = true; if (sBtn) sBtn.style.display = 'inline-flex'; if (lB) lB.classList.add('on'); document.getElementById('vmRecBadge').classList.remove('on'); document.getElementById('vmProgressWrap').classList.remove('on'); vmSetStatus('▶ Live preview…'); if (vmAudioEl) { try { vmAudioEl.currentTime = 0; await vmAudioEl.play(); } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.currentTime = 0; vmVoiceOver.audio.play(); } catch (e) { } } await vmRunTimeline(false, false); if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } } TTS.stop(); if (pBtn) pBtn.disabled = false; if (sBtn) sBtn.style.display = 'none'; if (lB) lB.classList.remove('on'); vmSetStatusDefault(); vmPreviewPlaying = false; }
 function vmScheduleAutoPreview() { if (vmRecording) return; if (vmPreviewPlaying) { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); vmPreviewPlaying = false; } if (vmAutoPreviewTimeout) clearTimeout(vmAutoPreviewTimeout); vmAutoPreviewTimeout = setTimeout(() => { vmPlayPreview(); }, 700); }
 function vmPickMime() { const list = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']; for (const m of list) { try { if (window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) return m; } catch (e) { } } return ''; }
@@ -1162,6 +1166,7 @@ function renderVideoStudio(data) {
     <div class="card" style="padding:0; background:transparent; box-shadow:none; margin-bottom:10px;">
       <div class="vm-shell" id="vmShell">
         <div class="vm-rail" id="vmRailLeft">
+          <button class="vm-rail-btn" data-key="voice" data-side="left"><span class="ri">🎙️</span><span class="rt">Voice</span></button>
           <button class="vm-rail-btn" data-key="theme" data-side="left"><span class="ri">🎨</span><span class="rt">Theme</span></button>
           <button class="vm-rail-btn" data-key="background" data-side="left"><span class="ri">🖼️</span><span class="rt">BG Style</span></button>
           <button class="vm-rail-btn" data-key="optionstyle" data-side="left"><span class="ri">🎯</span><span class="rt">Opt BG</span></button>
@@ -1276,7 +1281,7 @@ function renderVideoStudio(data) {
             <div class="vm-vo-status" id="voControls" style="display:none;">
               <div class="vo-row"><span><i class="fas fa-check-circle"></i> Voice over ready</span><div class="vm-file-row" style="margin:0;"><button class="vm-file-btn" id="voPlayBtn"><i class="fas fa-play"></i> Play</button><button class="vm-file-btn" id="voDeleteBtn" style="color:#991b1b;"><i class="fas fa-trash"></i> Delete</button></div></div>
             </div>
-            <div class="vm-info">💡 Tap <b>Record</b> — the panel closes and only a <b>2‑row bar</b> appears at the bottom: live waveform on top, <b>Pause • Stop • Delete • Add</b> below. The quiz plays behind while you speak.</div>
+            <div class="vm-info">💡 Tap the <b>🎙️ Voice</b> rail button (left side) — all panels close and only a <b>2‑row bar</b> appears at the bottom: live waveform on top, <b>Pause • Stop • Delete • Add</b> below. The quiz plays behind while you speak.</div>
             <div class="vm-section-label">🗣️ Text-to-Speech (preview only)</div>
             <div class="vm-toggle-row" id="toggleTTS"><span>🔊 Enable TTS Voice</span><div class="sw"></div></div>
             <div class="vm-toggle-row on" id="toggleTTSQ"><span>📝 Read Question</span><div class="sw"></div></div>
@@ -1366,7 +1371,19 @@ function renderVideoStudio(data) {
       </div>
     </div>`;
 
-    document.querySelectorAll('.vm-rail-btn').forEach(t => { t.onclick = () => vmOpenFlyout(t.dataset.side, t.dataset.key); });
+    // ★ Wire rail buttons — special-case "voice" to launch the recorder bar
+    document.querySelectorAll('.vm-rail-btn').forEach(t => {
+        t.onclick = () => {
+            if (t.dataset.key === 'voice') {
+                try { vmCloseAllFlyouts(); } catch (e) {}
+                document.querySelectorAll('.vm-rail-btn').forEach(x => x.classList.remove('active'));
+                t.classList.add('active');
+                VR.start();
+                return;
+            }
+            vmOpenFlyout(t.dataset.side, t.dataset.key);
+        };
+    });
     document.querySelectorAll('[data-close]').forEach(c => { c.onclick = vmCloseAllFlyouts; });
     document.getElementById('vmBackdrop').onclick = vmCloseAllFlyouts;
     document.querySelectorAll('[data-ori]').forEach(b => { b.onclick = () => { document.querySelectorAll('[data-ori]').forEach(x => x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('[data-ori2]').forEach(x => x.classList.remove('active')); const m = document.querySelector(`[data-ori2="${b.dataset.ori}"]`); if (m) m.classList.add('active'); vmSetOrientation(b.dataset.ori); }; });
@@ -1405,7 +1422,6 @@ function renderVideoStudio(data) {
     document.getElementById('vmMusicClear').onclick = () => { if (vmAudioEl) { try { vmAudioEl.pause(); } catch (e) { } vmAudioEl = null; } SE.attachMusic(null); document.getElementById('vmMusic').value = ''; document.getElementById('vmMusicName').textContent = 'No music selected'; document.getElementById('vmMusicClear').style.display = 'none'; qcToast('Music cleared'); };
     const musicSlider = document.getElementById('musicVolSlider'); musicSlider.value = vmSound.musicVolume; document.getElementById('musicVolVal').textContent = Math.round(vmSound.musicVolume * 100) + '%'; musicSlider.oninput = () => { const v = parseFloat(musicSlider.value); vmSound.musicVolume = v; SE.setMusicVolume(v); document.getElementById('musicVolVal').textContent = Math.round(v * 100) + '%'; };
 
-    /* ★★★ CONNECT RECORD BUTTON TO THE 2-ROW VOICE RECORDER ★★★ */
     connectRecordButton();
     document.getElementById('voHelpBtn').onclick = () => { openMicModal(); };
     document.getElementById('voFileInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (er) { } } vmVoiceOver = { blob: f, url: URL.createObjectURL(f), audio: new Audio(), recorder: null, stream: null, chunks: [], duration: 0 }; vmVoiceOver.audio.src = vmVoiceOver.url; vmVoiceOver.audio.preload = 'auto'; vmVoiceOver.audio.addEventListener('loadedmetadata', () => { vmVoiceOver.duration = vmVoiceOver.audio.duration || 0; }); await SE.attachVoiceover(vmVoiceOver.audio); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Voice Over File Loaded'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex'; qcToast('✅ File loaded'); e.target.value = ''; };
