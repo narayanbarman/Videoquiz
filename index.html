@@ -262,149 +262,101 @@
     .mic-browser-pane { display: none; }
     .mic-browser-pane.active { display: block; }
 
-    /* ★★★ VOICE OVER RECORDING MODE (focused) ★★★ */
-    .vm-shell.vo-recording { grid-template-columns: 1fr; }
-    .vm-shell.vo-recording .vm-rail,
-    .vm-shell.vo-recording .vm-canvas-controls,
-    .vm-shell.vo-recording .vm-bottom-bar,
-    .vm-shell.vo-recording .vm-status-line,
-    .vm-shell.vo-recording .vm-progress-wrap,
-    .vm-shell.vo-recording .vm-flyout,
-    .vm-shell.vo-recording .vm-backdrop,
-    .vm-shell.vo-recording .vm-live-badge,
-    .vm-shell.vo-recording .vm-rec-badge {
-        display: none !important;
-    }
-    .vm-shell.vo-recording .vm-canvas-wrap {
-        border-radius: 14px;
-        padding: 4px;
-    }
-
+    /* ★★★ ULTRA-COMPACT VOICE OVER HUD ★★★ */
     .vo-hud {
         position: absolute;
         left: 50%;
-        bottom: 14px;
+        bottom: 12px;
         transform: translateX(-50%);
-        width: calc(100% - 32px);
-        max-width: 560px;
-        background: rgba(15,23,42,0.92);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        background: rgba(15,23,42,0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.14);
-        border-radius: 18px;
-        padding: 12px 16px 14px;
-        box-shadow: 0 20px 60px rgba(0,0,0,.6);
+        border-radius: 14px;
+        padding: 10px 12px;
+        box-shadow: 0 16px 44px rgba(0,0,0,.55);
         z-index: 60;
         color: #fff;
         font-family: inherit;
-        animation: voHudIn .25s cubic-bezier(.34,1.4,.64,1);
+        min-width: 280px;
+        max-width: calc(100% - 24px);
+        animation: voHudIn .22s cubic-bezier(.34,1.4,.64,1);
     }
-    @keyframes voHudIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    @keyframes voHudIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-    .vo-hud-head {
+    .vo-hud-row {
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-size: .78rem;
+        gap: 8px;
+        font-size: .74rem;
         font-weight: 800;
-        margin-bottom: 10px;
     }
-    .vo-hud-dot {
-        width: 10px; height: 10px; border-radius: 50%;
+    .vo-rec-dot {
+        width: 9px; height: 9px; border-radius: 50%;
         background: #ef4444;
         animation: pulse-rec 1s infinite;
         flex-shrink: 0;
     }
-    .vo-hud-time {
-        margin-left: auto;
-        font-family: ui-monospace, monospace;
-        font-size: .74rem;
-        color: #cbd5e1;
-        letter-spacing: .04em;
+    .vo-label {
+        font-size: .6rem; letter-spacing: .1em;
+        color: #fca5a5; font-weight: 900;
+        text-transform: uppercase;
     }
-    .vo-hud-bar {
-        height: 8px;
-        background: rgba(255,255,255,0.12);
-        border-radius: 5px;
+    .vo-ok {
+        color: #34d399; font-size: 16px; font-weight: 900;
+    }
+    .vo-done-label {
+        font-size: .68rem; color: #a7f3d0; font-weight: 800;
+    }
+    .vo-time {
+        font-family: ui-monospace, 'SF Mono', monospace;
+        font-size: .7rem;
+        color: #e2e8f0;
+        letter-spacing: .03em;
+        margin-right: auto;
+    }
+    .vo-bar {
+        height: 5px;
+        background: rgba(255,255,255,0.14);
+        border-radius: 3px;
         overflow: hidden;
-        margin-bottom: 12px;
+        margin-top: 8px;
     }
-    .vo-hud-fill {
+    .vo-fill {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #22c55e, #16a34a);
-        transition: width .15s linear;
+        background: linear-gradient(90deg, #22c55e, #10b981);
+        transition: width .12s linear;
     }
-    .vo-hud-actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-    .vo-btn {
-        flex: 1;
-        min-width: 82px;
-        padding: 10px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.15);
+    .vo-btn-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        border: 1px solid rgba(255,255,255,0.16);
         background: rgba(255,255,255,0.08);
         color: #fff;
-        font-family: inherit;
-        font-size: .78rem;
-        font-weight: 800;
+        font-size: 13px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
         transition: .15s;
-        white-space: nowrap;
+        font-family: inherit;
+        padding: 0;
+        flex-shrink: 0;
     }
-    .vo-btn:hover { background: rgba(255,255,255,0.16); }
-    .vo-btn:active { transform: scale(.97); }
+    .vo-btn-icon:hover { background: rgba(255,255,255,0.18); }
+    .vo-btn-icon:active { transform: scale(.94); }
     .vo-btn-pause { background: #f59e0b; border-color: #f59e0b; }
     .vo-btn-pause:hover { background: #d97706; }
-    .vo-btn-stop { background: #ef4444; border-color: #ef4444; }
-    .vo-btn-stop:hover { background: #dc2626; }
-    .vo-btn-discard {
-        background: transparent;
-        color: #fca5a5;
-        border-color: rgba(239,68,68,0.45);
-        flex: 0 0 auto;
-        min-width: auto;
-        padding: 10px 14px;
-    }
-    .vo-btn-discard:hover { background: rgba(239,68,68,0.15); color: #fff; }
-    .vo-hud-done {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .vo-hud-done-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: .8rem;
-        font-weight: 800;
-    }
-    .vo-hud-done-row .vo-ok { color: #34d399; font-size: 16px; }
-    .vo-hud-close {
-        margin-left: auto;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        color: #cbd5e1;
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: .8rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: .15s;
-        padding: 0;
-        font-family: inherit;
-    }
-    .vo-hud-close:hover { background: rgba(255,255,255,0.18); color: #fff; }
+    .vo-btn-stop { background: #22c55e; border-color: #22c55e; }
+    .vo-btn-stop:hover { background: #16a34a; }
+    .vo-btn-discard { color: #fca5a5; border-color: rgba(239,68,68,0.45); }
+    .vo-btn-discard:hover { background: rgba(239,68,68,0.18); color: #fff; }
+    .vo-btn-add { background: #22c55e; border-color: #22c55e; }
+    .vo-btn-add:hover { background: #16a34a; }
+    .vo-btn-del { color: #fca5a5; border-color: rgba(239,68,68,0.45); }
+    .vo-btn-del:hover { background: rgba(239,68,68,0.18); color: #fff; }
 
     @media (max-width: 900px) {
         .vm-shell { grid-template-columns: 58px 1fr 58px; gap: 4px; height: calc(100vh - 68px); padding: 4px; border-radius: 12px; }
@@ -429,11 +381,10 @@
         .vm-tool .tt { font-size: .66rem; }
     }
     @media (max-width: 600px) {
-        .vo-hud { width: calc(100% - 16px); bottom: 8px; padding: 10px 12px 12px; border-radius: 14px; }
-        .vo-hud-head { font-size: .72rem; margin-bottom: 8px; }
-        .vo-hud-bar { margin-bottom: 10px; }
-        .vo-btn { min-width: 62px; padding: 9px 10px; font-size: .72rem; }
-        .vo-btn-discard { padding: 9px 11px; }
+        .vo-hud { bottom: 6px; padding: 8px 10px; min-width: 220px; border-radius: 12px; }
+        .vo-hud-row { gap: 6px; font-size: .68rem; }
+        .vo-time { font-size: .64rem; }
+        .vo-btn-icon { width: 28px; height: 28px; font-size: 11px; border-radius: 8px; }
     }
     @media (max-width: 480px) {
         .vm-shell { grid-template-columns: 52px 1fr 52px; padding: 3px; }
@@ -1373,10 +1324,12 @@ function vmProcessSoundEvents(t, scenes) {
     }
 }
 
-/* ★★★ VOICE OVER RECORDING — clean focused mode ★★★ */
+/* ★★★ VOICE OVER — compact bottom popup ★★★ */
 function hideVoHud() {
     const hud = document.getElementById('voHud');
     if (hud) hud.style.display = 'none';
+    const shell = document.getElementById('vmShell');
+    if (shell) shell.classList.remove('vo-recording');
 }
 
 async function startVoiceOverRecording() {
@@ -1395,11 +1348,14 @@ async function startVoiceOverRecording() {
     vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream, chunks: [], duration: 0 };
     vmRecordingVoiceOver = true;
 
-    // Mute video sounds during recording — user hears only their own voice
+    // Close all flyouts
+    vmCloseAllFlyouts();
+
+    // Mute video sounds during recording
     const prevMuted = vmMuted;
     vmSetMute(true, true);
 
-    // Switch into focused recording mode (rails/controls hidden via CSS)
+    // Show compact HUD, hide rails + controls so user only sees clean quiz video
     const shell = document.getElementById('vmShell');
     if (shell) shell.classList.add('vo-recording');
     const hud = document.getElementById('voHud');
@@ -1408,14 +1364,12 @@ async function startVoiceOverRecording() {
     const hudTime = document.getElementById('voHudTime');
     const hudFill = document.getElementById('voHudFill');
     if (hud) { hud.style.display = 'block'; }
-    if (hudRec) hudRec.style.display = 'block';
+    if (hudRec) hudRec.style.display = 'flex';
     if (hudDone) hudDone.style.display = 'none';
 
-    // Resize canvas after layout change
     requestAnimationFrame(() => vmFitCanvas());
 
     const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Recording…';
-    const voRecBadge = document.getElementById('voRecBadge'); if (voRecBadge) voRecBadge.style.display = 'flex';
     const voBtn = document.getElementById('voRecordBtn'); if (voBtn) voBtn.classList.add('active');
 
     let mime = '';
@@ -1425,19 +1379,14 @@ async function startVoiceOverRecording() {
     catch (e) {
         qcToast('❌ Recorder not supported'); stream.getTracks().forEach(t => t.stop());
         vmRecordingVoiceOver = false; vmSetMute(prevMuted, true);
-        if (shell) shell.classList.remove('vo-recording');
-        if (hud) hud.style.display = 'none';
+        hideVoHud();
         return;
     }
     vmVoiceOver.recorder = rec;
     rec.ondataavailable = e => { if (e.data && e.data.size) vmVoiceOver.chunks.push(e.data); };
     const stoppedP = new Promise(res => { rec.onstop = res; });
 
-    // Pause/resume state
-    let voPaused = false;
-    let voPausedTotal = 0;
-    let voPausedAt = 0;
-    let voCancelled = false;
+    let voPaused = false, voPausedTotal = 0, voPausedAt = 0, voCancelled = false;
 
     const pauseBtn = document.getElementById('voPauseBtn');
     const stopBtn = document.getElementById('voStopBtn');
@@ -1447,12 +1396,15 @@ async function startVoiceOverRecording() {
             voPausedTotal += performance.now() - voPausedAt;
             voPaused = false;
             try { if (rec.state === 'paused') rec.resume(); } catch(e){}
-            pauseBtn.innerHTML = '⏸ Pause';
+            pauseBtn.innerHTML = '⏸';
+            pauseBtn.title = 'Pause';
+            pauseBtn.classList.add('vo-btn-pause');
         } else {
             voPausedAt = performance.now();
             voPaused = true;
             try { if (rec.state === 'recording') rec.pause(); } catch(e){}
-            pauseBtn.innerHTML = '▶ Resume';
+            pauseBtn.innerHTML = '▶';
+            pauseBtn.title = 'Resume';
         }
     };
     if (stopBtn) stopBtn.onclick = () => { vmStopFlag = true; };
@@ -1496,19 +1448,11 @@ async function startVoiceOverRecording() {
     stream.getTracks().forEach(t => t.stop());
     vmRecordingVoiceOver = false;
     vmSetMute(prevMuted, true);
-
-    // Clean up focused mode
-    if (shell) shell.classList.remove('vo-recording');
-    if (pauseBtn) pauseBtn.onclick = null;
-    if (stopBtn) stopBtn.onclick = null;
-    if (discardBtn) discardBtn.onclick = null;
-    if (voRecBadge) voRecBadge.style.display = 'none';
     if (voBtn) voBtn.classList.remove('active');
-    requestAnimationFrame(() => vmFitCanvas());
 
     // Discarded?
     if (voCancelled) {
-        if (hud) hud.style.display = 'none';
+        hideVoHud();
         vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
         if (voStatus) voStatus.textContent = 'Record Voice Over';
         qcToast('🗑️ Recording discarded');
@@ -1520,7 +1464,7 @@ async function startVoiceOverRecording() {
     const type = rec.mimeType || mime || 'audio/webm';
     const blob = new Blob(vmVoiceOver.chunks, { type });
     if (!blob.size) {
-        if (hud) hud.style.display = 'none';
+        hideVoHud();
         qcToast('❌ Empty recording');
         if (voStatus) voStatus.textContent = 'Record Voice Over';
         return;
@@ -1535,17 +1479,21 @@ async function startVoiceOverRecording() {
     const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex';
     const voPlayBtn = document.getElementById('voPlayBtn'); if (voPlayBtn) voPlayBtn.innerHTML = '<i class="fas fa-play"></i> Play';
 
-    // Show done HUD (small area, visible above the video)
-    if (hud) { hudRec.style.display = 'none'; hudDone.style.display = 'flex'; }
+    // Show "done" state in the same compact HUD
+    if (hudRec) hudRec.style.display = 'none';
+    if (hudDone) hudDone.style.display = 'flex';
     const durEl = document.getElementById('voHudDur'); if (durEl) durEl.textContent = vmVoiceOver.duration.toFixed(1) + 's';
-    const doneClose = document.getElementById('voHudClose');
+
+    const doneAdd = document.getElementById('voHudAdd');
     const donePlay = document.getElementById('voHudPlay');
     const doneReRec = document.getElementById('voHudReRec');
     const doneDel = document.getElementById('voHudDel');
-    if (doneClose) doneClose.onclick = () => { if (hud) hud.style.display = 'none'; };
+    const doneClose = document.getElementById('voHudClose');
+    if (doneAdd) doneAdd.onclick = () => { hideVoHud(); qcToast('✅ Voice over added to video'); };
     if (donePlay) donePlay.onclick = () => { playVoiceOverPreview(); };
-    if (doneReRec) doneReRec.onclick = () => { if (hud) hud.style.display = 'none'; setTimeout(() => startVoiceOverRecording(), 200); };
-    if (doneDel) doneDel.onclick = () => { deleteVoiceOver(); if (hud) hud.style.display = 'none'; };
+    if (doneReRec) doneReRec.onclick = () => { hideVoHud(); setTimeout(() => startVoiceOverRecording(), 200); };
+    if (doneDel) doneDel.onclick = () => { deleteVoiceOver(); hideVoHud(); };
+    if (doneClose) doneClose.onclick = () => { hideVoHud(); };
 
     qcToast('✅ Voice over recorded (' + vmVoiceOver.duration.toFixed(1) + 's)');
 }
@@ -1598,7 +1546,6 @@ function deleteVoiceOver() {
     qcToast('🗑️ Voice over deleted');
 }
 
-/* ★★★ Global Mute helpers ★★★ */
 function vmSetMute(m, silent) {
     vmMuted = m;
     SE.setMasterMute(m);
@@ -1759,7 +1706,6 @@ function vmStopAll() {
     const rB = document.getElementById('vmRecBadge'); if (rB) rB.classList.remove('on');
     const pW = document.getElementById('vmProgressWrap'); if (pW) pW.classList.remove('on');
     const lB = document.getElementById('vmLiveBadge'); if (lB) lB.classList.remove('on');
-    const shell = document.getElementById('vmShell'); if (shell) shell.classList.remove('vo-recording');
     hideVoHud();
     vmRecording = false; vmPreviewPlaying = false; vmRecordingVoiceOver = false;
 }
@@ -1854,32 +1800,25 @@ function renderVideoStudio(data) {
             <div class="vm-rec-badge" id="vmRecBadge"><div class="vm-rec-dot"></div><span>REC</span><span id="vmRecTime">00:00</span>/<span id="vmRecTotal">00:00</span></div>
             <canvas id="vmCanvas"></canvas>
             <div class="vo-hud" id="voHud" style="display:none;">
-              <div class="vo-hud-recording" id="voHudRec" style="display:none;">
-                <div class="vo-hud-head">
-                  <div class="vo-hud-dot"></div>
-                  <span>🎙️ Recording Voice Over</span>
-                  <span class="vo-hud-time" id="voHudTime">00:00 / 00:00</span>
-                </div>
-                <div class="vo-hud-bar"><div class="vo-hud-fill" id="voHudFill"></div></div>
-                <div class="vo-hud-actions">
-                  <button class="vo-btn vo-btn-pause" id="voPauseBtn">⏸ Pause</button>
-                  <button class="vo-btn vo-btn-stop" id="voStopBtn">⏹ Stop &amp; Save</button>
-                  <button class="vo-btn vo-btn-discard" id="voDiscardBtn" title="Discard recording">🗑</button>
-                </div>
+              <div class="vo-hud-row" id="voHudRec" style="display:none;">
+                <div class="vo-rec-dot"></div>
+                <span class="vo-label">REC</span>
+                <span class="vo-time" id="voHudTime">00:00 / 00:00</span>
+                <button class="vo-btn-icon vo-btn-pause" id="voPauseBtn" title="Pause">⏸</button>
+                <button class="vo-btn-icon vo-btn-stop" id="voStopBtn" title="Stop &amp; Save">⏹</button>
+                <button class="vo-btn-icon vo-btn-discard" id="voDiscardBtn" title="Discard recording">✕</button>
               </div>
-              <div class="vo-hud-done" id="voHudDone" style="display:none;">
-                <div class="vo-hud-done-row">
-                  <span class="vo-ok">✓</span>
-                  <span>Voice over ready</span>
-                  <span style="margin-left:auto;font-family:ui-monospace,monospace;color:#cbd5e1;font-size:.74rem;" id="voHudDur">0.0s</span>
-                  <button class="vo-hud-close" id="voHudClose" title="Close">✕</button>
-                </div>
-                <div class="vo-hud-actions">
-                  <button class="vo-btn" id="voHudPlay">▶ Play</button>
-                  <button class="vo-btn" id="voHudReRec">🔄 Re-record</button>
-                  <button class="vo-btn vo-btn-discard" id="voHudDel">🗑 Delete</button>
-                </div>
+              <div class="vo-hud-row" id="voHudDone" style="display:none;">
+                <span class="vo-ok">✓</span>
+                <span class="vo-done-label">VO ready</span>
+                <span class="vo-time" id="voHudDur">0.0s</span>
+                <button class="vo-btn-icon" id="voHudPlay" title="Play">▶</button>
+                <button class="vo-btn-icon vo-btn-add" id="voHudAdd" title="Add voice over">➕</button>
+                <button class="vo-btn-icon" id="voHudReRec" title="Record again">🔄</button>
+                <button class="vo-btn-icon vo-btn-del" id="voHudDel" title="Delete">🗑</button>
+                <button class="vo-btn-icon" id="voHudClose" title="Close">✕</button>
               </div>
+              <div class="vo-bar" id="voHudBar"><div class="vo-fill" id="voHudFill"></div></div>
             </div>
           </div>
           <div class="vm-progress-wrap" id="vmProgressWrap"><div class="vm-progress-fill" id="vmRenderProgress" style="width:0%"></div><div class="vm-progress-text" id="vmRenderProgressText">0%</div></div>
@@ -1980,10 +1919,6 @@ function renderVideoStudio(data) {
               <i class="fas fa-upload"></i> Upload Voice Over File
             </label>
             <input type="file" id="voFileInput" accept="audio/*" hidden>
-            <div class="vm-recording-badge" id="voRecBadge" style="display:none;">
-              <div class="dot"></div><span>Recording…</span>
-              <span style="margin-left:auto;font-family:monospace;" id="voElapsed">00:00 / 00:00</span>
-            </div>
             <div class="vm-vo-status" id="voControls" style="display:none;">
               <div class="vo-row">
                 <span><i class="fas fa-check-circle"></i> Voice over ready</span>
@@ -1993,7 +1928,7 @@ function renderVideoStudio(data) {
                 </div>
               </div>
             </div>
-            <div class="vm-info">💡 Video sound is <b>auto‑muted</b> during recording so you only hear your own voice. Mixed into exported video.</div>
+            <div class="vm-info">💡 When you tap <b>Record</b>, a small recording bar appears at the bottom of the video. Video sound auto-mutes so you only hear your own voice. Final mix is included in the exported video.</div>
 
             <div class="vm-section-label">🗣️ Text-to-Speech (preview only)</div>
             <div class="vm-toggle-row" id="toggleTTS"><span>🔊 Enable TTS Voice</span><div class="sw"></div></div>
