@@ -15,7 +15,7 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .app-full { max-width: 1600px; margin: 0 auto; padding: 8px 10px; }
 .brand-header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-radius: 50px; padding: 5px 16px; margin-bottom: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
 .brand { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, #1a73e8, #0f9d58); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.home-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 10px; }
+.home-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
 @media (max-width: 860px) { .home-grid { grid-template-columns: repeat(2, 1fr); } }
 .home-card { background: white; border-radius: 18px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.25s; box-shadow: 0 5px 14px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); position: relative; overflow: hidden; }
 .home-card.active { border: 2px solid #1a73e8; background: linear-gradient(135deg, #f0f7ff, #ffffff); }
@@ -91,9 +91,9 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .vm-rail-btn.active { background: linear-gradient(135deg, #1a73e8, #2563eb); color: #fff; box-shadow: 0 4px 12px rgba(26,115,232,.5); }
 .vm-rail-btn .ri { font-size: 22px; line-height: 1; }
 .vm-rail-btn .rt { font-size: .48rem; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; opacity: .95; line-height: 1.05; text-align: center; padding: 0 2px; }
-/* Voice button — simple, like others. Only turns red while recording. */
 .vm-rail-btn[data-key="voice"].recording { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; animation: voicePulse 1.4s infinite; }
 .vm-rail-btn[data-key="voice"].recording:hover { color: #fff; }
+.vm-rail-btn[data-key="voice"].has-voice { background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #065f46; border: 1px solid #6ee7b7; }
 @keyframes voicePulse { 0%,100%{box-shadow: 0 4px 12px rgba(239,68,68,.4);} 50%{box-shadow: 0 4px 22px rgba(239,68,68,.9);} }
 .vm-center { display: flex; flex-direction: column; gap: 6px; min-width: 0; min-height: 0; }
 .vm-canvas-controls { position: absolute; top: 14px; left: 88px; right: 14px; display: flex; flex-wrap: wrap; gap: 6px; z-index: 20; align-items: center; pointer-events: none; }
@@ -259,12 +259,12 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .mic-browser-pane { display: none; }
 .mic-browser-pane.active { display: block; }
 
-/* ★★★ VOICE RECORDER — 2-ROW BOTTOM POPUP ★★★ */
+/* ★★★ VOICE RECORDER — 2-ROW BOTTOM BAR ★★★ */
 #voiceRecorderBar {
     position: fixed;
     left: 50%;
     bottom: 0;
-    width: min(620px, calc(100vw - 16px));
+    width: min(640px, calc(100vw - 16px));
     z-index: 9999999;
     background: rgba(10, 14, 20, 0.97);
     backdrop-filter: blur(20px);
@@ -291,7 +291,6 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
     transform: translateX(-50%) translateY(0);
 }
 
-/* ROW 1 — WAVEFORM */
 .vr-wave-wrap {
     position: relative;
     width: 100%;
@@ -331,18 +330,21 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 }
 .vr-rec-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: vrPulse 1s infinite; flex-shrink: 0; }
 .vr-rec-dot.paused { background: #f59e0b; animation: none; }
+.vr-rec-dot.preview { background: #22c55e; animation: none; }
 @keyframes vrPulse { 0%,100%{opacity:1; transform: scale(1);} 50%{opacity:.4; transform: scale(.85);} }
 .vr-label { font-size: .58rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: #f87171; }
 .vr-label.paused { color: #fbbf24; }
+.vr-label.preview { color: #86efac; }
 
-/* ROW 2 — CONTROLS */
+/* Row 2 — flex layout, buttons hide/show dynamically */
 .vr-row2 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
     gap: 6px;
     flex-shrink: 0;
 }
 .vr-btn {
+    flex: 1;
+    min-width: 0;
     border: none;
     border-radius: 10px;
     padding: 10px 4px;
@@ -364,6 +366,7 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
     -webkit-user-select: none;
 }
 .vr-btn i { font-size: 14px; }
+.vr-btn span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .vr-btn:active { transform: scale(0.94); }
 .vr-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .vr-btn.pause  { background: #f59e0b; border-color: #f59e0b; }
@@ -372,12 +375,15 @@ body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f5
 .vr-btn.pause.resume:hover { background: #0284c7; }
 .vr-btn.stop   { background: #ef4444; border-color: #ef4444; }
 .vr-btn.stop:hover   { background: #dc2626; }
+.vr-btn.play   { background: #3b82f6; border-color: #3b82f6; }
+.vr-btn.play:hover   { background: #2563eb; }
+.vr-btn.rerec  { background: #0ea5e9; border-color: #0ea5e9; }
+.vr-btn.rerec:hover  { background: #0284c7; }
 .vr-btn.del    { background: rgba(239,68,68,0.22); border-color: rgba(239,68,68,0.45); color: #fca5a5; }
 .vr-btn.del:hover    { background: rgba(239,68,68,0.4); color: #fff; }
 .vr-btn.add    { background: #22c55e; border-color: #22c55e; }
 .vr-btn.add:hover    { background: #16a34a; }
 
-/* While recording: hide every panel so ONLY the 2-row bar shows */
 body.vr-active { overflow: hidden !important; }
 body.vr-active .vm-shell { grid-template-columns: 1fr !important; }
 body.vr-active .vm-rail,
@@ -435,8 +441,9 @@ body.vr-active .dl-modal {
     .cp-presets { gap: 5px; }
     .cp-sv { height: 148px; }
     #vrCanvas { height: 46px; }
-    .vr-btn { min-height: 44px; font-size: .56rem; }
+    .vr-btn { min-height: 44px; font-size: .55rem; }
     .vr-btn i { font-size: 12px; }
+    .vr-btn span { font-size: .5rem; }
 }
 .dl-modal { position: fixed; inset: 0; background: rgba(6,20,15,0.88); backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; z-index: 5000; visibility: hidden; opacity: 0; transition: 0.3s; padding: 14px; }
 .dl-modal.active { visibility: visible; opacity: 1; }
@@ -459,7 +466,6 @@ body.vr-active .dl-modal {
     <div id="stepHome" class="home-grid">
         <div class="home-card" data-type="quiz"><div class="home-icon">📝</div><div class="home-title">Quiz Mode</div></div>
         <div class="home-card" data-type="mock"><div class="home-icon">⏱️</div><div class="home-title">Mocktest</div></div>
-        <div class="home-card" data-type="splash"><div class="home-icon">🃏</div><div class="home-title">Splash Cards</div></div>
         <div class="home-card" data-type="truefalse"><div class="home-icon">✓✗</div><div class="home-title">True / False</div></div>
         <div class="home-card" data-type="video"><div class="home-icon">🎬</div><div class="home-title">Video Maker</div><div class="home-sub">Shorts &amp; Reels ready</div></div>
     </div>
@@ -481,7 +487,7 @@ body.vr-active .dl-modal {
     </div>
 </div>
 
-<!-- ★★★ 2-ROW VOICE RECORDER BOTTOM POPUP ★★★ -->
+<!-- ★★★ VOICE RECORDER — 2-ROW BOTTOM BAR ★★★ -->
 <div id="voiceRecorderBar">
   <div class="vr-wave-wrap">
     <canvas id="vrCanvas" width="800" height="104"></canvas>
@@ -491,11 +497,13 @@ body.vr-active .dl-modal {
     </div>
     <div class="vr-wave-time" id="vrTime">00:00 / 00:00</div>
   </div>
-  <div class="vr-row2">
+  <div class="vr-row2" id="vrRow2">
     <button class="vr-btn pause" id="vrPauseBtn" type="button"><i class="fas fa-pause"></i><span>Pause</span></button>
     <button class="vr-btn stop"  id="vrStopBtn"  type="button"><i class="fas fa-stop"></i><span>Stop</span></button>
+    <button class="vr-btn play"  id="vrPlayBtn"  type="button" style="display:none;"><i class="fas fa-play"></i><span>Play</span></button>
+    <button class="vr-btn rerec" id="vrReRecBtn" type="button" style="display:none;"><i class="fas fa-redo"></i><span>Again</span></button>
     <button class="vr-btn del"   id="vrDelBtn"   type="button"><i class="fas fa-trash"></i><span>Delete</span></button>
-    <button class="vr-btn add"   id="vrAddBtn"   type="button"><i class="fas fa-check"></i><span>Add</span></button>
+    <button class="vr-btn add"   id="vrAddBtn"   type="button" style="display:none;"><i class="fas fa-check"></i><span>Add</span></button>
   </div>
 </div>
 
@@ -739,8 +747,8 @@ function vmDrawFrame(ctx, t, scenes) { const { W, H } = vmSize(); const th = vmG
 function vmRunTimeline(isRecording = false, muteTTS = false) { return new Promise(resolve => { const canvas = document.getElementById('vmCanvas'); const ctx = canvas.getContext('2d'); const scenes = vmSceneList(); const total = scenes[scenes.length - 1].end; const start = performance.now(); const renderStartTime = Date.now(); vmStopFlag = false; vmSoundRuntime = { lastSceneIdx: -1, playedOptions: {} }; const prevTtsEnabled = TTS.enabled; if (muteTTS) TTS.enabled = false; const finish = () => { TTS.enabled = prevTtsEnabled; TTS.stop(); resolve(); }; const frame = (now) => { if (vmStopFlag) { finish(); return; } const t = (now - start) / 1000; if (isRecording) { const elapsed = (Date.now() - renderStartTime) / 1000; const progress = Math.min(1, elapsed / total); const tEl = document.getElementById('vmRecTime'); if (tEl) tEl.textContent = vmFormatTime(elapsed); const totEl = document.getElementById('vmRecTotal'); if (totEl) totEl.textContent = vmFormatTime(total); const pEl = document.getElementById('vmRenderProgress'); if (pEl) pEl.style.width = (progress * 100) + '%'; const pTxt = document.getElementById('vmRenderProgressText'); if (pTxt) pTxt.textContent = Math.round(progress * 100) + '%'; } if (t >= total) { vmDrawFrame(ctx, Math.max(0, total - 0.05), scenes); finish(); return; } vmProcessSoundEvents(t, scenes); vmDrawFrame(ctx, t, scenes); vmRaf = requestAnimationFrame(frame); }; vmRaf = requestAnimationFrame(frame); }); }
 
 function vmProcessSoundEvents(t, scenes) {
-    // If the user is currently recording a voiceover, mute all quiz SFX/TTS
-    if (typeof VR !== 'undefined' && VR && VR.isRecording) return;
+    // Suppress all quiz SFX / TTS whenever the voice recorder is active
+    if (typeof VR !== 'undefined' && VR && VR.state === 'recording') return;
     if (vmMuted) return;
     let curIdx = -1, sc = null, scT = 0;
     for (let i = 0; i < scenes.length; i++) { if (t >= scenes[i].start && t < scenes[i].end) { curIdx = i; sc = scenes[i]; scT = t - scenes[i].start; break; } }
@@ -764,19 +772,25 @@ function vmProcessSoundEvents(t, scenes) {
 }
 
 /* =========================================================================
-   ★★★ VOICE RECORDER — 2-ROW BOTTOM POPUP ★★★
+   ★★★ VOICE RECORDER — PROFESSIONAL VOICE-OVER WORKFLOW ★★★
+   State machine: 'idle' → 'recording' → 'preview' → (Add / Delete / Re-record)
    ========================================================================= */
 const VR = {
-    bar: null,
-    canvas: null, ctx: null,
-    isRecording: false, isPaused: false,
+    state: 'idle',           // 'idle' | 'recording' | 'preview'
+    isPaused: false,
+    // recording session
     mediaRec: null, stream: null, chunks: [],
     analyser: null, audioCtx: null, source: null,
     waveRaf: null, timelineRaf: null, dataArr: null,
     startedAt: 0, pausedTotal: 0, pausedAt: 0,
     sceneTotal: 0,
-    cancelled: false,
-    stoppedPromise: null,
+    recordedPeaks: [],
+    // recorded clip (after Stop, before Add)
+    recordedBlob: null, recordedUrl: null,
+    recordedDuration: 0,
+    playbackAudio: null,
+    playbackRaf: null,
+    pendingAction: null,     // 'stop' | 'delete' | null
 
     init() {
         this.bar = document.getElementById('voiceRecorderBar');
@@ -796,16 +810,9 @@ const VR = {
         if (!this.bar) this.init();
         if (this.bar) this.bar.classList.add('open');
         document.body.classList.add('vr-active');
-        const dot = document.getElementById('vrDot');
-        const lbl = document.getElementById('vrLabel');
-        if (dot) dot.classList.remove('paused');
-        if (lbl) { lbl.classList.remove('paused'); lbl.textContent = 'RECORDING'; }
         const vb = document.querySelector('.vm-rail-btn[data-key="voice"]');
         if (vb) vb.classList.add('recording');
-        requestAnimationFrame(() => {
-            this.resizeCanvas();
-            try { vmFitCanvas(); } catch (e) {}
-        });
+        requestAnimationFrame(() => { this.resizeCanvas(); try { vmFitCanvas(); } catch (e) {} });
     },
 
     close() {
@@ -814,84 +821,95 @@ const VR = {
         const vb = document.querySelector('.vm-rail-btn[data-key="voice"]');
         if (vb) { vb.classList.remove('recording'); vb.classList.remove('active'); }
         if (this.waveRaf) { cancelAnimationFrame(this.waveRaf); this.waveRaf = null; }
+        if (this.playbackRaf) { cancelAnimationFrame(this.playbackRaf); this.playbackRaf = null; }
         if (this.audioCtx) { try { this.audioCtx.close(); } catch (e) {} this.audioCtx = null; this.analyser = null; this.source = null; }
+        if (this.playbackAudio) { try { this.playbackAudio.pause(); } catch (e) {} }
+        this.state = 'idle';
         requestAnimationFrame(() => { try { vmFitCanvas(); } catch (e) {} });
     },
 
-    setPaused(p) {
-        this.isPaused = p;
+    setUIState(state) {
+        this.state = state;
+        const pauseBtn = document.getElementById('vrPauseBtn');
+        const stopBtn  = document.getElementById('vrStopBtn');
+        const playBtn  = document.getElementById('vrPlayBtn');
+        const reRecBtn = document.getElementById('vrReRecBtn');
+        const delBtn   = document.getElementById('vrDelBtn');
+        const addBtn   = document.getElementById('vrAddBtn');
         const dot = document.getElementById('vrDot');
         const lbl = document.getElementById('vrLabel');
-        const btn = document.getElementById('vrPauseBtn');
-        if (dot) dot.classList.toggle('paused', p);
-        if (lbl) { lbl.classList.toggle('paused', p); lbl.textContent = p ? 'PAUSED' : 'RECORDING'; }
-        if (btn) {
-            btn.classList.toggle('resume', p);
-            btn.classList.toggle('pause', !p);
-            btn.innerHTML = p ? '<i class="fas fa-play"></i><span>Resume</span>' : '<i class="fas fa-pause"></i><span>Pause</span>';
+
+        if (state === 'recording') {
+            pauseBtn.style.display = 'flex';
+            stopBtn.style.display = 'flex';
+            playBtn.style.display = 'none';
+            reRecBtn.style.display = 'none';
+            delBtn.style.display = 'flex';
+            addBtn.style.display = 'none';
+            pauseBtn.classList.remove('resume'); pauseBtn.classList.add('pause');
+            pauseBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+            if (dot) { dot.classList.remove('paused', 'preview'); }
+            if (lbl) { lbl.classList.remove('paused', 'preview'); lbl.textContent = 'RECORDING'; }
+        } else if (state === 'preview') {
+            pauseBtn.style.display = 'none';
+            stopBtn.style.display = 'none';
+            playBtn.style.display = 'flex';
+            reRecBtn.style.display = 'flex';
+            delBtn.style.display = 'flex';
+            addBtn.style.display = 'flex';
+            playBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
+            if (dot) { dot.classList.remove('paused'); dot.classList.add('preview'); }
+            if (lbl) { lbl.classList.remove('paused'); lbl.classList.add('preview'); lbl.textContent = 'REVIEW'; }
         }
     },
 
     async start() {
-        if (this.isRecording) return;
+        if (this.state === 'recording') return;
         this.init();
 
-        // 1) Close any open flyouts / modals, then hide everything via vr-active
+        // Reset all recording/preview data
+        this.isPaused = false;
+        this.chunks = [];
+        this.pausedTotal = 0;
+        this.pendingAction = null;
+        this.recordedPeaks = [];
+        if (this.playbackAudio) { try { this.playbackAudio.pause(); } catch (e) {} this.playbackAudio = null; }
+        if (this.recordedUrl) { try { URL.revokeObjectURL(this.recordedUrl); } catch (e) {} }
+        this.recordedBlob = null;
+        this.recordedUrl = null;
+        this.recordedDuration = 0;
+
+        // Close all panels and quiet any playback
         try { vmCloseAllFlyouts(); } catch (e) {}
         document.querySelectorAll('.mic-modal, .modal-overlay, .cp-modal, .dl-modal').forEach(m => m.classList.remove('active'));
-
-        // 2) Stop any preview / music / TTS that may currently be playing
         if (vmPreviewPlaying) { vmStopFlag = true; vmPreviewPlaying = false; }
-        try { if (vmRaf) { cancelAnimationFrame(vmRaf); vmRaf = null; } } catch (e) {}
+        if (vmRaf) { try { cancelAnimationFrame(vmRaf); } catch (e) {} vmRaf = null; }
         if (vmAudioEl) { try { vmAudioEl.pause(); } catch (e) {} }
         if (vmVoiceOver && vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch (e) {} }
         try { TTS.stop(); } catch (e) {}
 
-        // 3) Show the 2-row bar immediately
         this.open();
 
-        // 4) Support check
         const isSecure = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-        if (!isSecure) {
-            qcToast('⚠️ Microphone needs <b>HTTPS</b>. Use “Upload Voice Over File” instead.', 4800);
-            this.close();
-            return;
-        }
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            qcToast('⚠️ Mic not supported. Use “Upload Voice Over File”.', 4800);
-            this.close();
-            return;
-        }
+        if (!isSecure) { qcToast('⚠️ Microphone needs <b>HTTPS</b>. Use “Upload Voice Over File” instead.', 4800); this.close(); return; }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { qcToast('⚠️ Mic not supported. Use “Upload Voice Over File”.', 4800); this.close(); return; }
 
-        // 5) Request mic
         let stream;
         try {
-            stream = await navigator.mediaDevices.getUserMedia({
-                audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-                video: false
-            });
-        } catch (e) {
-            qcToast('🎙️ <b>Microphone blocked.</b> Allow it in browser settings, then try again.', 5200);
-            this.close();
-            return;
-        }
+            stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false });
+        } catch (e) { qcToast('🎙️ <b>Microphone blocked.</b> Allow it in browser settings, then try again.', 5200); this.close(); return; }
 
-        // 6) Setup recorder
         this.stream = stream;
-        this.isRecording = true;
-        this.isPaused = false;
-        this.chunks = [];
-        this.pausedTotal = 0;
-        this.cancelled = false;
+        this.state = 'recording';
 
-        // Mute all quiz audio (SFX + TTS + music) — only mic is used
+        // Mute all quiz audio — only mic used
         vmMuted = true;
         SE.setMasterMute(true);
         TTS.stop();
         const muteBtn = document.getElementById('vmMuteBtn');
         if (muteBtn) { muteBtn.textContent = '🔕'; muteBtn.classList.add('muted'); }
 
-        // 7) Waveform
+        // Waveform analyser
         try {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             this.analyser = this.audioCtx.createAnalyser();
@@ -901,20 +919,17 @@ const VR = {
             this.source.connect(this.analyser);
         } catch (e) {}
 
-        // 8) MediaRecorder
+        // MediaRecorder
         let mime = '';
         try {
             const list = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
-            for (const c of list) {
-                if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; }
-            }
+            for (const c of list) { if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) { mime = c; break; } }
         } catch (e) {}
         try {
             this.mediaRec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
         } catch (e) {
             qcToast('❌ Recorder not supported');
             stream.getTracks().forEach(t => t.stop());
-            this.isRecording = false;
             vmMuted = false; SE.setMasterMute(false);
             if (muteBtn) { muteBtn.textContent = '🔊'; muteBtn.classList.remove('muted'); }
             this.close();
@@ -923,16 +938,14 @@ const VR = {
         this.mediaRec.ondataavailable = e => { if (e.data && e.data.size) this.chunks.push(e.data); };
         this.stoppedPromise = new Promise(res => { this.mediaRec.onstop = res; });
 
-        // 9) Wire buttons & start
         this.wireButtons();
         this.mediaRec.start(500);
         this.startedAt = Date.now();
         this.pausedAt = 0;
 
-        this.setPaused(false);
-        this.drawWaveform();
+        this.setUIState('recording');
+        this.drawLiveWaveform();
 
-        // 10) Play the quiz behind the scenes, recording voiceover
         await this.runQuizTimeline();
     },
 
@@ -964,7 +977,6 @@ const VR = {
                 const cur = Math.max(0, Math.min(t, total));
                 if (timeEl) timeEl.textContent = vmFormatTime(cur) + ' / ' + vmFormatTime(total);
                 if (t >= total) { vmDrawFrame(ctx, Math.max(0, total - 0.05), scenes); resolve(); return; }
-                // SFX are suppressed inside vmProcessSoundEvents because VR.isRecording is true
                 vmDrawFrame(ctx, t, scenes);
                 self.timelineRaf = requestAnimationFrame(frame);
             };
@@ -973,90 +985,202 @@ const VR = {
 
         if (self.timelineRaf) { cancelAnimationFrame(self.timelineRaf); self.timelineRaf = null; }
 
+        // Stop recorder
+        if (this.mediaRec && this.mediaRec.state !== 'inactive') { try { this.mediaRec.stop(); } catch (e) {} }
+        try { await this.stoppedPromise; } catch (e) {}
+        if (this.stream) this.stream.getTracks().forEach(t => t.stop());
+
+        if (this.waveRaf) { cancelAnimationFrame(this.waveRaf); this.waveRaf = null; }
+        if (this.audioCtx) { try { this.audioCtx.close(); } catch (e) {} this.audioCtx = null; this.analyser = null; this.source = null; }
+
+        // Restore mute
         TTS.enabled = prevTtsEnabled;
         vmMuted = false;
         SE.setMasterMute(false);
         const muteBtn = document.getElementById('vmMuteBtn');
         if (muteBtn) { muteBtn.textContent = '🔊'; muteBtn.classList.remove('muted'); }
 
-        // Stop recorder
-        if (this.mediaRec && this.mediaRec.state !== 'inactive') { try { this.mediaRec.stop(); } catch (e) {} }
-        try { await this.stoppedPromise; } catch (e) {}
-        if (this.stream) this.stream.getTracks().forEach(t => t.stop());
-        this.isRecording = false;
-
-        if (this.waveRaf) { cancelAnimationFrame(this.waveRaf); this.waveRaf = null; }
-        if (this.audioCtx) { try { this.audioCtx.close(); } catch (e) {} this.audioCtx = null; this.analyser = null; this.source = null; }
-
-        const duration = (Date.now() - this.startedAt) / 1000;
-
-        // DELETE
-        if (this.cancelled) {
-            this.cancelled = false;
-            this.chunks = [];
-            this.close();
-            vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 };
-            SE.attachVoiceover(null);
-            const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Not recorded';
-            const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none';
-            qcToast('🗑️ Voice over deleted');
+        // Handle what the user asked for
+        if (this.pendingAction === 'delete') {
+            this.pendingAction = null;
+            this.discardAndClose();
             return;
         }
 
-        if (!this.chunks.length) { this.close(); qcToast('❌ Empty recording'); return; }
+        if (!this.chunks.length) {
+            qcToast('❌ Empty recording');
+            this.discardAndClose();
+            return;
+        }
 
-        // STOP / ADD — save
+        // Save the take and enter preview state (NOT auto-attached)
+        const duration = (Date.now() - this.startedAt) / 1000;
         const type = this.mediaRec.mimeType || 'audio/webm';
-        const blob = new Blob(this.chunks, { type });
-        if (!blob.size) { this.close(); qcToast('❌ Empty recording'); return; }
+        this.recordedBlob = new Blob(this.chunks, { type });
+        this.recordedUrl = URL.createObjectURL(this.recordedBlob);
+        this.recordedDuration = duration;
+        this.pendingAction = null;
 
-        vmVoiceOver = { blob, url: URL.createObjectURL(blob), audio: new Audio(), recorder: null, stream: null, chunks: [], duration };
-        vmVoiceOver.audio.src = vmVoiceOver.url;
-        vmVoiceOver.audio.preload = 'auto';
-        await SE.attachVoiceover(vmVoiceOver.audio);
+        this.playbackAudio = new Audio(this.recordedUrl);
+        this.playbackAudio.preload = 'auto';
+        this.playbackAudio.onended = () => {
+            self.setPlayButtonState('play');
+            self.drawPreviewWaveform();
+        };
 
+        this.setUIState('preview');
+        this.drawPreviewWaveform();
+        if (timeEl) timeEl.textContent = vmFormatTime(duration) + ' / ' + vmFormatTime(duration);
+        qcToast('🎧 Review your take → click <b>Add</b> to use it', 4200);
+    },
+
+    discardAndClose() {
+        if (this.playbackAudio) { try { this.playbackAudio.pause(); } catch (e) {} this.playbackAudio = null; }
+        if (this.recordedUrl) { try { URL.revokeObjectURL(this.recordedUrl); } catch (e) {} }
+        this.recordedBlob = null;
+        this.recordedUrl = null;
+        this.recordedDuration = 0;
+        this.chunks = [];
+        this.recordedPeaks = [];
+        this.pendingAction = null;
         this.close();
-        const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = '✅ Voice over (' + duration.toFixed(1) + 's)';
-        const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex';
-        qcToast('✅ Voice over saved (' + duration.toFixed(1) + 's)');
+        qcToast('🗑️ Voice over discarded');
+    },
+
+    setPlayButtonState(state) {
+        const playBtn = document.getElementById('vrPlayBtn');
+        if (!playBtn) return;
+        if (state === 'play') {
+            playBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
+        } else {
+            playBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+        }
     },
 
     wireButtons() {
         const self = this;
-        ['vrPauseBtn', 'vrStopBtn', 'vrDelBtn', 'vrAddBtn'].forEach(id => {
+        ['vrPauseBtn', 'vrStopBtn', 'vrPlayBtn', 'vrReRecBtn', 'vrDelBtn', 'vrAddBtn'].forEach(id => {
             const btn = document.getElementById(id);
             if (!btn) return;
             const clone = btn.cloneNode(true);
             btn.parentNode.replaceChild(clone, btn);
         });
 
-        const p = document.getElementById('vrPauseBtn');
-        const s = document.getElementById('vrStopBtn');
-        const d = document.getElementById('vrDelBtn');
-        const a = document.getElementById('vrAddBtn');
+        const pauseBtn = document.getElementById('vrPauseBtn');
+        const stopBtn  = document.getElementById('vrStopBtn');
+        const playBtn  = document.getElementById('vrPlayBtn');
+        const reRecBtn = document.getElementById('vrReRecBtn');
+        const delBtn   = document.getElementById('vrDelBtn');
+        const addBtn   = document.getElementById('vrAddBtn');
 
-        if (p) p.onclick = () => {
-            if (!self.isRecording) return;
+        if (pauseBtn) pauseBtn.onclick = () => {
+            if (self.state !== 'recording') return;
+            const dot = document.getElementById('vrDot');
+            const lbl = document.getElementById('vrLabel');
             if (self.isPaused) {
                 self.pausedTotal += performance.now() - self.pausedAt;
                 self.isPaused = false;
                 try { if (self.mediaRec.state === 'paused') self.mediaRec.resume(); } catch (e) {}
+                pauseBtn.classList.remove('resume'); pauseBtn.classList.add('pause');
+                pauseBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+                if (dot) dot.classList.remove('paused');
+                if (lbl) { lbl.classList.remove('paused'); lbl.textContent = 'RECORDING'; }
             } else {
                 self.pausedAt = performance.now();
                 self.isPaused = true;
                 try { if (self.mediaRec.state === 'recording') self.mediaRec.pause(); } catch (e) {}
+                pauseBtn.classList.remove('pause'); pauseBtn.classList.add('resume');
+                pauseBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
+                if (dot) dot.classList.add('paused');
+                if (lbl) { lbl.classList.add('paused'); lbl.textContent = 'PAUSED'; }
             }
-            self.setPaused(self.isPaused);
         };
-        if (s) s.onclick = () => { vmStopFlag = true; };                                  // Stop  → save
-        if (d) d.onclick = () => { self.cancelled = true; vmStopFlag = true; };            // Delete → discard
-        if (a) a.onclick = () => { vmStopFlag = true; };                                  // Add   → save
+
+        if (stopBtn) stopBtn.onclick = () => {
+            if (self.state !== 'recording') return;
+            self.pendingAction = 'stop';
+            vmStopFlag = true;
+        };
+
+        if (delBtn) delBtn.onclick = () => {
+            if (self.state === 'recording') {
+                self.pendingAction = 'delete';
+                vmStopFlag = true;
+            } else if (self.state === 'preview') {
+                self.discardAndClose();
+            }
+        };
+
+        if (playBtn) playBtn.onclick = () => {
+            if (self.state !== 'preview' || !self.playbackAudio) return;
+            if (self.playbackAudio.paused) {
+                if (self.playbackAudio.currentTime >= (self.playbackAudio.duration - 0.05)) self.playbackAudio.currentTime = 0;
+                self.playbackAudio.play().catch(() => {});
+                self.setPlayButtonState('pause');
+                self.drawPreviewWaveform();
+            } else {
+                self.playbackAudio.pause();
+                self.setPlayButtonState('play');
+            }
+        };
+
+        if (reRecBtn) reRecBtn.onclick = () => {
+            if (self.state !== 'preview') return;
+            // Full reset, then start over
+            if (self.playbackAudio) { try { self.playbackAudio.pause(); } catch (e) {} self.playbackAudio = null; }
+            if (self.recordedUrl) { try { URL.revokeObjectURL(self.recordedUrl); } catch (e) {} }
+            self.recordedBlob = null;
+            self.recordedUrl = null;
+            self.recordedDuration = 0;
+            self.chunks = [];
+            self.recordedPeaks = [];
+            self.start();
+        };
+
+        if (addBtn) addBtn.onclick = () => {
+            if (self.state !== 'preview' || !self.recordedBlob) return;
+
+            // Attach as the active voice over (fresh Audio element)
+            const voAudio = new Audio();
+            voAudio.src = self.recordedUrl;
+            voAudio.preload = 'auto';
+            vmVoiceOver = {
+                blob: self.recordedBlob,
+                url: self.recordedUrl,
+                audio: voAudio,
+                recorder: null, stream: null, chunks: [],
+                duration: self.recordedDuration
+            };
+            SE.attachVoiceover(voAudio);
+
+            // Update Sound panel
+            const status = document.getElementById('voStatusText');
+            if (status) status.textContent = '✅ Voice over (' + self.recordedDuration.toFixed(1) + 's)';
+            const controls = document.getElementById('voControls');
+            if (controls) controls.style.display = 'flex';
+
+            // Mark the rail button as "has voice"
+            const vb = document.querySelector('.vm-rail-btn[data-key="voice"]');
+            if (vb) vb.classList.add('has-voice');
+
+            // Detach local refs (they now belong to vmVoiceOver)
+            if (self.playbackAudio) { try { self.playbackAudio.pause(); } catch (e) {} self.playbackAudio = null; }
+            self.recordedBlob = null;
+            self.recordedUrl = null;
+            self.recordedDuration = 0;
+            self.chunks = [];
+            self.recordedPeaks = [];
+
+            self.close();
+            qcToast('✅ Voice over added — play Preview or Download to export', 3600);
+        };
     },
 
-    drawWaveform() {
+    drawLiveWaveform() {
         const self = this;
+        this.recordedPeaks = [];
         const draw = () => {
-            if (!self.canvas || !self.analyser || !self.isRecording) return;
+            if (self.state !== 'recording' || !self.canvas || !self.analyser) return;
             const ctx = self.ctx;
             const W = self.canvas.width, H = self.canvas.height;
             ctx.clearRect(0, 0, W, H);
@@ -1066,14 +1190,20 @@ const VR = {
             }
             self.analyser.getByteTimeDomainData(self.dataArr);
 
-            ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+            // Grid
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctx.lineWidth = 1;
             for (let i = 1; i < 12; i++) { const x = (W / 12) * i; ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, H - 4); ctx.stroke(); }
             ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.stroke();
 
-            const bars = 100; const barW = W / bars; const paused = self.isPaused;
+            const bars = 100;
+            const barW = W / bars;
+            const paused = self.isPaused;
+            let frameMax = 0;
             for (let i = 0; i < bars; i++) {
                 const idx = Math.floor((i / bars) * self.dataArr.length);
                 const v = (self.dataArr[idx] - 128) / 128;
+                if (Math.abs(v) > frameMax) frameMax = Math.abs(v);
                 const barH = paused ? 4 : Math.max(3, Math.abs(v) * (H - 8));
                 const x = i * barW + barW * 0.15;
                 const y = (H - barH) / 2;
@@ -1092,18 +1222,77 @@ const VR = {
                 ctx.closePath();
                 ctx.fill();
             }
+
+            // Store a peak every frame for the preview waveform
+            if (self.recordedPeaks.length < 8000) self.recordedPeaks.push(frameMax);
+
             self.waveRaf = requestAnimationFrame(draw);
         };
         draw();
     },
 
-    stopAndDiscard() { if (!this.isRecording) return; this.cancelled = true; vmStopFlag = true; }
+    drawPreviewWaveform() {
+        const self = this;
+        if (self.playbackRaf) { cancelAnimationFrame(self.playbackRaf); self.playbackRaf = null; }
+        const draw = () => {
+            if (!self.canvas) return;
+            const ctx = self.ctx;
+            const W = self.canvas.width, H = self.canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            // Grid
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < 12; i++) { const x = (W / 12) * i; ctx.beginPath(); ctx.moveTo(x, 4); ctx.lineTo(x, H - 4); ctx.stroke(); }
+            ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.stroke();
+
+            const bars = 100;
+            const barW = W / bars;
+            const peaks = self.recordedPeaks;
+            const totalPeaks = peaks.length || 1;
+            const dur = (self.playbackAudio && self.playbackAudio.duration) ? self.playbackAudio.duration : (self.recordedDuration || 1);
+            const progress = self.playbackAudio ? (self.playbackAudio.currentTime / dur) : 0;
+
+            for (let i = 0; i < bars; i++) {
+                const startIdx = Math.floor((i / bars) * totalPeaks);
+                const endIdx = Math.max(startIdx + 1, Math.floor(((i + 1) / bars) * totalPeaks));
+                let peak = 0;
+                for (let j = startIdx; j < endIdx && j < totalPeaks; j++) if (peaks[j] > peak) peak = peaks[j];
+                const barH = Math.max(3, peak * (H - 8));
+                const x = i * barW + barW * 0.15;
+                const y = (H - barH) / 2;
+                const w = barW * 0.7;
+                const isPast = (i / bars) <= progress;
+                const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+                if (isPast) { grad.addColorStop(0, '#22c55e'); grad.addColorStop(1, '#10b981'); }
+                else { grad.addColorStop(0, '#475569'); grad.addColorStop(1, '#334155'); }
+                ctx.fillStyle = grad;
+                const r = Math.min(w / 2, 3);
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.arcTo(x + w, y, x + w, y + barH, r);
+                ctx.arcTo(x + w, y + barH, x, y + barH, r);
+                ctx.arcTo(x, y + barH, x, y, r);
+                ctx.arcTo(x, y, x + w, y, r);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            // Update time display during playback
+            if (self.playbackAudio && !self.playbackAudio.paused) {
+                const timeEl = document.getElementById('vrTime');
+                if (timeEl) timeEl.textContent = vmFormatTime(self.playbackAudio.currentTime) + ' / ' + vmFormatTime(dur);
+                self.playbackRaf = requestAnimationFrame(draw);
+            }
+        };
+        draw();
+    }
 };
 
 VR.init();
 window.addEventListener('resize', () => { try { VR.resizeCanvas(); } catch (e) {} });
 
-/* ============ CONNECT RECORD BUTTON (legacy no-op if button is gone) ============ */
+/* ============ CONNECT RECORD BUTTON (legacy no-op) ============ */
 function connectRecordButton() {
     const btn = document.getElementById('voRecordBtn');
     if (!btn) return;
@@ -1123,7 +1312,6 @@ async function vmPlayPreview() {
     if (pBtn) pBtn.disabled = true; if (sBtn) sBtn.style.display = 'inline-flex'; if (lB) lB.classList.add('on');
     document.getElementById('vmRecBadge').classList.remove('on'); document.getElementById('vmProgressWrap').classList.remove('on');
     vmSetStatus('▶ Live preview…');
-    // Start music & voiceover (if loaded) BEFORE the timeline so they stay in sync
     if (vmAudioEl) { try { vmAudioEl.currentTime = 0; await vmAudioEl.play(); } catch (e) {} }
     if (vmVoiceOver.audio) { try { vmVoiceOver.audio.currentTime = 0; await vmVoiceOver.audio.play(); } catch (e) {} }
     await vmRunTimeline(false, false);
@@ -1151,10 +1339,8 @@ async function vmStartRender() {
     vmRecording = true;
     pBtn.disabled = true; rBtn.disabled = true; sBtn.style.display = 'inline-flex';
     rBadge.classList.add('on'); pW.classList.add('on'); if (lB) lB.classList.remove('on');
-    document.getElementById('vmRecTime').textContent = '00:00';
-    document.getElementById('vmRecTotal').textContent = '00:00';
-    document.getElementById('vmRenderProgress').style.width = '0%';
-    document.getElementById('vmRenderProgressText').textContent = '0%';
+    document.getElementById('vmRecTime').textContent = '00:00'; document.getElementById('vmRecTotal').textContent = '00:00';
+    document.getElementById('vmRenderProgress').style.width = '0%'; document.getElementById('vmRenderProgressText').textContent = '0%';
     vmSetStatus('⏳ Preparing…');
     await vmPreloadImages(); await SE.init();
     try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { }
@@ -1163,8 +1349,7 @@ async function vmStartRender() {
     let stream;
     try { stream = canvas.captureStream(30); const vT = stream.getVideoTracks()[0]; if (!vT) throw new Error('No track'); }
     catch (e) { try { stream = canvas.captureStream(24); } catch (e2) { alert('Could not start recording: ' + e2.message); vmRecording = false; pBtn.disabled = false; rBtn.disabled = false; sBtn.style.display = 'none'; rBadge.classList.remove('on'); pW.classList.remove('on'); vmSetStatusDefault(); return; } }
-    // Attach audio (SFX + music + voiceover) via the WebAudio recDest
-    if (SE.recDest) { try { SE.recDest.stream.getAudioTracks().forEach(tr => stream.addTrack(tr)); } catch (e) { console.warn('attach audio failed', e); } }
+    if (SE.recDest) { try { SE.recDest.stream.getAudioTracks().forEach(tr => stream.addTrack(tr)); } catch (e) { } }
     const mime = vmPickMime();
     let rec;
     try { const opts = mime ? { mimeType: mime, videoBitsPerSecond: 5000000, audioBitsPerSecond: 128000 } : { videoBitsPerSecond: 5000000 }; rec = new MediaRecorder(stream, opts); }
@@ -1172,7 +1357,6 @@ async function vmStartRender() {
     const chunks = []; rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
     const stopped = new Promise(res => { rec.onstop = res; });
     vmMediaRec = rec; rec.start(1000);
-    // Start music + voiceover
     if (vmAudioEl) { try { vmAudioEl.currentTime = 0; await vmAudioEl.play(); } catch (e) { } }
     if (vmVoiceOver.audio) { try { vmVoiceOver.audio.currentTime = 0; await vmVoiceOver.audio.play(); } catch (e) { } }
     const prevTtsEnabled = TTS.enabled; TTS.enabled = false;
@@ -1197,13 +1381,13 @@ async function vmStartRender() {
     vmSetStatus(`✅ Ready! <b>${mb} MB • ${ext.toUpperCase()} • ${W}×${H}</b>`);
     showDownloadModal(blob, filename, W, H, ext);
 }
-function vmStopAll() { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } } TTS.stop(); if (vmMediaRec && vmMediaRec.state !== 'inactive') { try { vmMediaRec.stop(); } catch (e) { } } if (VR.isRecording) { VR.cancelled = true; vmStopFlag = true; } const pBtn = document.getElementById('vmPreviewBtn'); const rBtn = document.getElementById('vmRenderBtn'); const sBtn = document.getElementById('vmStopBtn'); if (pBtn) pBtn.disabled = false; if (rBtn) rBtn.disabled = false; if (sBtn) sBtn.style.display = 'none'; const rB = document.getElementById('vmRecBadge'); if (rB) rB.classList.remove('on'); const pW = document.getElementById('vmProgressWrap'); if (pW) pW.classList.remove('on'); const lB = document.getElementById('vmLiveBadge'); if (lB) lB.classList.remove('on'); VR.close(); vmRecording = false; vmPreviewPlaying = false; }
+function vmStopAll() { vmStopFlag = true; if (vmRaf) cancelAnimationFrame(vmRaf); if (vmAudioEl) { try { vmAudioEl.pause(); vmAudioEl.currentTime = 0; } catch (e) { } } if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); vmVoiceOver.audio.currentTime = 0; } catch (e) { } } TTS.stop(); if (vmMediaRec && vmMediaRec.state !== 'inactive') { try { vmMediaRec.stop(); } catch (e) { } } if (VR.state === 'recording') { VR.pendingAction = 'delete'; vmStopFlag = true; } const pBtn = document.getElementById('vmPreviewBtn'); const rBtn = document.getElementById('vmRenderBtn'); const sBtn = document.getElementById('vmStopBtn'); if (pBtn) pBtn.disabled = false; if (rBtn) rBtn.disabled = false; if (sBtn) sBtn.style.display = 'none'; const rB = document.getElementById('vmRecBadge'); if (rB) rB.classList.remove('on'); const pW = document.getElementById('vmProgressWrap'); if (pW) pW.classList.remove('on'); const lB = document.getElementById('vmLiveBadge'); if (lB) lB.classList.remove('on'); VR.close(); vmRecording = false; vmPreviewPlaying = false; }
 function vmSetStatus(html) { const el = document.getElementById('vmStatus'); if (el) el.innerHTML = html; }
 function vmSetStatusDefault() { const n = vmQuestions.length; const { W, H } = vmSize(); const total = Math.round(vmTotalDuration()); const el = document.getElementById('vmStatus'); const parts = [`🎬 ${n}Q`, `⏱️ ${total}s`, `📐 ${W}×${H}`, vmOrientation === 'portrait' ? 'Portrait' : 'Landscape']; if (vmSound.ttsEnabled) parts.push('🗣️ TTS'); if (vmVoiceOver.blob) parts.push('🎙️ VO'); if (vmMuted) parts.push('🔕 Muted'); if (el) el.innerHTML = parts.join(' • '); }
 function vmFitCanvas() { const c = document.getElementById('vmCanvas'); if (!c) return; const wrap = c.parentElement; const availW = Math.max(120, wrap.clientWidth - 20); const availH = Math.max(180, wrap.clientHeight - 20); const ratio = c.width / c.height; let w = availW, h = w / ratio; if (h > availH) { h = availH; w = h * ratio; } c.style.width = Math.round(w) + 'px'; c.style.height = Math.round(h) + 'px'; }
 async function vmRefreshIdle() { const canvas = document.getElementById('vmCanvas'); if (!canvas) return; await vmPreloadImages(); try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { } const ctx = canvas.getContext('2d'); const scenes = vmSceneList(); vmDrawFrame(ctx, Math.min(0.8, scenes[0].dur * 0.3), scenes); vmSetStatusDefault(); }
 function vmSetOrientation(ori) { vmOrientation = ori; const canvas = document.getElementById('vmCanvas'); const { W, H } = vmSize(); canvas.width = W; canvas.height = H; vmInitParticles(W, H); requestAnimationFrame(() => vmFitCanvas()); vmRefreshIdle(); vmScheduleAutoPreview(); }
-function vmOpenFlyout(side, key) { if (VR.isRecording) return; document.querySelectorAll('.vm-flyout').forEach(f => { if (f.dataset.key !== key) f.classList.remove('open'); }); const flyout = document.querySelector(`.vm-flyout[data-key="${key}"]`); if (!flyout) return; const wasOpen = flyout.classList.contains('open'); document.querySelectorAll('.vm-rail-btn').forEach(t => { if (t.dataset.key === key) t.classList.toggle('active', !wasOpen); else t.classList.remove('active'); }); if (wasOpen) { flyout.classList.remove('open'); document.getElementById('vmBackdrop').classList.remove('on'); } else { flyout.classList.add('open'); if (window.innerWidth <= 900) document.getElementById('vmBackdrop').classList.add('on'); } }
+function vmOpenFlyout(side, key) { if (VR.state === 'recording') return; document.querySelectorAll('.vm-flyout').forEach(f => { if (f.dataset.key !== key) f.classList.remove('open'); }); const flyout = document.querySelector(`.vm-flyout[data-key="${key}"]`); if (!flyout) return; const wasOpen = flyout.classList.contains('open'); document.querySelectorAll('.vm-rail-btn').forEach(t => { if (t.dataset.key === key) t.classList.toggle('active', !wasOpen); else t.classList.remove('active'); }); if (wasOpen) { flyout.classList.remove('open'); document.getElementById('vmBackdrop').classList.remove('on'); } else { flyout.classList.add('open'); if (window.innerWidth <= 900) document.getElementById('vmBackdrop').classList.add('on'); } }
 function vmCloseAllFlyouts() { document.querySelectorAll('.vm-flyout').forEach(f => f.classList.remove('open')); document.querySelectorAll('.vm-rail-btn').forEach(t => t.classList.remove('active')); const bd = document.getElementById('vmBackdrop'); if (bd) bd.classList.remove('on'); }
 function vmToggleMute() { vmMuted = !vmMuted; SE.setMasterMute(vmMuted); const mb = document.getElementById('vmMuteBtn'); if (mb) { mb.textContent = vmMuted ? '🔕' : '🔊'; mb.classList.toggle('muted', vmMuted); } vmSetStatusDefault(); }
 
@@ -1335,7 +1519,7 @@ function renderVideoStudio(data) {
           <div class="vm-flyout-head"><div class="vm-flyout-title"><span class="ti">🔊</span> Sound & Voice</div><button class="vm-flyout-close" data-close>✕</button></div>
           <div class="vm-flyout-body">
             <div class="vm-section-label">🎙️ Voice Over</div>
-            <div class="vm-info" style="margin-top:0;">Tap the <b>🎙️ Voice</b> button at the bottom of the left rail to record your voice over the quiz. All SFX will be muted during recording — only your voice is captured.</div>
+            <div class="vm-info" style="margin-top:0;">Tap the <b>🎙️ Voice</b> button at the bottom of the left rail to record over the quiz. Record → review → <b>Add</b>. Quiz SFX are muted while recording.</div>
             <div class="vm-row" style="margin-top:8px;"><span>🎙️ Status</span><span id="voStatusText" style="font-size:.72rem;color:#1a73e8;font-weight:800;">Not recorded</span></div>
             <button class="vm-file-btn" id="voHelpBtn" style="margin-top:8px;width:100%;justify-content:center;padding:10px;"><i class="fas fa-question-circle"></i> Microphone Help / Permission</button>
             <label class="vm-file-btn" for="voFileInput" style="margin-top:8px;width:100%;justify-content:center;padding:10px;"><i class="fas fa-upload"></i> Upload Voice Over File</label>
@@ -1434,7 +1618,7 @@ function renderVideoStudio(data) {
       </div>
     </div>`;
 
-    // Rail buttons — the Voice button triggers the recorder instead of a flyout
+    // Rail buttons — Voice triggers the recorder; everything else opens a flyout
     document.querySelectorAll('.vm-rail-btn').forEach(t => {
         t.onclick = () => {
             if (t.dataset.key === 'voice') {
@@ -1485,9 +1669,9 @@ function renderVideoStudio(data) {
 
     connectRecordButton();
     document.getElementById('voHelpBtn').onclick = () => { openMicModal(); };
-    document.getElementById('voFileInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (er) { } } vmVoiceOver = { blob: f, url: URL.createObjectURL(f), audio: new Audio(), recorder: null, stream: null, chunks: [], duration: 0 }; vmVoiceOver.audio.src = vmVoiceOver.url; vmVoiceOver.audio.preload = 'auto'; vmVoiceOver.audio.addEventListener('loadedmetadata', () => { vmVoiceOver.duration = vmVoiceOver.audio.duration || 0; }); await SE.attachVoiceover(vmVoiceOver.audio); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = '✅ File loaded'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex'; qcToast('✅ File loaded'); e.target.value = ''; };
+    document.getElementById('voFileInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (er) { } } vmVoiceOver = { blob: f, url: URL.createObjectURL(f), audio: new Audio(), recorder: null, stream: null, chunks: [], duration: 0 }; vmVoiceOver.audio.src = vmVoiceOver.url; vmVoiceOver.audio.preload = 'auto'; vmVoiceOver.audio.addEventListener('loadedmetadata', () => { vmVoiceOver.duration = vmVoiceOver.audio.duration || 0; }); await SE.attachVoiceover(vmVoiceOver.audio); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = '✅ File loaded'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'flex'; const vb = document.querySelector('.vm-rail-btn[data-key="voice"]'); if (vb) vb.classList.add('has-voice'); qcToast('✅ File loaded'); e.target.value = ''; };
     document.getElementById('voPlayBtn').onclick = () => { if (!vmVoiceOver.audio) return; const a = vmVoiceOver.audio; if (a.paused) { try { a.currentTime = 0; a.play(); } catch (e) { } } else { a.pause(); } };
-    document.getElementById('voDeleteBtn').onclick = () => { if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch (e) { } } if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (e) { } } vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 }; SE.attachVoiceover(null); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Not recorded'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none'; qcToast('🗑️ Voice over deleted'); };
+    document.getElementById('voDeleteBtn').onclick = () => { if (vmVoiceOver.audio) { try { vmVoiceOver.audio.pause(); } catch (e) { } } if (vmVoiceOver.url) { try { URL.revokeObjectURL(vmVoiceOver.url); } catch (e) { } } vmVoiceOver = { blob: null, url: null, audio: null, recorder: null, stream: null, chunks: [], duration: 0 }; SE.attachVoiceover(null); const voStatus = document.getElementById('voStatusText'); if (voStatus) voStatus.textContent = 'Not recorded'; const voControls = document.getElementById('voControls'); if (voControls) voControls.style.display = 'none'; const vb = document.querySelector('.vm-rail-btn[data-key="voice"]'); if (vb) vb.classList.remove('has-voice'); qcToast('🗑️ Voice over deleted'); };
 
     function wireSoundToggle(id, getter, setter) { const el = document.getElementById(id); if (!el) return; if (getter()) el.classList.add('on'); else el.classList.remove('on'); el.onclick = () => { const nv = !el.classList.contains('on'); if (nv) el.classList.add('on'); else el.classList.remove('on'); setter(nv); if (window._refreshTimingUI) window._refreshTimingUI(); }; }
     wireSoundToggle('toggleTTS', () => vmSound.ttsEnabled, v => { vmSound.ttsEnabled = v; TTS.enabled = v; if (!v) TTS.stop(); qcToast(v ? '🗣️ TTS ON' : '🔇 TTS OFF'); });
@@ -1498,9 +1682,9 @@ function renderVideoStudio(data) {
     const ttsRate = document.getElementById('ttsRateInput'); ttsRate.value = vmSound.ttsRate; ttsRate.oninput = () => { const v = parseFloat(ttsRate.value); if (!isNaN(v)) { vmSound.ttsRate = vmClamp(v, 0.5, 2); TTS.rate = vmSound.ttsRate; if (window._refreshTimingUI) window._refreshTimingUI(); } };
     const ttsPitch = document.getElementById('ttsPitchInput'); ttsPitch.value = vmSound.ttsPitch; ttsPitch.oninput = () => { const v = parseFloat(ttsPitch.value); if (!isNaN(v)) { vmSound.ttsPitch = vmClamp(v, 0, 2); TTS.pitch = vmSound.ttsPitch; } };
     const sfxSlider = document.getElementById('sfxVolSlider'); sfxSlider.value = vmSound.sfxVolume; document.getElementById('sfxVolVal').textContent = Math.round(vmSound.sfxVolume * 100) + '%'; sfxSlider.oninput = () => { const v = parseFloat(sfxSlider.value); vmSound.sfxVolume = v; SE.setSfxVolume(v); document.getElementById('sfxVolVal').textContent = Math.round(v * 100) + '%'; };
-    document.querySelectorAll('[data-qsfx]').forEach(b => { b.onclick = async () => { document.querySelectorAll('[data-qsfx]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmSound.qSfx = b.dataset.qsfx; if (!VR.isRecording) await SE.playSfx(vmSound.qSfx); }; });
-    document.querySelectorAll('[data-osfx]').forEach(b => { b.onclick = async () => { document.querySelectorAll('[data-osfx]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmSound.oSfx = b.dataset.osfx; if (!VR.isRecording) await SE.playSfx(vmSound.oSfx); }; });
-    document.querySelectorAll('[data-asfx]').forEach(b => { b.onclick = async () => { document.querySelectorAll('[data-asfx]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmSound.aSfx = b.dataset.asfx; if (!VR.isRecording) await SE.playSfx(vmSound.aSfx); }; });
+    document.querySelectorAll('[data-qsfx]').forEach(b => { b.onclick = async () => { document.querySelectorAll('[data-qsfx]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmSound.qSfx = b.dataset.qsfx; if (VR.state !== 'recording') await SE.playSfx(vmSound.qSfx); }; });
+    document.querySelectorAll('[data-osfx]').forEach(b => { b.onclick = async () => { document.querySelectorAll('[data-osfx]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmSound.oSfx = b.dataset.osfx; if (VR.state !== 'recording') await SE.playSfx(vmSound.oSfx); }; });
+    document.querySelectorAll('[data-asfx]').forEach(b => { b.onclick = async () => { document.querySelectorAll('[data-asfx]').forEach(x => x.classList.remove('active')); b.classList.add('active'); vmSound.aSfx = b.dataset.asfx; if (VR.state !== 'recording') await SE.playSfx(vmSound.aSfx); }; });
 
     document.getElementById('vmPreviewBtn').onclick = vmPlayPreview;
     document.getElementById('vmRenderBtn').onclick = vmStartRender;
@@ -1515,7 +1699,7 @@ const templates = { default: { bg: "#f5f7fc", accent: "#1a73e8" }, ocean: { bg: 
 const gradients = ["gradient-1", "gradient-2", "gradient-3", "gradient-4", "gradient-5", "gradient-6", "gradient-7", "gradient-8"];
 function applyTemplate() { document.body.style.background = templates[selectedTemplate]?.bg || "#f5f7fc"; }
 function goBackInApp() { const created = document.getElementById("createdArea"); const upload = document.getElementById("stepUpload"); const home = document.getElementById("stepHome"); if (created.style.display === "block") { created.style.display = "none"; upload.style.display = "block"; home.style.display = "none"; vmStopAll(); return true; } if (upload.style.display === "block") { upload.style.display = "none"; home.style.display = "grid"; document.querySelectorAll(".home-card").forEach(c => c.classList.remove("active")); return true; } return false; }
-window.addEventListener('keydown', (e) => { const inField = ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName) || e.target.isContentEditable; if ((e.key === 'Backspace' || e.key === 'Escape') && !inField && !VR.isRecording) { e.preventDefault(); goBackInApp(); } });
+window.addEventListener('keydown', (e) => { const inField = ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName) || e.target.isContentEditable; if ((e.key === 'Backspace' || e.key === 'Escape') && !inField && VR.state !== 'recording') { e.preventDefault(); goBackInApp(); } });
 history.pushState({ qcp: true }, "");
 window.addEventListener('popstate', (e) => { goBackInApp(); history.pushState({ qcp: true }, ""); });
 
